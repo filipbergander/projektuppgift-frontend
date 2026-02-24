@@ -4,8 +4,17 @@
             margin: 0 auto;
             text-align: center;
             height: 70px;
+            color: $color-white;
+            font-weight: $fontweight-bold;
             background-color: $color-bg-dark;
             width: 100%;
             margin-top: 1rem;
             padding: 12px 0 0;
+            .jsdoc {
+                @include button($color-complement, $color-text);
+                text-decoration: none;
+            }
+            .documentation {
+                margin: 8px;
+            }
         }
