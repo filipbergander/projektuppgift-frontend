@@ -1,6 +1,8 @@
 @use 'normalize.css/normalize' as *;
 @use "./abstracts/variables";
 @use "./layout/layout";
+@use "./layout/header";
+@use "./layout/footer";
 @use "./components/buttons";
 @use "./base/base";
 @use "./abstracts/mixins";

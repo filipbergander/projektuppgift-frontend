@@ -9,7 +9,46 @@
 </head>
 
 <body>
+    <header>
+        <img src="/currencyicon.svg" alt="Valutakompis logotyp" width="150" height="150" id="logo">
+        <h1>Valutakompis</h1>
+    </header>
+    <aside>
+        <nav>
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </nav>
+    </aside>
+    <main>
+        <section id="converter">
+            <h2>Konvertera valutor</h2>
+            <div id="currency-converter"></div>
+        </section>
+        <section id="map-section">
+            <h2>Karta</h2>
+            <div><label for="country">Sök land:</label>
+                <input type="text" id="country-name" name="country" placeholder="Skriv land...">
+                <button type="button" id="search-button">Sök</button>
+                <div id="country-error"></div>
+            </div>
+            <div id="map"></div>
+        </section>
+        <div id="country-card"></div>
+    </main>
+    <footer>
+        <div class="documentation">
+            <a href="/docs/index.html" class="jsdoc" target="_blank">Dokumentation JSDoc</a>
+        </div>
+        Copyright &copy; 2026 Valutakompis gjord av Filip Bergander
+    </footer>
+    <!--<div id="display-rates"></div>
+    <div id="lastUpd"></div> -->
     <script type="module" src="/src/js/main.js"></script>
+    <script type="module" src="/src/js/countries.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,31 @@
+@use "sass:color";
+//Färger för knappar och hoover-effekter
+$btn-color-primary:#0f6afd;
+$btn-color-hover:#8338EC;
+//Färger för layout
+$color-bg:#f7f2d7;
+$color-bg-dark:#464747c0;
+//Färger för text
+$color-text: #1A1A1A;
+$color-white:#fff;
+$color-text-secondary: #6C757D;
+$color-text-error:rgba(202, 22, 22, 0.89);
+//Komplement färger
+$color-complement: color.complement($btn-color-primary);
+// Skala färg till ljusare och mörkare för knappar
+$darkened-color-btn: color.scale($btn-color-primary, $lightness:-50%);
+$lightened-color-btn: color.scale($btn-color-primary, $lightness:30%);
+//
+$primary-dark: shade($btn-color-primary, 50%);
+$primary-light: tint($btn-color-primary, 50%);
+//Skuggor
+$shadow-light:0 2px 6px rgba(0, 0, 0, 0.08);
+$shadow-medium:0 4px 12px rgba(0, 0, 0, 0.12);
+//Fonter
+$font-primary:'Inter',
+sans-serif;
+$fontweight-bold:700;
+//Border-radius
+$radius-medium: 8px;
+//Övergångar
+$transition-base: 0.3s ease;

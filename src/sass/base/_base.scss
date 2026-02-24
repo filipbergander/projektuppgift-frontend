@@ -1,0 +1,6 @@
+        @use "../abstracts/variables" as *;
+        @use "../abstracts/mixins" as *;
+        #country-error {
+            color: $color-text-error;
+            font-weight: $fontweight-bold;
+        }
