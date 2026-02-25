@@ -12,6 +12,7 @@ $color-text-secondary: #6C757D;
 $color-text-error:rgba(202, 22, 22, 0.89);
 //Komplement färger
 $color-complement: color.complement($btn-color-primary);
+$color-complement-hover: color.complement($btn-color-hover);
 // Skala färg till ljusare och mörkare för knappar
 $darkened-color-btn: color.scale($btn-color-primary, $lightness:-50%);
 $lightened-color-btn: color.scale($btn-color-primary, $lightness:30%);
@@ -19,8 +20,8 @@ $lightened-color-btn: color.scale($btn-color-primary, $lightness:30%);
 $primary-dark: shade($btn-color-primary, 50%);
 $primary-light: tint($btn-color-primary, 50%);
 //Skuggor
-$shadow-light:0 2px 6px rgba(0, 0, 0, 0.08);
-$shadow-medium:0 4px 12px rgba(0, 0, 0, 0.12);
+$shadow-light:0 2px 6px rgb(0, 0, 0, 0.582);
+$shadow-medium:0 4px 12px rgba(0, 0, 0, 0.582);
 //Fonter
 $font-primary:'Inter',
 sans-serif;
@@ -29,3 +30,6 @@ $fontweight-bold:700;
 $radius-medium: 8px;
 //Övergångar
 $transition-base: 0.3s ease;
+//Marginaler
+$margin-general-md: 16px;
+$margin-general-s:8px;

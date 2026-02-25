@@ -1,19 +1,19 @@
-        @use "../abstracts/variables" as *;
-        @use "../abstracts/mixins" as *;
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        main {
-            max-width: 1240px;
-            background-color: $color-bg;
-            margin: 0 auto;
-            flex: 1;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    max-width: 1240px;
+    background-color: $color-bg;
+    margin: 0 auto;
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

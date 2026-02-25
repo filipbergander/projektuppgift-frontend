@@ -1,0 +1,16 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+#map {
+    height: 450px;
+    width: 450px;
+    transition: $transition-base;
+    display: none;
+}
+
+#map.show {
+    display: block;
+    border-radius: $radius-medium;
+    border: 2px solid $btn-color-hover;
+    box-shadow: $shadow-light;
+    margin-bottom: $margin-general-md;
+}

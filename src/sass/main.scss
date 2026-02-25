@@ -3,7 +3,9 @@
 @use "./layout/layout";
 @use "./layout/header";
 @use "./layout/footer";
+@use "./components/spinner";
 @use "./components/buttons";
+@use "./components/map";
 @use "./base/base";
 @use "./abstracts/mixins";
 @use "./abstracts/animations";

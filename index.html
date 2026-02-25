@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Projektuppgift</title>
     <link rel="stylesheet" href="./src/sass/main.scss">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 
 <body>
@@ -16,8 +18,8 @@
     <aside>
         <nav>
             <ul>
-                <li></li>
-                <li></li>
+                <li>Länder</li>
+                <li>Valutor</li>
                 <li></li>
                 <li></li>
             </ul>
@@ -31,20 +33,24 @@
         <section id="map-section">
             <h2>Vilket land vill du resa till?</h2>
             <p>Ta reda på information om landet.</p>
-            <div id="country-card"></div>
+
             <div><label for="country">Sök land:</label>
                 <input type="text" id="country-name" name="country" placeholder="Skriv land...">
                 <button type="button" id="search-button">Sök</button>
+                <div id="country-error"></div>
             </div>
-            <div id="country-error"></div>
+            <div id="country-card"></div>
+
             <div id="map"></div>
         </section>
         <div id="country-card"></div>
+
         <!--<img src="" alt="Landets flagga" id="flag">
         <p>Valuta:<span>${currencyCode}</span></p>
         <p>Huvudstad:<span>${capitalName}</span></p>
         <button id="countryMap">Se en karta över landet</button>-->
     </main>
+    <!-- <div id="loader" class="spinner hidden"></div> -->
     <footer>
         <div class="documentation">
             <a href="/docs/index.html" class="jsdoc" target="_blank">Dokumentation JSDoc</a>
@@ -55,6 +61,7 @@
     <div id="lastUpd"></div> -->
     <script type="module" src="/src/js/main.js"></script>
     <script type="module" src="/src/js/countries.js"></script>
+    <script type="module" src="/src/js/map.js"></script>
 </body>
 
 </html>

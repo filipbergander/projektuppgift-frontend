@@ -1,6 +1,17 @@
-        @use "../abstracts/variables" as *;
-        @use "../abstracts/mixins" as *;
-        #country-error {
-            color: $color-text-error;
-            font-weight: $fontweight-bold;
-        }
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+#country-error {
+    color: $color-text-error;
+    font-weight: $fontweight-bold;
+}
+
+.hidden {
+    display: none;
+}
+
+nav {
+    display: flex;
+    ul {
+        list-style: none;
+    }
+}
