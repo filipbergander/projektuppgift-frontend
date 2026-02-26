@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./src/sass/main.scss">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -28,7 +29,13 @@
     <main>
         <section id="converter">
             <h2>Konvertera valutor</h2>
-            <div id="currency-converter"></div>
+            <div id="currency-converter"> </div>
+            <label for="from-currency">Från</label>
+            <input type="text" id="from-currency" name="from-currency" placeholder="Skriv valuta...">
+            <label for="to-currency">Till</label>
+            <input type="text" id="to-currency" name="to-currency" placeholder="Skriv valuta...">
+            <button type="button" id="convert-btn">Omvandla</button>
+
         </section>
         <section id="map-section">
             <h2>Vilket land vill du resa till?</h2>
@@ -61,7 +68,7 @@
     <div id="lastUpd"></div> -->
     <script type="module" src="/src/js/main.js"></script>
     <script type="module" src="/src/js/countries.js"></script>
-    <script type="module" src="/src/js/map.js"></script>
+    <script type="module" src="/src/js/currency.js"></script>
 </body>
 
 </html>

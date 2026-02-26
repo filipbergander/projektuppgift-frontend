@@ -1,0 +1,10 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/animations" as *;
+@use "../abstracts/mixins" as *;
+#weatherIcon {
+    animation: floatWeatherIcon 3s ease-in-out infinite;
+    &:hover {
+        transform: translateY(10px);
+        transition: transform 0.3s ease;
+    }
+}

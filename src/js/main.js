@@ -1,11 +1,11 @@
-"use strict";
+/*"use strict";
 import '/src/sass/main.scss';
 
 
 
 addEventListener("DOMContentLoaded", () => {
 
-    /* fetchCurrencyData();*/
+     fetchCurrencyData();
 
 
 });
@@ -14,7 +14,7 @@ const ratesEl = document.getElementById("display-rates");
 const UpdateEl = document.getElementById("lastUpd");
 
 
-/*
+
 async function fetchCurrencyData() {
     const url = /*"https://v6.exchangerate-api.com/v6/b1e7b0cd61281ff6a98d18e0/latest/USD";
         try {
