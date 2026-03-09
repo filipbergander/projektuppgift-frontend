@@ -4,7 +4,17 @@
     @include button($btn-color-primary, $color-white)
 }
 
-#countryMap-btn {
+#countryMapBtn {
+    @include button($color-complement-hover, $color-text);
+    margin-bottom: 1rem;
+}
+
+#showWeatherBtn {
+    @include button($color-complement-hover, $color-text);
+    margin-bottom: 1rem;
+}
+
+#showCurrencyBtn {
     @include button($color-complement-hover, $color-text);
     margin-bottom: 1rem;
 }

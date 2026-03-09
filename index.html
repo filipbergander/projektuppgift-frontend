@@ -16,7 +16,7 @@
         <img src="/currencyicon.svg" alt="Valutakompis logotyp" width="150" height="150" id="logo">
         <h1>Valutakompis</h1>
     </header>
-    <aside>
+    <!--<aside>
         <nav>
             <ul>
                 <li>Länder</li>
@@ -25,37 +25,23 @@
                 <li></li>
             </ul>
         </nav>
-    </aside>
+    </aside>-->
     <main>
-        <section id="converter">
-            <h2>Konvertera valutor</h2>
-            <div id="currency-converter"> </div>
-            <label for="from-currency">Från</label>
-            <input type="text" id="from-currency" name="from-currency" placeholder="Skriv valuta...">
-            <label for="to-currency">Till</label>
-            <input type="text" id="to-currency" name="to-currency" placeholder="Skriv valuta...">
-            <button type="button" id="convert-btn">Omvandla</button>
-
-        </section>
-        <section id="map-section">
+        <section id="country-section">
             <h2>Vilket land vill du resa till?</h2>
             <p>Ta reda på information om landet.</p>
-
             <div><label for="country">Sök land:</label>
                 <input type="text" id="country-name" name="country" placeholder="Skriv land...">
                 <button type="button" id="search-button">Sök</button>
                 <div id="country-error"></div>
             </div>
             <div id="country-card"></div>
-
-            <div id="map"></div>
+            <div id="showArea">
+                <div id="map" class="hidden"></div>
+                <div id="weatherDiagram" class="hidden"></div>
+                <div id="currency-converter" class="hidden"></div>
+            </div>
         </section>
-        <div id="country-card"></div>
-
-        <!--<img src="" alt="Landets flagga" id="flag">
-        <p>Valuta:<span>${currencyCode}</span></p>
-        <p>Huvudstad:<span>${capitalName}</span></p>
-        <button id="countryMap">Se en karta över landet</button>-->
     </main>
     <!-- <div id="loader" class="spinner hidden"></div> -->
     <footer>
@@ -69,6 +55,15 @@
     <script type="module" src="/src/js/main.js"></script>
     <script type="module" src="/src/js/countries.js"></script>
     <script type="module" src="/src/js/currency.js"></script>
+    <!--    <section id="converter">
+            <h2>Konvertera valutor</h2>
+            <div id="currency-converter"> </div>
+            <label for="from-currency">Från</label>
+            <input type="text" id="from-currency" name="from-currency" placeholder="Skriv valuta...">
+            <label for="to-currency">Till</label>
+            <input type="text" id="to-currency" name="to-currency" placeholder="Skriv valuta...">
+            <button type="button" id="convert-btn">Omvandla</button>
+        </section>-->
 </body>
 
 </html>

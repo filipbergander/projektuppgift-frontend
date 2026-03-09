@@ -27,3 +27,37 @@ async function fetchCurrencyData() {
             console.error("Felmeddelande: ", error);
         }
 };*/
+
+
+/* 
+
+
+function addMarker(latitude, longitude) {
+
+    visualMap.setView([latitude, longitude], 8);
+
+}
+
+visualMap = L.map('map').setView([latitude, longitude], 4);
+
+ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+     maxZoom: 19,
+     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+ }).addTo(visualMap);   
+  if (visualMap !== null) { // Tar bort kartan från DOM om den redan visas
+        visualMap.remove();
+        visualMap = null;
+        visualMap.classList.remove("show");
+    }
+    document.getElementById("map").classList.add("show");*/
+/*const countryArea = data[0].maps.openStreetMaps;*/ // För att visa kartan på en länk
+
+/* let mapEl = document.getElementById("map");
+ mapEl.classList.remove("show");
+
+
+
+    //let myChartEl = document.getElementById("myChart");
+    //myChartEl.classList.add("hidden"); // Döljer diagrammet över väderprognosen när kartan visas
+
+ */

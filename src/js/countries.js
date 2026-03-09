@@ -7,6 +7,7 @@ addEventListener("DOMContentLoaded", () => {
     const countryInputEl = document.getElementById("country-name");
     const searchBtn = document.getElementById("search-button");
     const searchError = document.getElementById("country-error");
+
     visualMap = L.map('map').setView([51.78, -7.03], 2); // Grundvy för kartan, utzoomad
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -20,6 +21,7 @@ addEventListener("DOMContentLoaded", () => {
             searchError.innerHTML = "Vänligen, fyll i ett land"; // Felmeddelande i DOM
             return;
         }
+        hideSections();
         const countryInput = searchInput.charAt(0).toUpperCase() + searchInput.slice(1).toLowerCase(); // Gör första bokstaven i landets namn till en versal
         fetchCountry(countryInput, searchError); // Anropar funktionen för att hämta datan om landet beroende på vad användaren sökt på
     });
@@ -59,33 +61,34 @@ async function fetchCountry(countryInput, searchError) {
 async function displayCountry(data, currencyCode, countryInput) {
     const countryProfile = document.getElementById("country-card");
     const flag = data[0].flags.png; // Flagga
-    const countryName = data[0].altSpellings[0]; // Alternativt namn som kan användas
+    const countryName = data[0].altSpellings[0]; // Förkortning för landets namn
     const language = data[0].languages; // Språk
     const languageName = Object.values(language)[0]; // Värdet inom languages i arrayen från API:et 
-    console.log(languageName);
     const capitalName = data[0].capital; // Huvudstad
 
-    const [capitalLat, capitalLng] = data[0].capitalInfo.latlng; // Hämtar in koordinater för huvudstaden
+    // const [capitalLat, capitalLng] = data[0].capitalInfo.latlng; // Hämtar in koordinater för huvudstaden
     // Skapar struktur inom DOM för att visa info om landet
     countryProfile.innerHTML = `
     <h3>${countryName} - ${countryInput}</h3>
     <img src="${flag}" alt="${countryInput} flag" id="flag" width="150px" height="100px"> 
     <p>Valuta: <span>${currencyCode}</span></p>
     <p>Språk: <span>${languageName}</span></p>
+    <p>Tidszon: <span>${data[0].timezones[0]}</span></p>
     <p>Huvudstad: <span>${capitalName}</span></p>
-    <div id="weatherContainer">
-    </div>
+    <div id="weatherContainer"></div>
     <button id="countryMap-btn">Visa karta över landet</button>
+    <button id="showWeather">Se väderprognos</button>
+    <button id="showCurrency">Jämför valuta</button>
     `;
 
     const countryMapBtn = document.getElementById("countryMap-btn");
     countryMapBtn.addEventListener("click", () => {
+        hideSections(); // Dölj alla sektioner
         const [latitude, longitude] = data[0].latlng;
-
         showCountryMap(latitude, longitude);
     });
     const weatherInfo = await getWeatherForecast(capitalName);
-    displayWeather(weatherInfo);
+    displayWeather(weatherInfo, capitalName);
 };
 
 /**
@@ -124,14 +127,16 @@ async function fetchByTranslation(countryInput, searchError) {
  * @param {*} longitude 
  */
 function showCountryMap(latitude, longitude) {
-    let mapEl = document.getElementById("map");
-    mapEl.classList.add("show");
+    hideSections(); // Dölj alla sektioner i början
+    const mapEl = document.getElementById("map");
+    mapEl.classList.remove("hidden"); // Visa kartan sedan
     visualMap.invalidateSize(); // Justerar kartans synliga storlek när den väl visas
     visualMap.setView([latitude, longitude], 4); // Uppdaterar kartans position efter landets koordinater
     if (marker) {
         visualMap.removeLayer(marker); // Om det redan finns en markör på kartan tas den bort innan den nya markören läggs till
     }
     marker = L.marker([latitude, longitude]).addTo(visualMap); // Markören sätts på kartan beroende på landets koordinater
+
 }
 
 /**
@@ -141,7 +146,7 @@ function showCountryMap(latitude, longitude) {
  */
 async function getWeatherForecast(capitalName) {
     const apiKey = "3dc22c103acb482d9ee82613262602";
-    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${capitalName}&aqi=no`;
+    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${capitalName}&days=3&aqi=no&alerts=no`;
     try {
         const response = await fetch(url)
         const data = await response.json();
@@ -155,16 +160,25 @@ async function getWeatherForecast(capitalName) {
  * Visar väder för huvudstaden i det land som användaren sökt på, anropar funktionen för att visa diagram för väderprognos
  * @param {*} weatherInfo 
  */
-function displayWeather(weatherInfo) {
+function displayWeather(weatherInfo, capitalName) {
     // Container som ligger efter allmänna informationen om landet
     const weatherContainerEl = document.getElementById("weatherContainer");
+    const diagramEl = document.getElementById("weatherDiagram");
+    diagramEl.innerHTML = ""; // Tömmer diagrammet innan det visas igen, ifall användaren söker på flera länder efter varandra
+    const showWeatherBtn = document.getElementById("showWeather");
+    showWeatherBtn.addEventListener("click", () => {
+        hideSections(); // Döljer alla sektioner
+
+        diagramEl.classList.remove("hidden"); // Visar diagrammet med väderprognosen sedan
+    });
     // Skapar struktur inom containern för att visa väder
     weatherContainerEl.innerHTML += `
             <p> Väder just nu i ${weatherInfo.location.name}: <span>${weatherInfo.current.temp_c}°C</span></p>
             <img id="weatherIcon" src="${weatherInfo.current.condition.icon}" alt="${weatherInfo.current.condition.text} width="60px" height="60px"> 
-            <div id="weatherDiagram"><h3>Se väderprognos:</h3>
+    `
+    diagramEl.innerHTML += `
+            <h3>Väderprognos för ${capitalName}:</h3>
             <canvas id="myChart"></canvas>
-             </div>
     `
     weatherChart(); // Anropar funktionen för att visa diagrammet över väderprognosen för huvudstaden
 }
@@ -193,27 +207,17 @@ function weatherChart() {
         }
     });
 }
+/**
+ * 
+ */
+function hideSections() {
+    // Alla element som ligger inom diven showArea.
+    const mapEl = document.getElementById("map");
+    const diagramEl = document.getElementById("weatherDiagram");
+    const currencyEl = document.getElementById("currency-converter");
 
-
-/* 
-
-
-function addMarker(latitude, longitude) {
-
-    visualMap.setView([latitude, longitude], 8);
-
+    // Lägger på hidden på alla element för att inte visa dem i början
+    mapEl.classList.add("hidden");
+    diagramEl.classList.add("hidden");
+    currencyEl.classList.add("hidden");
 }
-
-visualMap = L.map('map').setView([latitude, longitude], 4);
-
- L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-     maxZoom: 19,
-     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
- }).addTo(visualMap);   
-  if (visualMap !== null) { // Tar bort kartan från DOM om den redan visas
-        visualMap.remove();
-        visualMap = null;
-        visualMap.classList.remove("show");
-    }
-    document.getElementById("map").classList.add("show");*/
-/*const countryArea = data[0].maps.openStreetMaps;*/ // För att visa kartan på en länk
