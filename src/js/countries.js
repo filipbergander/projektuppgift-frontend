@@ -87,8 +87,8 @@ async function displayCountry(data, currencyCode, countryInput) {
         const [latitude, longitude] = data[0].latlng;
         showCountryMap(latitude, longitude);
     });
-    const weatherInfo = await getWeatherForecast(capitalName);
-    displayWeather(weatherInfo, capitalName);
+    const weatherInfo = await getWeatherForecast(capitalName); // Väntar på att få väderinformationen
+    displayWeather(weatherInfo, capitalName); // Skickar med väderinformation och huvudstadens namn 
 };
 
 /**
@@ -146,7 +146,7 @@ function showCountryMap(latitude, longitude) {
  */
 async function getWeatherForecast(capitalName) {
     const apiKey = "3dc22c103acb482d9ee82613262602";
-    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${capitalName}&days=3&aqi=no&alerts=no`;
+    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${capitalName}&days=5&aqi=no&alerts=no`;
     try {
         const response = await fetch(url)
         const data = await response.json();
@@ -158,17 +158,20 @@ async function getWeatherForecast(capitalName) {
 }
 /**
  * Visar väder för huvudstaden i det land som användaren sökt på, anropar funktionen för att visa diagram för väderprognos
- * @param {*} weatherInfo 
+ * @param {*} weatherInfo - Hämtar in väderinformation från API:et
+ * @param {*} capitalName - Huvudstadens namn som används för att visa i DOM vilken stad väderprognosen gäller för
  */
 function displayWeather(weatherInfo, capitalName) {
-    // Container som ligger efter allmänna informationen om landet
-    const weatherContainerEl = document.getElementById("weatherContainer");
+
+    const showWeatherBtn = document.getElementById("showWeather");
+    const weatherContainerEl = document.getElementById("weatherContainer"); // Väderinfo som ligger efter allmänna informationen om landet
     const diagramEl = document.getElementById("weatherDiagram");
     diagramEl.innerHTML = ""; // Tömmer diagrammet innan det visas igen, ifall användaren söker på flera länder efter varandra
-    const showWeatherBtn = document.getElementById("showWeather");
+
+    /*weatherChart(date); // Anropar funktionen för att visa diagrammet över väderprognosen för huvudstaden*/
+
     showWeatherBtn.addEventListener("click", () => {
         hideSections(); // Döljer alla sektioner
-
         diagramEl.classList.remove("hidden"); // Visar diagrammet med väderprognosen sedan
     });
     // Skapar struktur inom containern för att visa väder
@@ -180,13 +183,85 @@ function displayWeather(weatherInfo, capitalName) {
             <h3>Väderprognos för ${capitalName}:</h3>
             <canvas id="myChart"></canvas>
     `
-    weatherChart(); // Anropar funktionen för att visa diagrammet över väderprognosen för huvudstaden
+    const weatherDays = weatherInfo.forecast.forecastday;
+    console.log(weatherDays);
+    const labels = weatherDays.map(day => day.date);
+    const avgTemp = weatherDays.map(day => day.day.avgtemp_c);
+    const lowestTemp = weatherDays.map(day => day.day.mintemp_c);
+    const highestTemp = weatherDays.map(day => day.day.maxtemp_c);
+    const chanceRain = weatherDays.map(day => day.day.daily_chance_of_rain);
+    // Skapa diagram som visar väderprognosen för tre dagar framåt
+    const ctx = document.getElementById("myChart");
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                    label: 'Temperatur genomsnitt',
+                    data: avgTemp,
+                    backgroundColor: ["#eeb006"],
+                    hoverBackgroundColor: "#fff",
+                    borderColor: "#0575f5",
+                    order: 2,
+                },
+                /*{
+                                   type: 'line',
+                                   label: 'Chans för nederbörd',
+                                   data: chanceRain,
+                                   backgroundColor: ["#0066ff"],
+                                   hoverBackgroundColor: "#fff",
+                                   order: 1,
+                               }
+
+                               /*  {
+                                     label: 'Lägsta temperatur',
+                                     data: lowestTemp,
+                                     backgroundColor: ["#3700ff"],
+                                     hoverBackgroundColor: "#fff",
+                                     borderColor: "#0066ff",
+                                 },
+                                 {
+                                     label: 'Högsta temperatur',
+                                     data: highestTemp,
+                                     backgroundColor: ["#ff0000"],
+                                     hoverBackgroundColor: "#fff",
+                                     borderColor: "#ff0000",
+                                 }*/
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+
+                            if (label) {
+                                label += ': ' + context.parsed.y + '°C'; // Lägger till grader i tooltipen, https://www.chartjs.org/docs/latest/configuration/tooltip.html
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: {
+                        callback: function(value) {
+                            return value + '°C'; // Lägger till grader på y-axeln: https://www.chartjs.org/docs/latest/axes/styling.html
+                        }
+                    }
+                }
+            }
+        }
+    });
 }
 
 /**
  * Skapar ett diagram som visar väderprognosen för huvudstaden som användaren sökt på för kommande dagar
  */
-function weatherChart() {
+/*function weatherChart(date) {
     const ctx = document.getElementById("myChart");
     const labels = ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
     const applicants = [20, 21, 19, 22, 18, 17];
@@ -206,7 +281,7 @@ function weatherChart() {
             responsive: true
         }
     });
-}
+}*/
 /**
  * 
  */
