@@ -76,19 +76,66 @@ async function displayCountry(data, currencyCode, countryInput) {
     <p>Tidszon: <span>${data[0].timezones[0]}</span></p>
     <p>Huvudstad: <span>${capitalName}</span></p>
     <div id="weatherContainer"></div>
-    <button id="countryMap-btn">Visa karta över landet</button>
-    <button id="showWeather">Se väderprognos</button>
-    <button id="showCurrency">Jämför valuta</button>
+    <button id="countryMapBtn">Visa karta över landet</button>
+    <button id="showWeatherBtn">Se väderprognos</button>
+    <button id="showCurrencyBtn">Jämför valuta</button>
     `;
 
-    const countryMapBtn = document.getElementById("countryMap-btn");
+    const showCurrencyBtn = document.getElementById("showCurrencyBtn");
+    const currencyEl = document.getElementById("currency-converter");
+    currencyEl.innerHTML = "";
+    showCurrencyBtn.addEventListener("click", () => {
+        hideSections(); // Döljer alla sektioner
+        currencyEl.classList.remove("hidden"); // Visar diagrammet med väderprognosen sedan
+        console.log("Klickade på visa valuta-knappen");
+    });
+
+
+    currencyEl.innerHTML += `
+    <label for="fromCurrency">Från:</label>
+    <input type="text" id="fromCurrency" value="SEK" disabled>
+    <label for="toCurrency">Till:</label>
+    <input type="text" id="toCurrency" value="${currencyCode}">
+    <input type="number" id="amount" placeholder="Ange belopp" autofocus>
+    <button id="convertBtn">Konvertera</button>
+    <div id="convertResult"></div>
+    `;
+    //<div id="display-rates">Se valutor:</div>
+    const countryMapBtn = document.getElementById("countryMapBtn");
     countryMapBtn.addEventListener("click", () => {
         hideSections(); // Dölj alla sektioner
         const [latitude, longitude] = data[0].latlng;
         showCountryMap(latitude, longitude);
     });
+    const convertBtn = document.getElementById("convertBtn");
+    convertBtn.addEventListener("click", async() => { // När användaren klickar på konvertera
+        const convertListEl = document.getElementById("convertResult");
+        const amount = document.getElementById("amount").value;
+        const toCurrency = document.getElementById("toCurrency").value.toUpperCase();
+
+        if (amount === "") {
+            convertListEl.innerHTML = "Ange ett giltigt belopp";
+            return;
+        }
+        const { rate, updated } = await fetchCurrencyData(toCurrency); // Hämtar in växlingskursen för SEK till den valutan som användaren sökt på och vill konvertera till i sökfältet
+        if (!rate) {
+            convertListEl.innerHTML = "Kunde inte hämta växlingskursen, försök snart igen";
+            return;
+        }
+
+        const convertedAmount = amount * rate;
+        console.log(convertedAmount);
+        convertListEl.innerHTML = `
+        <p>${amount} SEK = ${convertedAmount.toFixed(2)} i ${toCurrency}</p>
+        <p>Senast uppdaterad kurs: ${updated}</p>
+        `;
+    });
+
+
+
     const weatherInfo = await getWeatherForecast(capitalName); // Väntar på att få väderinformationen
-    displayWeather(weatherInfo, capitalName); // Skickar med väderinformation och huvudstadens namn 
+    displayWeather(weatherInfo, capitalName); // Skickar med väderinformation och huvudstadens namn
+    fetchCurrencyData(currencyCode); // Funktionen för att hämta valuta anropas med landets valutakod
 };
 
 /**
@@ -163,7 +210,7 @@ async function getWeatherForecast(capitalName) {
  */
 function displayWeather(weatherInfo, capitalName) {
 
-    const showWeatherBtn = document.getElementById("showWeather");
+    const showWeatherBtn = document.getElementById("showWeatherBtn");
     const weatherContainerEl = document.getElementById("weatherContainer"); // Väderinfo som ligger efter allmänna informationen om landet
     const diagramEl = document.getElementById("weatherDiagram");
     diagramEl.innerHTML = ""; // Tömmer diagrammet innan det visas igen, ifall användaren söker på flera länder efter varandra
@@ -282,17 +329,68 @@ function displayWeather(weatherInfo, capitalName) {
         }
     });
 }*/
+
 /**
- * 
+ * Döljer karta, väderprognos med diagram och valuta i början när användaren söker på ett land.
  */
 function hideSections() {
     // Alla element som ligger inom diven showArea.
     const mapEl = document.getElementById("map");
     const diagramEl = document.getElementById("weatherDiagram");
     const currencyEl = document.getElementById("currency-converter");
-
     // Lägger på hidden på alla element för att inte visa dem i början
     mapEl.classList.add("hidden");
     diagramEl.classList.add("hidden");
     currencyEl.classList.add("hidden");
 }
+
+
+
+/**
+ * En funktion för att hämta in växelkurser från API, Exchangerate-API, med svenska valutan som bas, 
+ * sparar växelkurser i localstorage för att återanvända och returnerar sedan växelkursen för landet som användaren sökt på i sökfältet.
+ * @param {*} currencyCode 
+ * @returns 
+ */
+async function fetchCurrencyData(currencyCode) {
+    // Om det finns sparat i localstorage så hämtas valutorna där istället för att göra ett nytt API-anrop
+    const storedCurrency = localStorage.getItem("currenciesSaved");
+    if (storedCurrency) {
+        const parsedCurrency = JSON.parse(storedCurrency);
+        return {
+            rate: parsedCurrency.rates[currencyCode],
+            updated: parsedCurrency.updated
+        }
+    }
+    // URL för att anropa API och hämta växelkursen där SEK är bas
+    const url = "https://v6.exchangerate-api.com/v6/b1e7b0cd61281ff6a98d18e0/latest/SEK";
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log(data);
+        const rates = data.conversion_rates; // Alla växelkurser med SEK som bas
+        const searchRate = rates[currencyCode]; // Växelkursen som användaren sökt på
+        console.log(searchRate);
+
+        // Utskrift när kursen var senast uppdaterad till DOM
+        const updCurrency = data.time_last_update_utc; // När växlingskursen senast var uppdaterad, utskrift i DOM
+        const weekdays = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
+        let day = new Date(updCurrency);
+        const date = day.getUTCDate();
+        const month = day.getUTCMonth() + 1;
+        const dayOfWeek = weekdays[day.getUTCDay()]; // Vilken veckodag det är när växlingskursen senast var uppdaterad, utskrift i DOM 
+        const datePrint = `${dayOfWeek} ${date}/${month}`; // Utskriftsformat
+        // Sparar växelkurserna i localstorage om de inte redan finns där
+        localStorage.setItem("currenciesSaved", JSON.stringify({
+            rates: rates,
+            updated: datePrint
+        }));
+        // Returnerar växelkursen för valutan som användaren sökt på och när den senast uppdaterades som ett objekt
+        return {
+            rate: searchRate,
+            updated: datePrint
+        };
+    } catch (error) {
+        console.error("Felmeddelande: ", error);
+    }
+};
