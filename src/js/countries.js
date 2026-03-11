@@ -13,15 +13,27 @@ addEventListener("DOMContentLoaded", () => {
      setTimeout(() => {
          main.classList.remove("hidden"); // Visar main när loadingikonen "laddat klart"
          footer.classList.remove("hidden"); // Visar footer när loadingikonen "laddat klart"
-         loadingIcon.classList.add("hidden"); // Döljer ikonen efter 2,3 sek
+         loadingIcon.classList.add("hidden"); // Döljer ikonen efter 2,5 sek
      }, 2500);*/
     // Sparar variabler som finns inom DOM
-    const countryInputEl = document.getElementById("country-name");
+    const countryInputEl = document.getElementById("country-name-input");
     const searchBtn = document.getElementById("search-button");
     const searchError = document.getElementById("country-error");
     const countriesListDisplay = document.getElementById("countriesDisplay");
     const showCountriesBtn = document.getElementById("moreCountries");
     const countriesDiv = document.getElementById("countriesDiv");
+    // const countrySearch = document.getElementById("country-search");
+    const hintEl = document.getElementById("hint");
+
+    // Sätter igång en timeout som visar tipsmeddelandet efter 1.5sekund och sedan döljer det efter 6 sekunder igen.
+    setTimeout(() => {
+        hintEl.classList.remove("hiddenText"); // Visar tips när användaren börjar skriva i sökfältet
+    }, 1500);
+
+    setTimeout(() => {
+        hintEl.classList.add("hiddenText"); // Döljer tipset
+    }, 8000);
+
     fetchAllcountries(); // Hämtar alla länder efter att DOM laddats in
 
     visualMap = L.map('map').setView([51.78, -7.03], 2); // Grundvy för kartan, utzoomad
@@ -32,7 +44,7 @@ addEventListener("DOMContentLoaded", () => {
 
     // När användaren skriver i sökfältet för land 
     countryInputEl.addEventListener("input", async() => {
-        const countryInput = countryInputEl.value.trim(); // Det som användaren söker på i sökfältet, tar bort mellanslag med trim()
+        const countryInput = countryInputEl.value.trim().toLowerCase(); // Det som användaren söker på i sökfältet, tar bort mellanslag med trim(), samt för att kunna söka med både stor- och liten första bokstav.
         searchError.innerHTML = ""; // Tar bort felmeddelande i DOM när användaren skriver i sökfältet
         const filteredCountries = allCountries.filter(country =>
             country.name.common.toLowerCase().includes(countryInput) // Filtrerar efter vad användaren söker på
@@ -46,8 +58,11 @@ addEventListener("DOMContentLoaded", () => {
             searchError.innerHTML = "Vänligen, fyll i ett land"; // Felmeddelande i DOM
             return;
         }
-        hideSections(); // Döljer karta, väderprognos och valutakonverterare 
+        // countrySearch.classList.add("hidden"); // Döljer diven
+        console.log("Du klickade på sök");
         countriesDiv.classList.add("hidden"); // Döljer listan med alla länder
+        hideSections(); // Döljer karta, väderprognos och valutakonverterare 
+
         const countryInput = searchInput.charAt(0).toUpperCase() + searchInput.slice(1).toLowerCase(); // Gör första bokstaven i landets namn till en versal och resten till gemener
         fetchCountry(countryInput, searchError); // Anropar funktionen för att hämta datan om landet beroende på vad användaren sökt på
     });
@@ -96,7 +111,7 @@ function showCountries(info) {
  * Filtrerar listan av länder beroende på vad användaren skriver i sökfältet
  */
 function filterCountries() {
-    const countryInputEl = document.getElementById("country-name").value.toLowerCase();
+    const countryInputEl = document.getElementById("country-name-input").value.toLowerCase();
     const filteredCountries = allCountries.filter(country =>
         country.name.common.toLowerCase().includes(countryInputEl)
     );
@@ -138,20 +153,25 @@ async function fetchCountry(countryInput, searchError) {
 async function displayCountry(data, currencyCode, countryInput) {
     const countryProfile = document.getElementById("country-card"); // Där information om landet ska skrivas ut
     const flag = data[0].flags.png; // Flagga
-    const countryName = data[0].altSpellings[0]; // Förkortning för landets namn
+    const countryNameShort = data[0].altSpellings[0]; // Förkortning för landets namn
     const language = data[0].languages; // Språk
     const languageName = Object.values(language)[0]; // Värdet inom languages i arrayen från API:et 
     const capitalName = data[0].capital; // Huvudstad
+    const countryName = data[0].name.common;
+    const population = data[0].population; // Invånare i landet
+    const populationText = population.toLocaleString("sv-SE"); // Gör om invånarantalet till en textsträng med tusentalsavgränsare
 
     // const [capitalLat, capitalLng] = data[0].capitalInfo.latlng; // Hämtar in koordinater för huvudstaden
     // Skapar struktur inom DOM för att visa info om landet, skickar med olika data från api
     countryProfile.innerHTML = `
-    <h2>${countryName} | ${countryInput}</h2>
-    <img src="${flag}" alt="${countryInput} flag" id="flag" width="150px" height="100px"> 
-    <p>Valuta: <span>${currencyCode}</span></p>
-    <p>Språk: <span>${languageName}</span></p>
-    <p>Tidszon: <span>${data[0].timezones[0]}</span></p>
-    <p>Huvudstad: <span>${capitalName}</span></p>
+    <h2 class="headline-country">${countryNameShort} | ${countryName}</h2>
+    <img src="${flag}" class="flagImg" alt="${countryInput} flag" id="flag" width="150px" height="100px"> 
+    <p class="textInfo">Valuta: <span class="spanInfo">${currencyCode}</span></p>
+    <p class="textInfo">Språk: <span class="spanInfo">${languageName}</span></p>
+    <p class="textInfo">Invånare: <span class="spanInfo">${populationText}</span></p>
+    <p class="textInfo">Tidszon: <span class="spanInfo">${data[0].timezones[0]}</span></p>
+    <p class="textInfo">Region: <span class="spanInfo">${data[0].continents[0]}</span></p>
+    <p class="textInfo">Huvudstad: <span class="spanInfo">${capitalName}</span></p>
     <div id="weatherContainer"></div>
     <button id="countryMapBtn">Visa karta över landet</button>
     <button id="showWeatherBtn">Se väderprognos</button>
@@ -163,7 +183,9 @@ async function displayCountry(data, currencyCode, countryInput) {
     const currencyEl = document.getElementById("currency-converter");
     currencyEl.innerHTML = "";
     showCurrencyBtn.addEventListener("click", () => {
-        hideSections(); // Döljer alla sektioner
+
+        hideSections(); // Döljer alla sektioner  
+        showCurrencyBtn.classList.add("active");
         currencyEl.classList.remove("hidden"); // Visar diagrammet med väderprognosen sedan
     });
 
@@ -180,9 +202,14 @@ async function displayCountry(data, currencyCode, countryInput) {
     // Eventlyssnare för att visa kartan över det land som användaren sökt på
     const countryMapBtn = document.getElementById("countryMapBtn");
     countryMapBtn.addEventListener("click", () => {
+        const mapEl = document.getElementById("map");
         hideSections(); // Döljer element som väderprognos och valutakonverterare när man klickar på visa kartan över landet
         const [latitude, longitude] = data[0].latlng; // Koordinaterna
         showCountryMap(latitude, longitude); // Visar kartan över landet beroende på koordinaterna för landet som hämtats in från apiet
+        setTimeout(() => {
+            mapEl.scrollIntoView({ behavior: "smooth" }); // Scrollar ner till kartan när den väl visas  
+        }, 200);
+        countryMapBtn.classList.add("active"); // Lägger på klassen active för style på knappen
     });
 
     // Eventlyssnare för att visa det konverterade beloppet mellan SEK och valutan för landet
@@ -230,6 +257,7 @@ async function fetchByTranslation(countryInput, searchError) {
         const data = await response.json();
         if (!response.ok) { // Om det inte hittades något land på svenska först
             searchError.innerHTML = `Landet "${countryInput}" hittades inte, prova med namnet på Engelska.`
+            countriesDiv.classList.remove("hidden"); // För att visa listan med alla länder
             return;
         }
         console.log(data); // För att se det som hämtas in
@@ -293,11 +321,15 @@ function displayWeather(weatherInfo, capitalName) {
     // När användaren klickar på att visa väderprognosen
     showWeatherBtn.addEventListener("click", () => {
         hideSections(); // Döljer alla andra element som karta och valutakonverter
+        showWeatherBtn.classList.add("active");
         diagramEl.classList.remove("hidden"); // Visar diagrammet med väderprognosen sedan
+        setTimeout(() => {
+            diagramEl.scrollIntoView({ behavior: "smooth" }); // Scrollar ner till kartan när den väl visas  
+        }, 200);
     });
     // Skapar struktur inom containern för att visa väder med celsius samt ikon för vädret, ex soligt/molnigt
     weatherContainerEl.innerHTML += `
-            <p> Väder just nu i ${weatherInfo.location.name}: <span>${weatherInfo.current.temp_c}°C</span></p>
+            <p class="textInfo"> Väder just nu i ${weatherInfo.location.name}: <span class="glowy-text">${weatherInfo.current.temp_c}°C</span></p>
             <img id="weatherIcon" src="${weatherInfo.current.condition.icon}" alt="${weatherInfo.current.condition.text} width="60px" height="60px"> 
     `
         // Rubrik med huvudstadens namn samt diagrammet
@@ -357,6 +389,7 @@ function displayWeather(weatherInfo, capitalName) {
         },
         options: {
             responsive: true,
+            /*maintainAspectRatio: false,*/
             plugins: {
                 tooltip: {
                     callbacks: {
@@ -374,7 +407,7 @@ function displayWeather(weatherInfo, capitalName) {
                 y: {
                     ticks: {
                         callback: function(value) {
-                            return value + '°C'; // Lägger till grader på y-axeln: https://www.chartjs.org/docs/latest/axes/styling.html
+                            return value.toFixed(1) + '°C'; // Lägger till grader på y-axeln samt minimerar till en decimal: https://www.chartjs.org/docs/latest/axes/styling.html
                         }
                     }
                 }
@@ -392,11 +425,19 @@ function hideSections() {
     const diagramEl = document.getElementById("weatherDiagram");
     const currencyEl = document.getElementById("currency-converter");
     const countriesListDisplay = document.getElementById("countriesDisplay");
+    const countryMapBtn = document.getElementById("countryMapBtn");
+    const showWeatherBtn = document.getElementById("showWeatherBtn");
+    const showCurrencyBtn = document.getElementById("showCurrencyBtn");
     // Lägger på hidden på alla element för att inte visa dem i början
     mapEl.classList.add("hidden");
     diagramEl.classList.add("hidden");
     currencyEl.classList.add("hidden");
     countriesListDisplay.classList.add("hidden");
+    if (countryMapBtn && showWeatherBtn && showCurrencyBtn) {
+        countryMapBtn.classList.remove("active");
+        showWeatherBtn.classList.remove("active");
+        showCurrencyBtn.classList.remove("active");
+    }
 }
 
 /**

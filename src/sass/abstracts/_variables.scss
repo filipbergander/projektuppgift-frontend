@@ -6,14 +6,19 @@ $btn-color-hover:#8338EC;
 //Färger för layout
 $color-accent: rgba(5, 207, 207, 0.356);
 $color-bg:#f7f2d7;
+$color-sun:#f9c64fbd;
 $color-bg-dark:#464747c0;
 $color-bg-orange: #ec6d04;
-$color-bg-orange-hover: #eca66c48;
+$color-bg-orange-hover: #ec9a5648;
+$color-bg-blue:rgba(110, 110, 236, 0.658);
 //Färger för text
 $color-text: #1A1A1A;
 $color-white:#fff;
 $color-text-secondary: #6C757D;
 $color-text-error:rgba(202, 22, 22, 0.89);
+$color-span: #3A7AFE;
+$color-text-info: #022d41;
+$glowy-text: #ff7300;
 //Komplement färger
 $color-complement: color.complement($btn-color-primary);
 $color-complement-hover: color.complement($btn-color-hover);

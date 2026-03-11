@@ -2,13 +2,51 @@
 @use "../abstracts/animations" as *;
 @use "../abstracts/mixins" as *;
 #weatherIcon {
+    background-color: $color-white;
+    border-radius: 25%;
     animation: floatWeatherIcon 3s ease-in-out infinite;
-    &:hover {
-        transform: translateY(10px);
-        transition: transform 0.3s ease;
-    }
+    box-shadow: $shadow-medium;
+    transition: transform 0.3s ease;
+}
+
+#weatherContainer {
+    margin-bottom: $margin-general-md;
+}
+
+#weatherDiagram {
+    width: 100%;
+    max-width: 450px;
+    height: 300px;
+    margin: 0 auto;
+    background-color: $color-bg;
+    padding: 0.75rem;
+    border-radius: $radius-medium;
+    box-shadow: $shadow-medium;
+}
+
+#myChart {
+    width: 100%;
+    height: auto;
 }
 
 #myChart .hidden {
     display: none;
 }
+
+@media (max-width: 768px) {
+    #weatherDiagram {
+        width: 95%;
+        height: auto;
+    }
+}
+
+@media (max-width: 530px) {
+    #weatherDiagram {
+        width: 85%;
+        height: auto;
+    }
+}
+
+@media (max-width: 375px) {}
+
+@media (max-width: 375px) {}

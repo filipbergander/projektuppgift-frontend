@@ -6,13 +6,15 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-image: linear-gradient(to right, $color-bg, $color-bg-orange-hover);
+    background-image: linear-gradient(to right, $color-sun, $color-bg-orange-hover);
 }
 
 main {
     font-family: "Work Sans", ui-sans-serif, system-ui, sans-serif;
     color: $color-text;
     box-shadow: $shadow-light;
+    z-index: 1000;
+    background-color: $color-accent;
 }
 
 #country-section {
@@ -23,6 +25,20 @@ main {
         text-transform: uppercase;
         animation: moveText 2s ease-in-out infinite;
         transition: $transition-base;
+    }
+    #hint {
+        margin: 0 0.5em 0.5em;
+        opacity: 1;
+        transition: opacity 4s ease, margin 0.3s ease;
+        animation: bounce 3s ease-in-out infinite;
+        text-align: center;
+    }
+    #hint.hiddenText {
+        opacity: 0;
+    }
+    // När man börjar skriva i sökfältet slutar animationen för h1-rubriken
+    &:has(input:focus) h1 {
+        animation-play-state: paused;
     }
 }
 
@@ -52,6 +68,44 @@ nav {
     }
 }
 
+#country-card {
+    margin-bottom: $margin-general-md;
+}
+
+#showArea {
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: $margin-general-md;
+}
+
+.spanInfo {
+    font-weight: $fontweight-bold;
+    color: $color-span;
+}
+
+.textInfo {
+    font-weight: $fontweight-bold;
+    color: $color-text-info;
+}
+
+.glowy-text {
+    font-weight: $fontweight-bold;
+    color: $glowy-text;
+    animation: bigLighter 2s ease-in-out infinite;
+}
+
+.headline-country {
+    font-family: "Honk", system-ui, sans-serif;
+    font-size: 3rem;
+    letter-spacing: 1px;
+    animation: glowHeadline 3s ease-in-out infinite;
+}
+
+.flagImg {
+    border-radius: $radius-medium;
+    box-shadow: $shadow-medium;
+}
+
 @media (max-width: 768px) {}
 
 @media (max-width: 530px) {
@@ -64,6 +118,9 @@ nav {
     #countrylist {
         font-size: 0.8rem;
     }
+    #hint {
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 375px) {
@@ -72,6 +129,9 @@ nav {
         column-gap: 0.2rem;
     }
     #country-error {
+        font-size: 0.8rem;
+    }
+    #hint {
         font-size: 0.8rem;
     }
 }

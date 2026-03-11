@@ -24,7 +24,6 @@ body {
 main {
     @extend %flex-layout-start;
     max-width: 1240px;
-    background-color: $color-accent;
     margin: 0 auto;
     flex: 1;
     width: 100%;

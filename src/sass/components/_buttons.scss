@@ -28,6 +28,12 @@
     align-items: center;
 }
 
+.active {
+    background: linear-gradient(90deg, $color-bg-orange-hover, $color-accent, $btn-color-secondary);
+    animation: gradientShift 4s ease infinite;
+    background-size: 500% 500%;
+}
+
 @media (max-width: 768px) {}
 
 @media (max-width: 530px) {
@@ -42,8 +48,3 @@
         padding: 0.1rem 0.5rem;
     }
 }
-
-
-/* {
-    @include button($btn-color-primary, $color-white)
-}*/

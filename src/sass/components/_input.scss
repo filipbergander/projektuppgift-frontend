@@ -2,7 +2,7 @@
 @use "../abstracts/animations" as *;
 @use "../abstracts/mixins" as *;
 @use "../base/base" as *;
-#country-name {
+#country-name-input {
     font-weight: $fontweight-bold;
     border-radius: 0.7em;
     padding: 0.5em 0.5em;
@@ -17,7 +17,7 @@
 @media (max-width: 768px) {}
 
 @media (max-width: 530px) {
-    #country-name {
+    #country-name-input {
         font-size: 0.9rem;
     }
     #search-button {
@@ -26,15 +26,9 @@
 }
 
 @media (max-width: 375px) {
-    #country-name {
+    #country-name-input {
         font-size: 0.8rem;
     }
-    #search-button {
-        font-size: 0.8rem;
-    }
-}
-
-@media (max-width: 375px) {
     #search-button {
         font-size: 0.8rem;
     }
