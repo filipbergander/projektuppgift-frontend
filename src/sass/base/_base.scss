@@ -1,8 +1,40 @@
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Contrail+One&family=Honk:MORF,SHLN@0..45,0..100&family=Manrope&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+html,
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-image: linear-gradient(to right, $color-bg, $color-bg-orange-hover);
+}
+
+main {
+    font-family: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+    color: $color-text;
+    box-shadow: $shadow-light;
+}
+
+#country-section {
+    h1 {
+        font-family: 'Contrail One', sans-serif;
+        letter-spacing: 1px;
+        color: $color-text;
+        text-transform: uppercase;
+        animation: moveText 2s ease-in-out infinite;
+        transition: $transition-base;
+    }
+}
+
 #country-error {
     color: $color-text-error;
     font-weight: $fontweight-bold;
+    margin-top: $margin-general-s;
+    transition: $transition-base;
+}
+
+#countrylist {
+    font-size: 0.9rem;
 }
 
 .hidden {
@@ -17,5 +49,29 @@ nav {
     display: flex;
     ul {
         list-style: none;
+    }
+}
+
+@media (max-width: 768px) {}
+
+@media (max-width: 530px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+    #country-error {
+        font-size: 0.9rem;
+    }
+    #countrylist {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 375px) {
+    #countrylist {
+        columns: 2;
+        column-gap: 0.2rem;
+    }
+    #country-error {
+        font-size: 0.8rem;
     }
 }

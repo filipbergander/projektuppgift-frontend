@@ -1,0 +1,10 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+@use "../base/base" as *;
+#countriesDisplay {
+    display: flex;
+}
+
+#countriesDisplay.hidden {
+    display: none;
+}

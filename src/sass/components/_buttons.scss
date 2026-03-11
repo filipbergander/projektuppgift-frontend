@@ -1,9 +1,5 @@
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
-#search-button {
-    @include button($btn-color-primary, $color-white)
-}
-
 #countryMapBtn {
     @include button($color-complement-hover, $color-text);
     margin-bottom: 1rem;
@@ -18,3 +14,36 @@
     @include button($color-complement-hover, $color-text);
     margin-bottom: 1rem;
 }
+
+#search-button.btn {
+    @include button($color-complement-hover, $color-text);
+    padding: 0.5rem 1rem;
+}
+
+#moreCountries.btn {
+    @include button($btn-color-secondary, $color-text);
+    margin-top: $margin-general-md;
+    margin-bottom: $margin-general-md;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 768px) {}
+
+@media (max-width: 530px) {
+    #moreCountries.btn {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 375px) {
+    #moreCountries.btn {
+        font-size: 0.8rem;
+        padding: 0.1rem 0.5rem;
+    }
+}
+
+
+/* {
+    @include button($btn-color-primary, $color-white)
+}*/
