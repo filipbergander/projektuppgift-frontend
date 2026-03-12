@@ -8,13 +8,13 @@ let allCountries = []; // Array för länder som används för att filtrera sök
 
 // Inväntar att DOM har laddats in
 addEventListener("DOMContentLoaded", () => {
-    /*const loadingIcon = document.getElementById("loadingIcon"); // Laddningsikonen "För jag vill resa!"
-     loadingIcon.classList.remove("hidden"); // Visar laddningsikonen
-     setTimeout(() => {
-         main.classList.remove("hidden"); // Visar main när loadingikonen "laddat klart"
-         footer.classList.remove("hidden"); // Visar footer när loadingikonen "laddat klart"
-         loadingIcon.classList.add("hidden"); // Döljer ikonen efter 2,5 sek
-     }, 2500);*/
+    const loadingIcon = document.getElementById("loadingIcon"); // Laddningsikonen "För jag vill resa!"
+    loadingIcon.classList.remove("hidden"); // Visar laddningsikonen
+    setTimeout(() => {
+        main.classList.remove("hidden"); // Visar main när loadingikonen "laddat klart"
+        // footer.classList.remove("hidden"); // Visar footer när loadingikonen "laddat klart"
+        loadingIcon.classList.add("hidden"); // Döljer ikonen efter 2,5 sek
+    }, 2500);
     // Sparar variabler som finns inom DOM
     const countryInputEl = document.getElementById("country-name-input");
     const searchBtn = document.getElementById("search-button");
@@ -25,14 +25,14 @@ addEventListener("DOMContentLoaded", () => {
     // const countrySearch = document.getElementById("country-search");
     const hintEl = document.getElementById("hint");
 
-    // Sätter igång en timeout som visar tipsmeddelandet efter 1.5sekund och sedan döljer det efter 6 sekunder igen.
+    // Sätter igång en timeout som visar tipsmeddelandet och sedan döljer det igen.
     setTimeout(() => {
-        hintEl.classList.remove("hiddenText"); // Visar tips när användaren börjar skriva i sökfältet
-    }, 1500);
+        hintEl.classList.remove("hiddenText"); // Visar tipset efter 5 sek
+    }, 5000);
 
     setTimeout(() => {
         hintEl.classList.add("hiddenText"); // Döljer tipset
-    }, 8000);
+    }, 12500);
 
     fetchAllcountries(); // Hämtar alla länder efter att DOM laddats in
 
@@ -297,7 +297,7 @@ function showCountryMap(latitude, longitude) {
  */
 async function getWeatherForecast(capitalName) {
     const apiKey = "3dc22c103acb482d9ee82613262602"; // Api-nyckel för apiet
-    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${capitalName}&days=5&aqi=no&alerts=no`; // Hela adressen för anrop
+    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${capitalName}&days=3&aqi=no&alerts=no`; // Hela adressen för anrop
     try {
         const response = await fetch(url)
         const data = await response.json();
@@ -336,6 +336,7 @@ function displayWeather(weatherInfo, capitalName) {
     diagramEl.innerHTML += `
             <h3>Väderprognos för ${capitalName}:</h3>
             <canvas id="myChart"></canvas>
+            <canvas id="chartRain"></canvas>
     `
         // Väderprognos kommande dagar som ska visas i diagrammet
     const weatherDays = weatherInfo.forecast.forecastday;
@@ -343,53 +344,28 @@ function displayWeather(weatherInfo, capitalName) {
     const labels = weatherDays.map(day => day.date); // Datumen
     const avgTemp = weatherDays.map(day => day.day.avgtemp_c); // Genomsnittstemperaturen 
 
-    /* Lägsta, högsta temperatur och chansen för regn
-    const lowestTemp = weatherDays.map(day => day.day.mintemp_c);
-    const highestTemp = weatherDays.map(day => day.day.maxtemp_c);
-    const chanceRain = weatherDays.map(day => day.day.daily_chance_of_rain); */
+    // Lägsta, högsta temperatur och chansen för regn
+    /*const lowestTemp = weatherDays.map(day => day.day.mintemp_c);
+    const highestTemp = weatherDays.map(day => day.day.maxtemp_c);*/
+    const chanceRain = weatherDays.map(day => day.day.daily_chance_of_rain);
 
-    // Skapa diagram som visar väderprognosen fem dagar framåt
+    // Skapa diagram som visar väderprognosen tre dagar framåt
     const ctx = document.getElementById("myChart");
     new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                    label: 'Temperatur genomsnitt',
-                    data: avgTemp,
-                    backgroundColor: ["#eeb006"],
-                    hoverBackgroundColor: "#fff",
-                    borderColor: "#0575f5",
-                    order: 2,
-                },
-                /*{
-                                   type: 'line',
-                                   label: 'Chans för nederbörd',
-                                   data: chanceRain,
-                                   backgroundColor: ["#0066ff"],
-                                   hoverBackgroundColor: "#fff",
-                                   order: 1,
-                               }
-
-                               /*  {
-                                     label: 'Lägsta temperatur',
-                                     data: lowestTemp,
-                                     backgroundColor: ["#3700ff"],
-                                     hoverBackgroundColor: "#fff",
-                                     borderColor: "#0066ff",
-                                 },
-                                 {
-                                     label: 'Högsta temperatur',
-                                     data: highestTemp,
-                                     backgroundColor: ["#ff0000"],
-                                     hoverBackgroundColor: "#fff",
-                                     borderColor: "#ff0000",
-                                 }*/
-            ]
+                label: 'Temperatur genomsnitt',
+                data: avgTemp,
+                backgroundColor: ["#eeb006"],
+                hoverBackgroundColor: "#fff",
+                borderColor: "#0575f5",
+                order: 2,
+            }, ]
         },
         options: {
             responsive: true,
-            /*maintainAspectRatio: false,*/
             plugins: {
                 tooltip: {
                     callbacks: {
@@ -414,6 +390,75 @@ function displayWeather(weatherInfo, capitalName) {
             }
         }
     });
+    const ctxRain = document.getElementById("chartRain");
+    new Chart(ctxRain, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Chans för nederbörd',
+                data: chanceRain,
+                backgroundColor: ["#0066ff"],
+                hoverBackgroundColor: "#fff",
+                order: 1,
+                borderColor: "#0575f5",
+
+            }, ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ' + context.parsed.y + '%'; // Lägger till grader i tooltipen när man hoovrar, https://www.chartjs.org/docs/latest/configuration/tooltip.html
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: {
+                        callback: function(value) {
+                            return value.toFixed(1) + '%'; // Lägger till grader på y-axeln samt minimerar till en decimal: https://www.chartjs.org/docs/latest/axes/styling.html
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+
+
+
+    /*{
+                                  type: 'line',
+                                  label: 'Chans för nederbörd',
+                                  data: chanceRain,
+                                  backgroundColor: ["#0066ff"],
+                                  hoverBackgroundColor: "#fff",
+                                  order: 1,
+                              }
+
+                              /*  {
+                                    label: 'Lägsta temperatur',
+                                    data: lowestTemp,
+                                    backgroundColor: ["#3700ff"],
+                                    hoverBackgroundColor: "#fff",
+                                    borderColor: "#0066ff",
+                                },
+                                {
+                                    label: 'Högsta temperatur',
+                                    data: highestTemp,
+                                    backgroundColor: ["#ff0000"],
+                                    hoverBackgroundColor: "#fff",
+                                    borderColor: "#ff0000",
+                                }*/
+
 }
 
 /**
