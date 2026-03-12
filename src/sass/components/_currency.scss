@@ -1,0 +1,92 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/animations" as *;
+@use "../abstracts/mixins" as *;
+@use "../base/base" as *;
+#currency-converter {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    align-items: center;
+    margin: 0 auto;
+    gap: 0.5rem;
+    box-shadow: $shadow-medium;
+    background-color: $color-bg;
+    padding: $padding-base;
+    border-radius: $radius-medium;
+    label[for="fromCurrency"] {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    label[for="toCurrency"] {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .fromToCurrency {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        padding: $padding-base;
+        margin-top: $margin-general-md;
+    }
+    h3 {
+        text-align: center;
+    }
+}
+
+.moneyError {
+    font-weight: $fontweight-bold;
+    color: $color-text-error;
+}
+
+.money {
+    font-weight: $fontweight-bold;
+    color: $glowy-text;
+}
+
+.updateDate {
+    font-weight: $fontweight-bold;
+    color: $color-text-info;
+}
+
+#currency-converter.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #currency-converter {
+        width: 95%;
+        max-width: 500;
+    }
+    .fromCurrency {
+        width: 100%;
+    }
+    .fromToCurrency {
+        gap: 0.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 530px) {
+    #currency-converter {
+        width: 90%;
+    }
+}
+
+@media (max-width: 375px) {
+    #currency-converter {
+        width: 85%;
+    }
+}
+
+@media (max-width: 315px) {
+    #currency-converter {
+        width: 80%;
+    }
+}

@@ -16,7 +16,6 @@
 #weatherDiagram {
     width: 100%;
     max-width: 450px;
-    height: 300px;
     margin: 0 auto;
     background-color: $color-bg;
     padding: 0.75rem;
@@ -27,6 +26,7 @@
 #myChart {
     width: 100%;
     height: auto;
+    margin-bottom: $margin-general-md;
 }
 
 #myChart .hidden {

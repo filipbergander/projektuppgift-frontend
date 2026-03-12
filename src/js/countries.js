@@ -8,13 +8,13 @@ let allCountries = []; // Array för länder som används för att filtrera sök
 
 // Inväntar att DOM har laddats in
 addEventListener("DOMContentLoaded", () => {
-    const loadingIcon = document.getElementById("loadingIcon"); // Laddningsikonen "För jag vill resa!"
-    loadingIcon.classList.remove("hidden"); // Visar laddningsikonen
-    setTimeout(() => {
-        main.classList.remove("hidden"); // Visar main när loadingikonen "laddat klart"
-        // footer.classList.remove("hidden"); // Visar footer när loadingikonen "laddat klart"
-        loadingIcon.classList.add("hidden"); // Döljer ikonen efter 2,5 sek
-    }, 2500);
+    /* const loadingIcon = document.getElementById("loadingIcon"); // Laddningsikonen "För jag vill resa!"
+     loadingIcon.classList.remove("hidden"); // Visar laddningsikonen
+     setTimeout(() => {
+         main.classList.remove("hidden"); // Visar main när loadingikonen "laddat klart"
+         // footer.classList.remove("hidden"); // Visar footer när loadingikonen "laddat klart"
+         loadingIcon.classList.add("hidden"); // Döljer ikonen efter 2,5 sek
+     }, 2500);*/
     // Sparar variabler som finns inom DOM
     const countryInputEl = document.getElementById("country-name-input");
     const searchBtn = document.getElementById("search-button");
@@ -24,7 +24,6 @@ addEventListener("DOMContentLoaded", () => {
     const countriesDiv = document.getElementById("countriesDiv");
     // const countrySearch = document.getElementById("country-search");
     const hintEl = document.getElementById("hint");
-
     // Sätter igång en timeout som visar tipsmeddelandet och sedan döljer det igen.
     setTimeout(() => {
         hintEl.classList.remove("hiddenText"); // Visar tipset efter 5 sek
@@ -62,7 +61,6 @@ addEventListener("DOMContentLoaded", () => {
         console.log("Du klickade på sök");
         countriesDiv.classList.add("hidden"); // Döljer listan med alla länder
         hideSections(); // Döljer karta, väderprognos och valutakonverterare 
-
         const countryInput = searchInput.charAt(0).toUpperCase() + searchInput.slice(1).toLowerCase(); // Gör första bokstaven i landets namn till en versal och resten till gemener
         fetchCountry(countryInput, searchError); // Anropar funktionen för att hämta datan om landet beroende på vad användaren sökt på
     });
@@ -183,22 +181,42 @@ async function displayCountry(data, currencyCode, countryInput) {
     const currencyEl = document.getElementById("currency-converter");
     currencyEl.innerHTML = "";
     showCurrencyBtn.addEventListener("click", () => {
-
         hideSections(); // Döljer alla sektioner  
         showCurrencyBtn.classList.add("active");
         currencyEl.classList.remove("hidden"); // Visar diagrammet med väderprognosen sedan
+        setTimeout(() => {
+            currencyEl.scrollIntoView({ behavior: "smooth" }); // Scrollar ner till konverteraren när den väl visas/200 ms
+        }, 200);
+        /*
+        const convertHintEl = document.getElementById("convertHint");
+        // Sätter igång en timeout som visar tipsmeddelandet och sedan döljer det igen.
+        setTimeout(() => {
+            convertHintEl.classList.remove("hidden"); // Visar tipset efter 5 sek
+        }, 3000);
+        setTimeout(() => {
+            convertHintEl.classList.add("hidden"); // Döljer tipset
+        }, 8500);*/
     });
 
     // Struktur inom DOM för att visa valutakonverteraren, currencyCode är valutakoden för det land som användaren sökt på
     currencyEl.innerHTML += `
-    <label for="fromCurrency">Från: <img src="https://flagcdn.com/se.svg" alt="Svenska flaggan" id="swedishFlag" width="25px" height="25px"></label>
-    <input type="text" id="fromCurrency" value="SEK" disabled>
-    <label for="toCurrency">Till: </label>
-    <input type="text" id="toCurrency" value="${currencyCode}">
-    <input type="number" id="amount" placeholder="Ange belopp">
-    <button id="convertBtn">Konvertera</button>
+    <h3>Jämför och konvertera valutor</h3>
+    <div class="fromToCurrency">
+        <div class="fromCurrency"> 
+            <label for="fromCurrency">Från: <img src="https://flagcdn.com/se.svg" alt="Svenska flaggan" id="swedishFlag" width="20px" height="20px"></label>
+            <input type="text" id="fromCurrency" value="SEK" disabled>
+        </div>
+        <div class="toCurrency"> 
+            <label for="toCurrency">Till: </label>
+            <input type="text" id="toCurrency" value="${currencyCode}">
+        </div>
+    </div>
+        <label for="amount">Belopp att konvertera</label>
+        <input type="number" id="amount" placeholder="Ange belopp">
+        <button id="convertBtn">Konvertera</button>
     <div id="convertResult"></div>
-    `;
+        `;
+    // <span id="convertHint" class="">Prova en annan valuta</span> Används inte
     // Eventlyssnare för att visa kartan över det land som användaren sökt på
     const countryMapBtn = document.getElementById("countryMapBtn");
     countryMapBtn.addEventListener("click", () => {
@@ -218,23 +236,27 @@ async function displayCountry(data, currencyCode, countryInput) {
         const convertListEl = document.getElementById("convertResult"); // Div där det konverterade beloppet ska skrivas ut
         const amount = document.getElementById("amount").value; // Beloppet
         const toCurrency = document.getElementById("toCurrency").value.toUpperCase(); // Valutakoden med enbart versaler
+        setTimeout(() => {
+            convertListEl.scrollIntoView({ behavior: "smooth" }); // Scrollar ner till det konverterade meddelandet när det visas med en delay på 200 ms
+        }, 200);
         // Om användaren inte skrivit något
         if (amount === "") {
-            convertListEl.innerHTML = "Ange ett giltigt belopp";
+            convertListEl.innerHTML = `<p id="currency-error">Ange ett giltigt belopp</p>`; // Felmeddelande när man inte anger något belopp
             return;
         }
-        const { rate, updated } = await fetchCurrencyData(toCurrency); // Hämtar in växlingskursen för SEK till den valutan som användaren sökt på och vill konvertera till i sökfältet
+        const { rate, updated, nextUpdate } = await fetchCurrencyData(toCurrency); // Hämtar in växlingskursen för SEK till den valutan som användaren sökt på och vill konvertera till i sökfältet
         // Om det inte gick att hämta växlingskursen
         if (!rate) {
-            convertListEl.innerHTML = "Kunde inte hämta växlingskursen, försök igen";
+            convertListEl.innerHTML = `<p id="convertError">Kunde inte hämta växlingskursen, finns valutan?</p>`;
             return;
         }
         // Beräknar det konverterade beloppet och skriver ut det i DOM samt när växlingskursen senast blev uppdaterad
         const convertedAmount = amount * rate;
         console.log(convertedAmount);
         convertListEl.innerHTML = `
-        <p>${amount} SEK = ${convertedAmount.toFixed(2)} i ${toCurrency}</p>
-        <p>Senast uppdaterad kurs: ${updated}</p>
+        <p class="money">${amount} SEK <span class="moneyError">=</span> ${convertedAmount.toFixed(2)} i ${toCurrency}</p>
+        <p>Senast uppdaterad kurs: <span class="updateDate">${updated}<span></p>
+        <p> Ny uppdatering för kurs: <span class="updateDate">${nextUpdate}<span></p>
         `;
     });
 
@@ -323,6 +345,10 @@ function displayWeather(weatherInfo, capitalName) {
         hideSections(); // Döljer alla andra element som karta och valutakonverter
         showWeatherBtn.classList.add("active");
         diagramEl.classList.remove("hidden"); // Visar diagrammet med väderprognosen sedan
+        diagramEl.style.display = "flex";
+        diagramEl.style.flexDirection = "column";
+        diagramEl.style.alignItems = "center";
+
         setTimeout(() => {
             diagramEl.scrollIntoView({ behavior: "smooth" }); // Scrollar ner till kartan när den väl visas  
         }, 200);
@@ -334,9 +360,9 @@ function displayWeather(weatherInfo, capitalName) {
     `
         // Rubrik med huvudstadens namn samt diagrammet
     diagramEl.innerHTML += `
-            <h3>Väderprognos för ${capitalName}:</h3>
+            <h3>Väderprognos för ${capitalName}</h3>
             <canvas id="myChart"></canvas>
-            <canvas id="chartRain"></canvas>
+            <canvas id="chartRainSnow"></canvas>
     `
         // Väderprognos kommande dagar som ska visas i diagrammet
     const weatherDays = weatherInfo.forecast.forecastday;
@@ -345,10 +371,11 @@ function displayWeather(weatherInfo, capitalName) {
     const avgTemp = weatherDays.map(day => day.day.avgtemp_c); // Genomsnittstemperaturen 
 
     // Lägsta, högsta temperatur och chansen för regn
-    /*const lowestTemp = weatherDays.map(day => day.day.mintemp_c);
-    const highestTemp = weatherDays.map(day => day.day.maxtemp_c);*/
+    const lowestTemp = weatherDays.map(day => day.day.mintemp_c);
+    const highestTemp = weatherDays.map(day => day.day.maxtemp_c);
     const chanceRain = weatherDays.map(day => day.day.daily_chance_of_rain);
-
+    const chanceSnow = weatherDays.map(day => day.day.daily_chance_of_snow);
+    console.log(highestTemp, lowestTemp);
     // Skapa diagram som visar väderprognosen tre dagar framåt
     const ctx = document.getElementById("myChart");
     new Chart(ctx, {
@@ -356,13 +383,32 @@ function displayWeather(weatherInfo, capitalName) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Temperatur genomsnitt',
-                data: avgTemp,
-                backgroundColor: ["#eeb006"],
-                hoverBackgroundColor: "#fff",
-                borderColor: "#0575f5",
-                order: 2,
-            }, ]
+                    label: 'Temperatur genomsnitt',
+                    data: avgTemp,
+                    backgroundColor: ["#ff9900"],
+                    hoverBackgroundColor: "#fff",
+                    borderColor: "#ffa600",
+                    borderWidth: 2,
+                    order: 1,
+                }, {
+                    label: 'Min-temp',
+                    data: lowestTemp,
+                    backgroundColor: ["#0019fc"],
+                    hoverBackgroundColor: "#fff",
+                    borderColor: "#0026ff94",
+                    borderWidth: 2,
+                    order: 2,
+                },
+                {
+                    label: 'Max-temp',
+                    data: highestTemp,
+                    backgroundColor: ["#ff0000"],
+                    hoverBackgroundColor: "#fff",
+                    borderColor: "#f80000",
+                    borderWidth: 2,
+                    order: 3,
+                }
+            ]
         },
         options: {
             responsive: true,
@@ -390,20 +436,29 @@ function displayWeather(weatherInfo, capitalName) {
             }
         }
     });
-    const ctxRain = document.getElementById("chartRain");
-    new Chart(ctxRain, {
-        type: 'line',
+    const ctxRainSnow = document.getElementById("chartRainSnow");
+    new Chart(ctxRainSnow, {
+        type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Chans för nederbörd',
+                label: 'Chans för regn',
                 data: chanceRain,
                 backgroundColor: ["#0066ff"],
-                hoverBackgroundColor: "#fff",
+                hoverBackgroundColor: "#0066ff77",
                 order: 1,
-                borderColor: "#0575f5",
-
-            }, ]
+                borderColor: "#000000",
+                barThickness: 30,
+            }, {
+                label: 'Chans för snö',
+                data: chanceSnow,
+                backgroundColor: ["#ffffff"],
+                hoverBackgroundColor: "#d3d3d38e",
+                order: 2,
+                borderColor: "#000000",
+                borderWidth: 2,
+                barThickness: 30,
+            }]
         },
         options: {
             responsive: true,
@@ -413,7 +468,7 @@ function displayWeather(weatherInfo, capitalName) {
                         label: function(context) {
                             let label = context.dataset.label || '';
                             if (label) {
-                                label += ': ' + context.parsed.y + '%'; // Lägger till grader i tooltipen när man hoovrar, https://www.chartjs.org/docs/latest/configuration/tooltip.html
+                                label += ': ' + context.parsed.y + '%'; // Lägger till procent för nederbörd i tooltipen när man hoovrar, https://www.chartjs.org/docs/latest/configuration/tooltip.html
                             }
                             return label;
                         }
@@ -424,41 +479,13 @@ function displayWeather(weatherInfo, capitalName) {
                 y: {
                     ticks: {
                         callback: function(value) {
-                            return value.toFixed(1) + '%'; // Lägger till grader på y-axeln samt minimerar till en decimal: https://www.chartjs.org/docs/latest/axes/styling.html
+                            return value.toFixed(1) + '%'; // Lägger till procent för nederbörd på y-axeln samt minimerar till en decimal: https://www.chartjs.org/docs/latest/axes/styling.html
                         }
                     }
                 }
             }
         }
     });
-
-
-
-
-    /*{
-                                  type: 'line',
-                                  label: 'Chans för nederbörd',
-                                  data: chanceRain,
-                                  backgroundColor: ["#0066ff"],
-                                  hoverBackgroundColor: "#fff",
-                                  order: 1,
-                              }
-
-                              /*  {
-                                    label: 'Lägsta temperatur',
-                                    data: lowestTemp,
-                                    backgroundColor: ["#3700ff"],
-                                    hoverBackgroundColor: "#fff",
-                                    borderColor: "#0066ff",
-                                },
-                                {
-                                    label: 'Högsta temperatur',
-                                    data: highestTemp,
-                                    backgroundColor: ["#ff0000"],
-                                    hoverBackgroundColor: "#fff",
-                                    borderColor: "#ff0000",
-                                }*/
-
 }
 
 /**
@@ -476,6 +503,7 @@ function hideSections() {
     // Lägger på hidden på alla element för att inte visa dem i början
     mapEl.classList.add("hidden");
     diagramEl.classList.add("hidden");
+    diagramEl.style.display = "none"; // För att dölja diagrammet
     currencyEl.classList.add("hidden");
     countriesListDisplay.classList.add("hidden");
     if (countryMapBtn && showWeatherBtn && showCurrencyBtn) {
@@ -498,10 +526,15 @@ async function fetchCurrencyData(currencyCode) {
     const storedCurrency = localStorage.getItem("currenciesSaved");
     if (storedCurrency) {
         const parsedCurrency = JSON.parse(storedCurrency); // Gör om till objekt
-        // Returnerar växelkursen för valutan och när den uppdaterades senast
-        return {
-            rate: parsedCurrency.rates[currencyCode],
-            updated: parsedCurrency.updated
+        const nowInUnixTime = Math.floor(Date.now() / 1000) // Nuvarande tid i sekunder. Date.now ger millisekunder därför dela med 1000
+        if (nowInUnixTime < parsedCurrency.expires) { // Om tiden nu är mindre än tid för uppdatering så returneras de sparade valutorna från localstorage
+            return { // Returnerar växelkursen för valutan och när den uppdaterades senast och när nästa uppdatering sker
+                rate: parsedCurrency.rates[currencyCode],
+                updated: parsedCurrency.updated,
+                nextUpdate: parsedCurrency.nextUpdate
+            };
+        } else { // Tar bort från localstorage och gör nytt api-anrop
+            localStorage.removeItem("currenciesSaved");
         }
     }
     // Annars om inte valutorna finns lagrade i localstorage görs ett nytt api-anrop
@@ -523,15 +556,26 @@ async function fetchCurrencyData(currencyCode) {
         const dayOfWeek = weekdays[day.getUTCDay()]; // Vilken veckodag det är när växlingskursen senast var uppdaterad, utskrift i DOM 
         const datePrint = `${dayOfWeek} ${date}/${month}`; // Utskriftsformat
 
+        const nextUpdate = data.time_next_update_unix
+        let nextUpdDay = new Date(nextUpdate * 1000);
+        const nextDate = nextUpdDay.getUTCDate();
+        const UpdMonth = nextUpdDay.getUTCMonth() + 1; // Månad
+        const UpdDayOfWeek = weekdays[nextUpdDay.getUTCDay()]; // Vilken veckodag det är när växlingskursen senast var uppdaterad, utskrift i DOM 
+        const nextUpdateDay = `${UpdDayOfWeek} ${nextDate}/${UpdMonth}`; // Utskriftsformat
+
+        console.log(nextUpdateDay);
         // Sparar växelkurserna och datum för senaste uppdatering i localstorage
         localStorage.setItem("currenciesSaved", JSON.stringify({
             rates: rates,
-            updated: datePrint
+            updated: datePrint,
+            nextUpdate: nextUpdateDay,
+            expires: data.time_next_update_unix // Tid när APIet kommer uppdateras igen i unix med sekunder, då går tidigare uppdatering ut också = expires
         }));
         // Returnerar växelkursen för valutan som användaren sökt på och när den senast uppdaterades som ett objekt
         return {
             rate: searchRate,
-            updated: datePrint
+            updated: datePrint,
+            nextUpdate: nextUpdateDay
         };
     } catch (error) {
         console.error("Felmeddelande: ", error); // Felmeddelande

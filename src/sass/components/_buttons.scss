@@ -28,6 +28,17 @@
     align-items: center;
 }
 
+#convertBtn {
+    @include button($btn-color-secondary, $color-text);
+    margin-top: $margin-general-md;
+    margin-bottom: $margin-general-md;
+    display: flex;
+    align-items: center;
+    /*&:active {
+        animation: textGlow, bounce 0.5s ease-in-out;
+    }*/
+}
+
 .active {
     background: linear-gradient(90deg, $color-bg-orange-hover, $color-accent, $btn-color-secondary);
     animation: gradientShift 4s ease infinite;

@@ -42,11 +42,42 @@ main {
     }
 }
 
+
+/*
+#convertHint {
+    margin-top: 2rem;
+    margin: 0.5em 0;
+    opacity: 1;
+    transition: opacity 4s ease, margin 0.3s ease;
+    animation: bounce 3s ease-in-out infinite;
+    text-align: center;
+    #convertHint.hidden {
+        opacity: 0;
+    }
+}*/
+
+#convertError {
+    color: $color-text-error;
+    font-weight: $fontweight-bold;
+    margin-top: $margin-general-s;
+    transition: $transition-base;
+    animation: bounce 3s ease-in-out infinite;
+}
+
+#currency-error {
+    color: $color-text-error;
+    font-weight: $fontweight-bold;
+    margin-top: $margin-general-s;
+    transition: $transition-base;
+    animation: bounce 3s ease-in-out infinite;
+}
+
 #country-error {
     color: $color-text-error;
     font-weight: $fontweight-bold;
     margin-top: $margin-general-s;
     transition: $transition-base;
+    animation: bounce 3s ease-in-out infinite;
 }
 
 #countrylist {
@@ -121,6 +152,9 @@ nav {
     #hint {
         font-size: 0.9rem;
     }
+    #convertHint {
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 375px) {
@@ -132,6 +166,9 @@ nav {
         font-size: 0.8rem;
     }
     #hint {
+        font-size: 0.8rem;
+    }
+    #convertHint {
         font-size: 0.8rem;
     }
 }
