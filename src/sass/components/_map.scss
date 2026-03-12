@@ -19,14 +19,26 @@
     opacity: 0;
 }
 
+.my-marker-icon {
+    transition: transform 0.3s ease;
+    border-radius: 50%;
+    animation: gradientShift 4s ease infinite, textPulse 3s ease-in-out infinite;
+    box-shadow: $shadow-medium;
+    background: linear-gradient(270deg, $glowy-text, $color-accent, $color-white, $color-sun);
+    animation: textPulse 3s ease-in-out infinite;
+    background-size: 500% 500%;
+}
+
 @media (max-width: 768px) {}
 
 @media (max-width: 530px) {
     #map {
         width: 350px;
-        height: 300px;
+        height: 350px;
     }
 }
+
+@media (max-width: 430px) {}
 
 @media (max-width: 375px) {
     #map {

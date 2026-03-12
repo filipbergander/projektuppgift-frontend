@@ -14,6 +14,7 @@ $color-bg-blue:rgba(110, 110, 236, 0.658);
 //Färger för text
 $color-text: #1A1A1A;
 $color-white:#fff;
+$color-black:rgba(0, 0, 0, 0.61);
 $color-text-secondary: #6C757D;
 $color-text-error:rgba(202, 22, 22, 0.89);
 $color-span: #3A7AFE;
@@ -43,6 +44,7 @@ $transition-base: 0.3s ease;
 //Marginaler
 $margin-general-md: 16px;
 $margin-general-s:8px;
+$margin-general-large: 30px;
 $margin-general-lg: 35vh;
 // Padding
 $padding-base: 0.25rem 1rem;

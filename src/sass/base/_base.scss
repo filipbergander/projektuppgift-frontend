@@ -1,49 +1,82 @@
-@use "../abstracts/variables" as *;
-@use "../abstracts/mixins" as *;
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Contrail+One&family=Honk:MORF,SHLN@0..45,0..100&family=Manrope&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-html,
-body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-image: linear-gradient(to right, $color-sun, $color-bg-orange-hover);
-}
-
-main {
-    font-family: "Work Sans", ui-sans-serif, system-ui, sans-serif;
-    color: $color-text;
-    box-shadow: $shadow-light;
-    z-index: 1000;
-    background-color: $color-accent;
-}
-
-#country-section {
-    h1 {
-        font-family: 'Contrail One', sans-serif;
-        letter-spacing: 1px;
+    @use "../abstracts/variables" as *;
+    @use "../abstracts/mixins" as *;
+    @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Contrail+One&family=Honk:MORF,SHLN@0..45,0..100&family=Manrope&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-image: linear-gradient(to right, $color-sun, $color-bg-orange-hover);
+    }
+    
+    main {
+        font-family: "Work Sans", ui-sans-serif, system-ui, sans-serif;
         color: $color-text;
-        text-transform: uppercase;
-        animation: moveText 2s ease-in-out infinite;
-        transition: $transition-base;
+        box-shadow: $shadow-light;
+        z-index: 1000;
+        background-color: $color-accent;
     }
-    #hint {
-        margin: 0 0.5em 0.5em;
-        opacity: 1;
-        transition: opacity 4s ease, margin 0.3s ease;
-        animation: bounce 3s ease-in-out infinite;
-        text-align: center;
+    
+    @media (prefers-color-scheme: dark) {
+        #main {
+            background-color: $color-text-info;
+            color: $color-white;
+        }
+        #country-section h1 {
+            color: $color-white !important;
+        }
+        #country-card {
+            color: $color-white;
+        }
+        #showArea {
+            background-color: $color-text-info;
+            color: $color-white;
+        }
+        .textInfo {
+            color: $color-white !important;
+        }
+        #weatherDiagram {
+            background-color: $color-black !important;
+            box-shadow: $shadow-fantasy !important;
+        }
+        #currency-converter {
+            background-color: $color-text-info !important;
+            color: $color-white !important;
+            box-shadow: $shadow-fantasy !important;
+        }
+        .updateDate {
+            color: $glowy-text !important;
+        }
+        #changeCurrencyBtn {
+            fill: white;
+        }
     }
-    #hint.hiddenText {
-        opacity: 0;
+    
+    #country-section {
+        h1 {
+            font-family: 'Contrail One', sans-serif;
+            letter-spacing: 1px;
+            color: $color-text;
+            text-transform: uppercase;
+            animation: moveText 2s ease-in-out infinite;
+            transition: $transition-base;
+        }
+        #hint {
+            margin: 0 0.5em 0.5em;
+            opacity: 1;
+            transition: opacity 4s ease, margin 0.3s ease;
+            animation: bounce 3s ease-in-out infinite;
+            text-align: center;
+        }
+        #hint.hiddenText {
+            opacity: 0;
+        }
+        // När man börjar skriva i sökfältet slutar animationen för h1-rubriken
+        &:has(input:focus) h1 {
+            animation-play-state: paused;
+        }
     }
-    // När man börjar skriva i sökfältet slutar animationen för h1-rubriken
-    &:has(input:focus) h1 {
-        animation-play-state: paused;
-    }
-}
-
-
-/*
+    /*
 #convertHint {
     margin-top: 2rem;
     margin: 0.5em 0;
@@ -55,120 +88,130 @@ main {
         opacity: 0;
     }
 }*/
-
-#convertError {
-    color: $color-text-error;
-    font-weight: $fontweight-bold;
-    margin-top: $margin-general-s;
-    transition: $transition-base;
-    animation: bounce 3s ease-in-out infinite;
-}
-
-#currency-error {
-    color: $color-text-error;
-    font-weight: $fontweight-bold;
-    margin-top: $margin-general-s;
-    transition: $transition-base;
-    animation: bounce 3s ease-in-out infinite;
-}
-
-#country-error {
-    color: $color-text-error;
-    font-weight: $fontweight-bold;
-    margin-top: $margin-general-s;
-    transition: $transition-base;
-    animation: bounce 3s ease-in-out infinite;
-}
-
-#countrylist {
-    font-size: 0.9rem;
-}
-
-.hidden {
-    display: none;
-}
-
-.show {
-    display: block;
-}
-
-nav {
-    display: flex;
-    ul {
-        list-style: none;
+    
+    #convertError {
+        color: $color-text-error;
+        font-weight: $fontweight-bold;
+        margin-top: $margin-general-s;
+        transition: $transition-base;
+        animation: bounce 3s ease-in-out infinite;
     }
-}
-
-#country-card {
-    margin-bottom: $margin-general-md;
-}
-
-#showArea {
-    width: 100%;
-    margin: 0 auto;
-    margin-bottom: $margin-general-md;
-}
-
-.spanInfo {
-    font-weight: $fontweight-bold;
-    color: $color-span;
-}
-
-.textInfo {
-    font-weight: $fontweight-bold;
-    color: $color-text-info;
-}
-
-.glowy-text {
-    font-weight: $fontweight-bold;
-    color: $glowy-text;
-    animation: bigLighter 2s ease-in-out infinite;
-}
-
-.headline-country {
-    font-family: "Honk", system-ui, sans-serif;
-    font-size: 3rem;
-    letter-spacing: 1px;
-    animation: glowHeadline 3s ease-in-out infinite;
-}
-
-.flagImg {
-    border-radius: $radius-medium;
-    box-shadow: $shadow-medium;
-}
-
-@media (max-width: 768px) {}
-
-@media (max-width: 530px) {
-    h1 {
-        font-size: 1.5rem;
+    
+    #currency-error {
+        color: $color-text-error;
+        font-weight: $fontweight-bold;
+        margin-top: $margin-general-s;
+        transition: $transition-base;
+        animation: bounce 3s ease-in-out infinite;
     }
+    
     #country-error {
-        font-size: 0.9rem;
+        color: $color-text-error;
+        font-weight: $fontweight-bold;
+        margin-top: $margin-general-s;
+        transition: $transition-base;
+        animation: bounce 3s ease-in-out infinite;
     }
+    
     #countrylist {
-        font-size: 0.8rem;
-    }
-    #hint {
         font-size: 0.9rem;
     }
-    #convertHint {
-        font-size: 0.9rem;
+    
+    .hidden {
+        display: none;
     }
-}
-
-@media (max-width: 375px) {
-    #countrylist {
-        columns: 2;
-        column-gap: 0.2rem;
+    
+    .show {
+        display: block;
     }
-    #country-error {
-        font-size: 0.8rem;
+    
+    nav {
+        display: flex;
+        ul {
+            list-style: none;
+        }
     }
-    #hint {
-        font-size: 0.8rem;
+    
+    #country-card {
+        margin-bottom: $margin-general-md;
     }
-    #convertHint {
-        font-size: 0.8rem;
+    
+    #showArea {
+        width: 100%;
+        margin: 0 auto;
+        margin-bottom: $margin-general-large;
     }
-}
+    
+    .spanInfo {
+        font-weight: $fontweight-bold;
+        color: $color-span;
+    }
+    
+    .textInfo {
+        font-weight: $fontweight-bold;
+        color: $color-text-info;
+    }
+    
+    .glowy-text {
+        font-weight: $fontweight-bold;
+        color: $glowy-text;
+        animation: bigLighter 1.5s ease-in-out infinite;
+    }
+    
+    .headline-country {
+        font-family: "Honk", system-ui, sans-serif;
+        font-size: 3rem;
+        letter-spacing: 2px;
+        animation: textGlow 3s ease-in-out infinite;
+    }
+    
+    .flagImg {
+        border-radius: $radius-medium;
+        box-shadow: $shadow-medium;
+    }
+    
+    @media (max-width: 768px) {}
+    
+    @media (max-width: 530px) {
+        h1 {
+            font-size: 1.5rem;
+        }
+        #country-error {
+            font-size: 0.9rem;
+        }
+        #convertError {
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        #countrylist {
+            font-size: 0.8rem;
+        }
+        #hint {
+            font-size: 0.9rem;
+        }
+        #convertHint {
+            font-size: 0.9rem;
+        }
+        #country-card {
+            padding-left: 1rem;
+        }
+    }
+    
+    @media (max-width: 375px) {
+        #countrylist {
+            columns: 2;
+            column-gap: 0.2rem;
+        }
+        #country-error {
+            font-size: 0.8rem;
+        }
+        #convertError {
+            font-size: 0.9rem;
+        }
+        #hint {
+            font-size: 0.8rem;
+        }
+        #convertHint {
+            font-size: 0.8rem;
+        }
+    }

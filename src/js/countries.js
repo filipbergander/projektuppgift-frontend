@@ -35,11 +35,38 @@ addEventListener("DOMContentLoaded", () => {
 
     fetchAllcountries(); // Hämtar alla länder efter att DOM laddats in
 
+    // Olika karter som går att använda, jawg har en token som jag sparat i en variabel.
+    const jawgToken = "6aUCDcns9wnFKVGcqzrnXSypntTzjgqY7YYoAsMa71MbVgHGNZ6wRokX3739muDB";
+    const darkmodeTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    });
+
+    const jawgDarkTile = L.tileLayer(`https://tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
+        maxZoom: 19,
+        attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+    });
+
+    const jawgLagoonTile = L.tileLayer(`https://tile.jawg.io/jawg-lagoon/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
+        maxZoom: 19,
+        attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+    });
+
+    const jawgStreetsTile = L.tileLayer(`https://tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
+        maxZoom: 19,
+        attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+    });
+
+    const stadiaTile = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19
+    });
+
+    const voyagerTile = L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+        maxZoom: 19,
+    });
+
     visualMap = L.map('map').setView([51.78, -7.03], 2); // Grundvy för kartan, utzoomad
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19, // Max inzoomnivå för kartan
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(visualMap); // Kartan genom Openstreetmap och leaflet
+    jawgLagoonTile.addTo(visualMap); // Kartan genom Openstreetmap och leaflet
 
     // När användaren skriver i sökfältet för land 
     countryInputEl.addEventListener("input", async() => {
@@ -83,7 +110,7 @@ addEventListener("DOMContentLoaded", () => {
  * Funktion som hämtar in alla länder som finns från Restcountries API. 
  */
 async function fetchAllcountries() {
-    const url = `https://restcountries.com/v3.1/all?fields=name`;
+    const url = `https://restcountries.com/v3.1/all?fields=name,flags`;
     try {
         const response = await fetch(url);
         const info = await response.json();
@@ -100,8 +127,13 @@ async function fetchAllcountries() {
 function showCountries(info) {
     const countryListEl = document.getElementById("countrylist");
     countryListEl.innerHTML = "";
+    console.log(info)
     info.forEach(country => {
-        countryListEl.innerHTML += `<li>${country.name.common}</li>` // Struktur 
+        countryListEl.innerHTML += `
+        <li class="countriesflag">
+            <img src="${country.flags.svg}" alt="${country.name.common} flagga" width="18px" height="12px">
+            <span>${country.name.common}</span>
+        </li>` // Struktur 
     });
 }
 
@@ -148,9 +180,10 @@ async function fetchCountry(countryInput, searchError) {
  * @param {*} countryInput - Sökinnehållet som användaren skrev i sökfältet för land
  * @return {void} - Returnerar inget
  */
-async function displayCountry(data, currencyCode, countryInput) {
+async function displayCountry(data, currencyCode, countryInput, info) {
     const countryProfile = document.getElementById("country-card"); // Där information om landet ska skrivas ut
-    const flag = data[0].flags.png; // Flagga
+    const flag = data[0].flags.png; // Flagga png
+    const flagSvg = data[0].flags.svg; // Flagga svg
     const countryNameShort = data[0].altSpellings[0]; // Förkortning för landets namn
     const language = data[0].languages; // Språk
     const languageName = Object.values(language)[0]; // Värdet inom languages i arrayen från API:et 
@@ -158,7 +191,6 @@ async function displayCountry(data, currencyCode, countryInput) {
     const countryName = data[0].name.common;
     const population = data[0].population; // Invånare i landet
     const populationText = population.toLocaleString("sv-SE"); // Gör om invånarantalet till en textsträng med tusentalsavgränsare
-
     // const [capitalLat, capitalLng] = data[0].capitalInfo.latlng; // Hämtar in koordinater för huvudstaden
     // Skapar struktur inom DOM för att visa info om landet, skickar med olika data från api
     countryProfile.innerHTML = `
@@ -197,17 +229,18 @@ async function displayCountry(data, currencyCode, countryInput) {
             convertHintEl.classList.add("hidden"); // Döljer tipset
         }, 8500);*/
     });
-
-    // Struktur inom DOM för att visa valutakonverteraren, currencyCode är valutakoden för det land som användaren sökt på
+    console.log(currencyCode)
+        // Struktur inom DOM för att visa valutakonverteraren, currencyCode är valutakoden för det land som användaren sökt på
     currencyEl.innerHTML += `
     <h3>Jämför och konvertera valutor</h3>
     <div class="fromToCurrency">
         <div class="fromCurrency"> 
-            <label for="fromCurrency">Från: <img src="https://flagcdn.com/se.svg" alt="Svenska flaggan" id="swedishFlag" width="20px" height="20px"></label>
+            <label for="fromCurrency">Från: <img src="https://flagcdn.com/se.svg" alt="Svenska flaggan" id="fromFlag" width="20px" height="20px"></label>
             <input type="text" id="fromCurrency" value="SEK" disabled>
         </div>
+        <svg xmlns="http://www.w3.org/2000/svg" id="changeCurrencyBtn" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M280-120 80-320l200-200 57 56-104 104h607v80H233l104 104-57 56Zm400-320-57-56 104-104H120v-80h607L623-784l57-56 200 200-200 200Z"/></svg>
         <div class="toCurrency"> 
-            <label for="toCurrency">Till: </label>
+            <label for="toCurrency">Till: <img src="${flagSvg}"id="toFlag" width="20px" height="20px"></label>
             <input type="text" id="toCurrency" value="${currencyCode}">
         </div>
     </div>
@@ -216,6 +249,22 @@ async function displayCountry(data, currencyCode, countryInput) {
         <button id="convertBtn">Konvertera</button>
     <div id="convertResult"></div>
         `;
+
+    //
+    const changeCurrencyBtn = document.getElementById("changeCurrencyBtn"); //
+    changeCurrencyBtn.addEventListener("click", () => {
+        const swedishFlag = document.getElementById("swedishFlag");
+        const fromCurrencyInp = document.getElementById("fromCurrency");
+        const toCurrencyInp = document.getElementById("toCurrency");
+
+        const changeCurrency = fromCurrencyInp.value;
+        fromCurrencyInp.value = toCurrencyInp.value;
+        toCurrencyInp.value = changeCurrency;
+
+        const flagSrc = fromFlag.src
+        fromFlag.src = toFlag.src;
+        toFlag.src = flagSrc;
+    });
     // <span id="convertHint" class="">Prova en annan valuta</span> Används inte
     // Eventlyssnare för att visa kartan över det land som användaren sökt på
     const countryMapBtn = document.getElementById("countryMapBtn");
@@ -247,7 +296,7 @@ async function displayCountry(data, currencyCode, countryInput) {
         const { rate, updated, nextUpdate } = await fetchCurrencyData(toCurrency); // Hämtar in växlingskursen för SEK till den valutan som användaren sökt på och vill konvertera till i sökfältet
         // Om det inte gick att hämta växlingskursen
         if (!rate) {
-            convertListEl.innerHTML = `<p id="convertError">Kunde inte hämta växlingskursen, finns valutan?</p>`;
+            convertListEl.innerHTML = `<p id="convertError">Kunde inte hämta valutan, försök igen</p>`;
             return;
         }
         // Beräknar det konverterade beloppet och skriver ut det i DOM samt när växlingskursen senast blev uppdaterad
@@ -256,7 +305,7 @@ async function displayCountry(data, currencyCode, countryInput) {
         convertListEl.innerHTML = `
         <p class="money">${amount} SEK <span class="moneyError">=</span> ${convertedAmount.toFixed(2)} i ${toCurrency}</p>
         <p>Senast uppdaterad kurs: <span class="updateDate">${updated}<span></p>
-        <p> Ny uppdatering för kurs: <span class="updateDate">${nextUpdate}<span></p>
+        <p> Ny uppdatering av kurs: <span class="updateDate">${nextUpdate}<span></p>
         `;
     });
 
@@ -300,16 +349,26 @@ async function fetchByTranslation(countryInput, searchError) {
  * @param {*} latitude - Koordinater för latitud som hämtas in från apiet
  * @param {*} longitude - Koordinater för longitud som hämtas in från apiet
  */
-function showCountryMap(latitude, longitude) {
+function showCountryMap(latitude, longitude, countryInput) {
     hideSections(); // Dölj element som väderprognos, valutakonverterare
     const mapEl = document.getElementById("map"); // Hämtar in element från DOM
     mapEl.classList.remove("hidden"); // Visa kartan sedan
     visualMap.invalidateSize(); // Justerar kartans synliga storlek när den väl visas
     visualMap.setView([latitude, longitude], 4); // Uppdaterar kartans position efter landets koordinater, zoomar in lite på landet 
+
+    const myIcon = L.icon({
+        iconUrl: "/public/travelMarker.svg", // Inhämtad svg som liknar flygplan
+        className: 'my-marker-icon', // En klass för att styla in scss, animation och färger
+        iconSize: [30, 30],
+        iconAnchor: [15, 30]
+    });
+
     if (marker) {
         visualMap.removeLayer(marker); // Om det redan finns en markör på kartan tas den bort innan den nya markören läggs till
     }
-    marker = L.marker([latitude, longitude]).addTo(visualMap); // Markören sätts på kartan beroende på landets koordinater
+    console.log(countryInput);
+    marker = L.marker([latitude, longitude], { icon: myIcon, content: countryInput }).addTo(visualMap); // Markören sätts på kartan beroende på landets koordinater
+    // marker.bindTooltip(`${countryInput}`).openTooltip(); // Tooltip med landets namn
 }
 
 /**

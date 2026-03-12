@@ -50,15 +50,27 @@
     }
 }
 
+@keyframes textPulse {
+    0% {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 30px $glowy-text;
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    }
+}
+
 @keyframes textGlow {
     0% {
-        text-shadow: 0 0 5px $color-text, 0 0 10px $color-text;
+        text-shadow: 0 0 5px $color-bg-orange, 0 0 10px $color-bg-orange;
     }
     50% {
         text-shadow: 0 0 10px $color-text, 0 0 20px $color-text;
     }
     100% {
-        text-shadow: 0 0 5px $color-text, 0 0 10px $color-text;
+        text-shadow: 0 0 5px $color-bg-orange, 0 0 10px $color-bg-orange;
     }
 }
 
