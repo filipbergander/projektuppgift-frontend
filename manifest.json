@@ -1,0 +1,21 @@
+{
+    "name": "TravelBuddy",
+    "short_name": "Resvän",
+    "description": "Resapp med karta, väder, valuta och länder.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#4a90e2",
+    "icons": [{
+            "src": "/images/web-app-manifest-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/web-app-manifest-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "prefer_related_applications": false
+}

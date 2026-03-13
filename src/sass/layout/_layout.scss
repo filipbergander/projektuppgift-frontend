@@ -33,7 +33,6 @@ main {
 
 #country-section {
     @extend %flex-layout-start;
-    margin-top: $margin-general-lg;
     h1,
     h2 {
         text-align: center;

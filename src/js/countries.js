@@ -8,13 +8,7 @@ let allCountries = []; // Array för länder som används för att filtrera sök
 
 // Inväntar att DOM har laddats in
 addEventListener("DOMContentLoaded", () => {
-    /* const loadingIcon = document.getElementById("loadingIcon"); // Laddningsikonen "För jag vill resa!"
-     loadingIcon.classList.remove("hidden"); // Visar laddningsikonen
-     setTimeout(() => {
-         main.classList.remove("hidden"); // Visar main när loadingikonen "laddat klart"
-         // footer.classList.remove("hidden"); // Visar footer när loadingikonen "laddat klart"
-         loadingIcon.classList.add("hidden"); // Döljer ikonen efter 2,5 sek
-     }, 2500);*/
+
     // Sparar variabler som finns inom DOM
     const countryInputEl = document.getElementById("country-name-input");
     const searchBtn = document.getElementById("search-button");
@@ -22,18 +16,41 @@ addEventListener("DOMContentLoaded", () => {
     const countriesListDisplay = document.getElementById("countriesDisplay");
     const showCountriesBtn = document.getElementById("moreCountries");
     const countriesDiv = document.getElementById("countriesDiv");
-    // const countrySearch = document.getElementById("country-search");
+    const countrySection = document.getElementById("country-section");
+    const countrySearch = document.getElementById("country-search");
+    const countryCard = document.getElementById("country-card");
+
+    // Skapar rubrik och lägger till inom sektion
+    const headline = document.createElement("h1");
+    headline.textContent = "Vilket land vill du resa till?"; // Huvudrubrik
+    countrySection.prepend(headline); // Lägger till huvudrubriken först inom sektionselementet
+
+    // Skapar tipsmeddelande och lägger till efter rubriken och i diven
+    const tipMessage = document.createElement("p");
+    tipMessage.id = "hint";
+    tipMessage.classList.add("hiddenText");
+    tipMessage.textContent = "Sök både svenska och engelska namn";
+    countrySearch.prepend(tipMessage);
+
     const hintEl = document.getElementById("hint");
     // Sätter igång en timeout som visar tipsmeddelandet och sedan döljer det igen.
     setTimeout(() => {
         hintEl.classList.remove("hiddenText"); // Visar tipset efter 5 sek
-    }, 5000);
+    }, 3000);
 
     setTimeout(() => {
         hintEl.classList.add("hiddenText"); // Döljer tipset
-    }, 12500);
+    }, 11000);
 
     fetchAllcountries(); // Hämtar alla länder efter att DOM laddats in
+
+    // Eventlyssnare när användaren klickar på "Enter-tangenten", initierar sökningen av land
+    document.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+            searchBtn.click(); // Simulerar klick på sökknappen
+            countryInputEl.blur(); // Tar bort fokuset från sökfältet och sökförslag
+        }
+    });
 
     // Olika kartor som jag kan använda på hemsidan
     /* const darkmodeTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
@@ -113,13 +130,28 @@ addEventListener("DOMContentLoaded", () => {
             searchError.innerHTML = "Vänligen, fyll i ett land"; // Felmeddelande i DOM
             return;
         }
-        // countrySearch.classList.add("hidden"); // Döljer diven
-        console.log("Du klickade på sök");
+        countryCard.innerHTML = ""; // Tar bort allt från landsprofilen
+        countryCard.classList.remove("show"); // Tar bort klassen show för att dölja informationen om
+        const countryInput = searchInput.charAt(0).toUpperCase() + searchInput.slice(1).toLowerCase(); // Gör första bokstaven i landets namn till en versal och resten till gemener
+
+        showLoadingIcon(); // Laddningsikon som går igång och visas efter man klickat på sök
+
         countriesDiv.classList.add("hidden"); // Döljer listan med alla länder
         hideSections(); // Döljer karta, väderprognos och valutakonverterare 
-        const countryInput = searchInput.charAt(0).toUpperCase() + searchInput.slice(1).toLowerCase(); // Gör första bokstaven i landets namn till en versal och resten till gemener
-        fetchCountry(countryInput, searchError); // Anropar funktionen för att hämta datan om landet beroende på vad användaren sökt på
+
+        setTimeout(() => {
+            fetchCountry(countryInput, searchError); // Anropar funktionen för att hämta datan om landet beroende på vad användaren sökt på
+            main.classList.remove("hidden"); // Visar main när informationen om landet har visats i DOM
+            countryCard.classList.add("show"); // Lägger på klassen show för att visa elementet
+            countryCard.scrollIntoView({ behavior: "smooth" }); // Scrollar ner information om landet/profil-kortet
+        }, 1550);
+
+
+
+        slowDisplay() // Startar funktionen för att visa information om landet långsamt och starta laddningsikon
+
     });
+
     // När användaren klickar på knappen för att visa alla länder
     showCountriesBtn.addEventListener("click", () => {
         const arrowIcon = document.getElementById("arrowIcon"); // Ikonen (chevron) som pilar i knappen
@@ -156,7 +188,6 @@ async function fetchAllcountries() {
 function showCountries(info) {
     const countryListEl = document.getElementById("countrylist");
     countryListEl.innerHTML = "";
-    console.log(info)
     info.forEach(country => {
         countryListEl.innerHTML += `
         <li class="countriesflag">
@@ -193,7 +224,6 @@ async function fetchCountry(countryInput, searchError) {
         if (!response.ok) { // Om responsen inte hittade något land används en backup-funktion för namn på länder med svenska språket. t.ex frankrike och inte france.
             return fetchByTranslation(countryInput, searchError);
         }
-        console.log(data);
         const currencyObject = data[0].currencies; // Informationen om landets valuta
         const currencyCode = Object.keys(currencyObject)[0]; // Valutakoden som landet använder
         displayCountry(data, currencyCode, countryInput); // Anropar funktion för att visa information om landet i DOM
@@ -258,8 +288,7 @@ async function displayCountry(data, currencyCode, countryInput, info) {
             convertHintEl.classList.add("hidden"); // Döljer tipset
         }, 8500);*/
     });
-    console.log(currencyCode)
-        // Struktur inom DOM för att visa valutakonverteraren, currencyCode är valutakoden för det land som användaren sökt på
+    // Struktur inom DOM för att visa valutakonverteraren, currencyCode är valutakoden för det land som användaren sökt på
     currencyEl.innerHTML += `
     <h3>Jämför och konvertera valutor</h3>
     <div class="fromToCurrency">
@@ -267,9 +296,9 @@ async function displayCountry(data, currencyCode, countryInput, info) {
             <label for="fromCurrency">Från: <img src="https://flagcdn.com/se.svg" alt="Svenska flaggan" id="fromFlag" width="20px" height="20px"></label>
             <input type="text" id="fromCurrency" value="SEK" disabled>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" id="changeCurrencyBtn" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M280-120 80-320l200-200 57 56-104 104h607v80H233l104 104-57 56Zm400-320-57-56 104-104H120v-80h607L623-784l57-56 200 200-200 200Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" id="changeCurrencyBtn" height="24px" viewBox="0 -960 960 960" width="20px" fill="#1f1f1f"><path d="M280-120 80-320l200-200 57 56-104 104h607v80H233l104 104-57 56Zm400-320-57-56 104-104H120v-80h607L623-784l57-56 200 200-200 200Z"/></svg>
         <div class="toCurrency"> 
-            <label for="toCurrency">Till: <img src="${flagSvg}"id="toFlag" width="20px" height="20px"></label>
+            <label for="toCurrency">Till: <img src="${flagSvg}"id="toFlag" width="24px" height="20px"></label>
             <input type="text" id="toCurrency" value="${currencyCode}">
         </div>
     </div>
@@ -330,7 +359,6 @@ async function displayCountry(data, currencyCode, countryInput, info) {
         }
         // Beräknar det konverterade beloppet och skriver ut det i DOM samt när växlingskursen senast blev uppdaterad
         const convertedAmount = amount * rate;
-        console.log(convertedAmount);
         convertListEl.innerHTML = `
         <p class="money">${amount} SEK <span class="moneyError">=</span> ${convertedAmount.toFixed(2)} i ${toCurrency}</p>
         <p>Senast uppdaterad kurs: <span class="updateDate">${updated}<span></p>
@@ -358,15 +386,16 @@ async function fetchByTranslation(countryInput, searchError) {
         if (!response.ok) { // Om det inte hittades något land på svenska först
             searchError.innerHTML = `Landet "${countryInput}" hittades inte, prova med namnet på Engelska.`
             countriesDiv.classList.remove("hidden"); // För att visa listan med alla länder
+            const countryCard = document.getElementById("country-card"); // landprofilen
+            countryCard.classList.remove("show"); // Tar bort klassen show för att dölja informationen om landet
+            countryCard.innerHTML = ""; // Tömmer hela landprofilen
             return;
         }
-        console.log(data); // För att se det som hämtas in
         const currency = document.getElementById("currency-converter");
         currency.innerHTML = "";
         const currencyObject = data[0].currencies; // Valutainformation
         const currencyCode = Object.keys(currencyObject)[0]; // Valutakoden
         currency.innerHTML = currencyCode;
-        console.log(currencyCode); // För att se valutakoden som hämtades in
         displayCountry(data, currencyCode, countryInput); // Anropar funktionen för att visa information om landet i DOM
     } catch (error) {
         console.error("Felmeddelande: ", error);
@@ -395,7 +424,6 @@ function showCountryMap(latitude, longitude, countryInput) {
     if (marker) {
         visualMap.removeLayer(marker); // Om det redan finns en markör på kartan tas den bort innan den nya markören läggs till
     }
-    console.log(countryInput);
     marker = L.marker([latitude, longitude], { icon: myIcon, content: countryInput }).addTo(visualMap); // Markören sätts på kartan beroende på landets koordinater
     // marker.bindTooltip(`${countryInput}`).openTooltip(); // Tooltip med landets namn
 }
@@ -411,7 +439,7 @@ async function getWeatherForecast(capitalName) {
     try {
         const response = await fetch(url)
         const data = await response.json();
-        console.log("Svarsresultat:", data);
+        //console.log("Svarsresultat:", data);
         return data;
     } catch (error) {
         console.error("Felmeddelande från hämtning av väder: ", error);
@@ -454,7 +482,6 @@ function displayWeather(weatherInfo, capitalName) {
     `
         // Väderprognos kommande dagar som ska visas i diagrammet
     const weatherDays = weatherInfo.forecast.forecastday;
-    console.log(weatherDays);
     const labels = weatherDays.map(day => day.date); // Datumen
     const avgTemp = weatherDays.map(day => day.day.avgtemp_c); // Genomsnittstemperaturen 
 
@@ -463,7 +490,6 @@ function displayWeather(weatherInfo, capitalName) {
     const highestTemp = weatherDays.map(day => day.day.maxtemp_c);
     const chanceRain = weatherDays.map(day => day.day.daily_chance_of_rain);
     const chanceSnow = weatherDays.map(day => day.day.daily_chance_of_snow);
-    console.log(highestTemp, lowestTemp);
     // Skapa diagram som visar väderprognosen tre dagar framåt
     const ctx = document.getElementById("myChart");
     new Chart(ctx, {
@@ -631,10 +657,8 @@ async function fetchCurrencyData(currencyCode) {
     try {
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data);
         const rates = data.conversion_rates; // Alla växelkurser med SEK som bas
         const searchRate = rates[currencyCode]; // Växelkursen som användaren sökt på
-        console.log(searchRate);
         // Utskrift när kursen var senast uppdaterad till DOM
         const updCurrency = data.time_last_update_utc; // När växlingskursen senast var uppdaterad, utskrift i DOM
         const weekdays = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"]; // Veckodagar på svenska
@@ -650,8 +674,6 @@ async function fetchCurrencyData(currencyCode) {
         const UpdMonth = nextUpdDay.getUTCMonth() + 1; // Månad
         const UpdDayOfWeek = weekdays[nextUpdDay.getUTCDay()]; // Vilken veckodag det är när växlingskursen senast var uppdaterad, utskrift i DOM 
         const nextUpdateDay = `${UpdDayOfWeek} ${nextDate}/${UpdMonth}`; // Utskriftsformat
-
-        console.log(nextUpdateDay);
         // Sparar växelkurserna och datum för senaste uppdatering i localstorage
         localStorage.setItem("currenciesSaved", JSON.stringify({
             rates: rates,
@@ -669,3 +691,32 @@ async function fetchCurrencyData(currencyCode) {
         console.error("Felmeddelande: ", error); // Felmeddelande
     }
 };
+
+/**
+ * Funktion för att visa profilkortet för land långsamt
+ */
+function slowDisplay() {
+    const countryProfile = document.getElementById("country-card");
+    countryProfile.classList.add("show");
+}
+/**
+ * Funktion för att visa laddningsikon och dölja main
+ */
+function showLoadingIcon() {
+    const loadingIcon = document.getElementById("loadingIcon");
+    const main = document.getElementById("main");
+    loadingIcon.classList.remove("hidden");
+    setTimeout(() => {
+        main.classList.remove("hidden"); // Visar main när loadingikonen "laddat klart"
+        // footer.classList.remove("hidden"); // Visar footer när loadingikonen "laddat klart"
+        loadingIcon.classList.add("hidden"); // Döljer ikonen efter 2,5 sek
+    }, 1475);
+}
+
+/**
+ * Funktion för att dölja laddningsikon
+ */
+function hideLoadingIcon() {
+    const loadingIcon = document.getElementById("loadingIcon");
+    loadingIcon.classList.add("hidden");
+}

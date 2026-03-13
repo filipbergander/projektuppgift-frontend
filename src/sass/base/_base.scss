@@ -71,11 +71,12 @@
             transition: $transition-base;
         }
         #hint {
-            margin: 0 0.5em 0.5em;
+            margin: 0 0.5em 0em;
             opacity: 1;
             transition: opacity 4s ease, margin 0.3s ease;
             animation: bounce 3s ease-in-out infinite;
             text-align: center;
+            margin-bottom: $margin-general-s;
         }
         #hint.hiddenText {
             opacity: 0;
@@ -143,6 +144,12 @@
     
     #country-card {
         margin-bottom: $margin-general-md;
+        transition: 3s ease-in;
+        opacity: 0;
+    }
+    
+    #country-card.show {
+        opacity: 1;
     }
     
     #showArea {
