@@ -6,7 +6,6 @@
     width: 450px;
     transition: $transition-base;
     display: block;
-    border-radius: $radius-medium;
     border: 4px solid;
     border-image: linear-gradient(90deg, $btn-color-primary, $color-accent, $color-sun, $color-bg-orange) 1;
     box-shadow: $shadow-medium;

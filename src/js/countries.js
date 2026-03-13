@@ -35,12 +35,29 @@ addEventListener("DOMContentLoaded", () => {
 
     fetchAllcountries(); // Hämtar alla länder efter att DOM laddats in
 
-    // Olika karter som går att använda, jawg har en token som jag sparat i en variabel.
+    // Olika kartor som jag kan använda på hemsidan
+    /* const darkmodeTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+         maxZoom: 19,
+         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+     });  
+     const jawgStreetsTile = L.tileLayer(`https://tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
+         maxZoom: 19,
+         attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+     });
+
+      const stadiaTile = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+          maxZoom: 19
+      });
+
+      const voyagerTile = L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+          maxZoom: 19,
+      }); */
+
+    // För att ändra kartans lager om användaren befinner sig i mörkt eller ljust läge
+    const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches; // Om användaren har valt mörk tema
+
+    // Olika karter som går att använda, jawg har en token som jag sparat i variabel.
     const jawgToken = "6aUCDcns9wnFKVGcqzrnXSypntTzjgqY7YYoAsMa71MbVgHGNZ6wRokX3739muDB";
-    const darkmodeTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-    });
 
     const jawgDarkTile = L.tileLayer(`https://tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
         maxZoom: 19,
@@ -52,21 +69,33 @@ addEventListener("DOMContentLoaded", () => {
         attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
     });
 
-    const jawgStreetsTile = L.tileLayer(`https://tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
-        maxZoom: 19,
-        attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
-    });
-
-    const stadiaTile = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-        maxZoom: 19
-    });
-
-    const voyagerTile = L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-        maxZoom: 19,
-    });
-
     visualMap = L.map('map').setView([51.78, -7.03], 2); // Grundvy för kartan, utzoomad
-    jawgLagoonTile.addTo(visualMap); // Kartan genom Openstreetmap och leaflet
+    if (darkMode) { // Använder mörk karta
+        visualMap.removeLayer(jawgLagoonTile);
+        jawgDarkTile.addTo(visualMap);
+    } else { // Använder ljus karta
+        visualMap.removeLayer(jawgDarkTile);
+        jawgLagoonTile.addTo(visualMap);
+    }
+
+    // Lyssnar även på om man ändrar tema live, då ändras kartan också till rätt tema, ljust eller mörkt
+    const darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    darkModeQuery.addEventListener("change", event => {
+        const darkMode = event.matches;
+        if (darkMode) { // Använder mörk karta
+            visualMap.removeLayer(jawgLagoonTile);
+            jawgDarkTile.addTo(visualMap);
+        } else { // Använder ljus karta
+            visualMap.removeLayer(jawgDarkTile);
+            jawgLagoonTile.addTo(visualMap);
+        }
+    });
+
+    /*jawgDarkTile.addTo(visualMap); // Kartan genom jawg, Openstreetmap och leaflet
+    visualMap = L.map('map').setView([51.78, -7.03], 2); // Grundvy för kartan, utzoomad
+    jawgLagoonTile.addTo(visualMap); // Kartan genom jawg, Openstreetmap och leaflet*/
+
 
     // När användaren skriver i sökfältet för land 
     countryInputEl.addEventListener("input", async() => {
@@ -357,7 +386,7 @@ function showCountryMap(latitude, longitude, countryInput) {
     visualMap.setView([latitude, longitude], 4); // Uppdaterar kartans position efter landets koordinater, zoomar in lite på landet 
 
     const myIcon = L.icon({
-        iconUrl: "/public/travelMarker.svg", // Inhämtad svg som liknar flygplan
+        iconUrl: "/images/travelMarker.svg", // Inhämtad svg som liknar flygplan
         className: 'my-marker-icon', // En klass för att styla in scss, animation och färger
         iconSize: [30, 30],
         iconAnchor: [15, 30]

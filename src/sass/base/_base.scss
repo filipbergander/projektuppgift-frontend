@@ -18,8 +18,14 @@
     }
     
     @media (prefers-color-scheme: dark) {
+        #html,
+        body {
+            background-color: black;
+            background-image: linear-gradient(to right, $color-bg-dark-mode, $color-bg-dark-hover);
+            color: $color-white;
+        }
         #main {
-            background-color: $color-text-info;
+            background-color: $color-bg-main-dark;
             color: $color-white;
         }
         #country-section h1 {
@@ -49,6 +55,9 @@
         }
         #changeCurrencyBtn {
             fill: white;
+        }
+        #map {
+            box-shadow: $shadow-fantasy !important;
         }
     }
     
