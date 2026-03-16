@@ -60,6 +60,12 @@
         #map {
             box-shadow: $shadow-fantasy !important;
         }
+        .moneyError {
+            color: $color-white !important;
+        }
+        .spanInfo {
+            color: $color-span-darkmode !important;
+        }
     }
     
     #country-section {
@@ -97,21 +103,6 @@
         display: flex;
         flex-direction: column;
     }
-    /* .country {
-        width: 100%;
-    }*/
-    /*
-#convertHint {
-    margin-top: 2rem;
-    margin: 0.5em 0;
-    opacity: 1;
-    transition: opacity 4s ease, margin 0.3s ease;
-    animation: bounce 3s ease-in-out infinite;
-    text-align: center;
-    #convertHint.hidden {
-        opacity: 0;
-    }
-}*/
     
     #convertError {
         color: $color-text-error;
@@ -186,7 +177,7 @@
     .glowy-text {
         font-weight: $fontweight-bold;
         color: $glowy-text;
-        animation: bigLighter 1.5s ease-in-out infinite;
+        animation: bigLighter 2s ease-in-out infinite;
     }
     
     .headline-country {

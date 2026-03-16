@@ -1,13 +1,41 @@
-  /**
-   * @file Projektuppgift - Frontend-baserad webbutveckling<br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: countries.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: countries.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>  /**
+   * @file Projektuppgift - Frontend-baserad webbutveckling&lt;br>
    * 
-   * Denna applikation, TravelBuddy, hämtar in data från olika API:er och visar länder samt sökfunktion för att hitta information om ett specifikt land.<br>
+   * Denna applikation, TravelBuddy, hämtar in data från olika API:er och visar länder samt sökfunktion för att hitta information om ett specifikt land.&lt;br>
    * 
-   * Syftet med applikationen är att det ska vara en reseguide där man skriver in till vilket land man vill resa till.<br>
+   * Syftet med applikationen är att det ska vara en reseguide där man skriver in till vilket land man vill resa till.&lt;br>
    * 
-   * Användaren ser en landprofil med information om landet och temperatur just nu för huvudstaden. Det går att se landet på en karta, väderprognos framöver och valutakonverterare för landets valuta mot SEK.<br>
+   * Användaren ser en landprofil med information om landet och temperatur just nu för huvudstaden. Det går att se landet på en karta, väderprognos framöver och valutakonverterare för landets valuta mot SEK.&lt;br>
    * 
-   * Projektet är byggt med Vite och dokumenterat med JSDoc.<br>
+   * Projektet är byggt med Vite och dokumenterat med JSDoc.&lt;br>
    */
 
   "use strict";
@@ -63,11 +91,11 @@
 
       // Struktur inom DOM för att sortera och filtrera länder, efter regioner
       divDropDown.innerHTML += `
-        <p class="sortCountries">Sortera: <span id="sortHint">Namn</span></p>
-        <label for="region-to-select">Regioner:
-        <select id="region-to-select">
-        <option value="Alla">Alla</option>
-        </select></label>
+        &lt;p class="sortCountries">Sortera: &lt;span id="sortHint">Namn&lt;/span>&lt;/p>
+        &lt;label for="region-to-select">Regioner:
+        &lt;select id="region-to-select">
+        &lt;option value="Alla">Alla&lt;/option>
+        &lt;/select>&lt;/label>
         `;
 
       // Lägger till dropdownmenyn till DOM efter knappen för att visa länder
@@ -112,11 +140,11 @@
       // Olika kartor som jag kan använda på hemsidan
       /* const darkmodeTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
            maxZoom: 19,
-           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+           attribution: '&amp;copy; &lt;a href="https://www.openstreetmap.org/copyright">OpenStreetMap&lt;/a> contributors &amp;copy; &lt;a href="https://carto.com/attributions">CARTO&lt;/a>'
        });  
        const jawgStreetsTile = L.tileLayer(`https://tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
            maxZoom: 19,
-           attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+           attribution: '© &lt;a href="https://www.jawg.io" target="_blank">Jawg Maps&lt;/a> © &lt;a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap&lt;/a> contributors'
        });
 
         const stadiaTile = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
@@ -134,12 +162,12 @@
       const jawgToken = "6aUCDcns9wnFKVGcqzrnXSypntTzjgqY7YYoAsMa71MbVgHGNZ6wRokX3739muDB";
       const jawgDarkTile = L.tileLayer(`https://tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
           maxZoom: 19,
-          attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+          attribution: '© &lt;a href="https://www.jawg.io" target="_blank">Jawg Maps&lt;/a> © &lt;a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap&lt;/a> contributors'
       });
 
       const jawgLagoonTile = L.tileLayer(`https://tile.jawg.io/jawg-lagoon/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
           maxZoom: 19,
-          attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+          attribution: '© &lt;a href="https://www.jawg.io" target="_blank">Jawg Maps&lt;/a> © &lt;a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap&lt;/a> contributors'
       });
 
       visualMap = L.map('map').setView([51.78, -7.03], 2); // Grundvy för kartan, utzoomad
@@ -242,7 +270,7 @@
           const regionsSelectEl = document.getElementById("region-to-select");
           regions.forEach(region => {
               regionsSelectEl.innerHTML += `
-                <option value="${region}">${region}</option>
+                &lt;option value="${region}">${region}&lt;/option>
                 `
           });
       } catch (error) {
@@ -258,10 +286,10 @@
       countryListEl.innerHTML = ""; // Tömmer listan innan den fylls på igen
       info.forEach(country => { // Struktur
           countryListEl.innerHTML += `
-        <li class="countriesflag">
-            <img src="${country.flags.svg}" alt="${country.name.common} flagga" width="18px" height="12px">
-            <span class="country-name">${country.name.common}</span>
-        </li>`
+        &lt;li class="countriesflag">
+            &lt;img src="${country.flags.svg}" alt="${country.name.common} flagga" width="18px" height="12px">
+            &lt;span class="country-name">${country.name.common}&lt;/span>
+        &lt;/li>`
       });
       // När man klickar på ett land i listan av länder så skrivs det namnet in i sökfältet och fokuset hamnar sedan där
       const countryNameEl = document.querySelectorAll(".country-name");
@@ -365,18 +393,18 @@
 
       // Skapar struktur inom DOM för att visa info om landet, skickar med olika data från api
       countryProfile.innerHTML = `
-    <h2 class="headline-country">${countryNameShort} | ${countryName}</h2>
-    <img src="${flag}" class="flagImg" alt="${countryInput} flag" id="flag" width="150px" height="100px"> 
-    <p class="textInfo">Valuta: <span class="spanInfo">${currencyCode}</span></p>
-    <p class="textInfo">Språk: <span class="spanInfo">${languageName}</span></p>
-    <p class="textInfo">Invånare: <span class="spanInfo">${populationText}</span></p>
-    <p class="textInfo">Tidszon: <span class="spanInfo">${data[0].timezones[0]}</span></p>
-    <p class="textInfo">Region: <span class="spanInfo">${data[0].continents[0]}</span></p>
-    <p class="textInfo">Huvudstad: <span class="spanInfo">${capitalName}</span></p>
-    <div id="weatherContainer"></div>
-    <button id="countryMapBtn">Visa karta över landet</button>
-    <button id="showWeatherBtn">Se väderprognos</button>
-    <button id="showCurrencyBtn">Jämför valuta</button>
+    &lt;h2 class="headline-country">${countryNameShort} | ${countryName}&lt;/h2>
+    &lt;img src="${flag}" class="flagImg" alt="${countryInput} flag" id="flag" width="150px" height="100px"> 
+    &lt;p class="textInfo">Valuta: &lt;span class="spanInfo">${currencyCode}&lt;/span>&lt;/p>
+    &lt;p class="textInfo">Språk: &lt;span class="spanInfo">${languageName}&lt;/span>&lt;/p>
+    &lt;p class="textInfo">Invånare: &lt;span class="spanInfo">${populationText}&lt;/span>&lt;/p>
+    &lt;p class="textInfo">Tidszon: &lt;span class="spanInfo">${data[0].timezones[0]}&lt;/span>&lt;/p>
+    &lt;p class="textInfo">Region: &lt;span class="spanInfo">${data[0].continents[0]}&lt;/span>&lt;/p>
+    &lt;p class="textInfo">Huvudstad: &lt;span class="spanInfo">${capitalName}&lt;/span>&lt;/p>
+    &lt;div id="weatherContainer">&lt;/div>
+    &lt;button id="countryMapBtn">Visa karta över landet&lt;/button>
+    &lt;button id="showWeatherBtn">Se väderprognos&lt;/button>
+    &lt;button id="showCurrencyBtn">Jämför valuta&lt;/button>
     `;
 
       // Eventlyssnare för att visa valutakonverteraren 
@@ -394,24 +422,24 @@
 
       // Struktur inom DOM för att visa valutakonverteraren, currencyCode är valutakoden för det land som användaren sökt på
       currencyEl.innerHTML += `
-    <form id="currencyForm">
-        <h3>Jämför och konvertera valutor</h3>
-        <div class="fromToCurrency">
-            <div class="fromCurrency"> 
-                <label for="fromCurrency">Från: <img src="https://flagcdn.com/se.svg" class="flag" alt="Svenska flaggan" id="fromFlag" width="24px" height="20px"></label>
-                <input type="text" id="fromCurrency" value="SEK" disabled>
-            </div>
-                <svg xmlns="http://www.w3.org/2000/svg" id="changeCurrencyBtn" height="24px" viewBox="0 -960 960 960" width="20px" fill="#1f1f1f"><path d="M280-120 80-320l200-200 57 56-104 104h607v80H233l104 104-57 56Zm400-320-57-56 104-104H120v-80h607L623-784l57-56 200 200-200 200Z"/></svg>
-            <div class="toCurrency"> 
-                    <label for="toCurrency">Till: <img src="${flagSvg}" class="flag" id="toFlag" alt="${countryName} flaggan" width="24px" height="20px"></label>
-                    <input type="text" id="toCurrency" value="${currencyCode}">
-            </div>
-        </div>
-                    <label for="amount">Belopp att konvertera</label>
-                    <input type="number" id="amount" placeholder="Ange belopp" step="any">
-                    <button id="convertBtn">Konvertera</button>
-            <div id="convertResult"></div>
-    </form>
+    &lt;form id="currencyForm">
+        &lt;h3>Jämför och konvertera valutor&lt;/h3>
+        &lt;div class="fromToCurrency">
+            &lt;div class="fromCurrency"> 
+                &lt;label for="fromCurrency">Från: &lt;img src="https://flagcdn.com/se.svg" class="flag" alt="Svenska flaggan" id="fromFlag" width="24px" height="20px">&lt;/label>
+                &lt;input type="text" id="fromCurrency" value="SEK" disabled>
+            &lt;/div>
+                &lt;svg xmlns="http://www.w3.org/2000/svg" id="changeCurrencyBtn" height="24px" viewBox="0 -960 960 960" width="20px" fill="#1f1f1f">&lt;path d="M280-120 80-320l200-200 57 56-104 104h607v80H233l104 104-57 56Zm400-320-57-56 104-104H120v-80h607L623-784l57-56 200 200-200 200Z"/>&lt;/svg>
+            &lt;div class="toCurrency"> 
+                    &lt;label for="toCurrency">Till: &lt;img src="${flagSvg}" class="flag" id="toFlag" alt="${countryName} flaggan" width="24px" height="20px">&lt;/label>
+                    &lt;input type="text" id="toCurrency" value="${currencyCode}">
+            &lt;/div>
+        &lt;/div>
+                    &lt;label for="amount">Belopp att konvertera&lt;/label>
+                    &lt;input type="number" id="amount" placeholder="Ange belopp" step="any">
+                    &lt;button id="convertBtn">Konvertera&lt;/button>
+            &lt;div id="convertResult">&lt;/div>
+    &lt;/form>
         `;
 
       const inputAmountEl = document.getElementById("amount"); // Inputfältet för att skriva in beloppet 
@@ -502,7 +530,7 @@
 
           // Om användaren inte skrivit in något belopp genereras ett felmeddelande i DOM
           if (!amount) {
-              convertListEl.innerHTML = `<p id="currency-error">Ange ett giltigt belopp</p>`; // Felmeddelande
+              convertListEl.innerHTML = `&lt;p id="currency-error">Ange ett giltigt belopp&lt;/p>`; // Felmeddelande
               return;
           }
 
@@ -512,7 +540,7 @@
 
           // Om det inte gick att hämta växlingskursen
           if (!rate) {
-              convertListEl.innerHTML = `<p id="convertError">Kunde inte hämta valutan, försök igen</p>`;
+              convertListEl.innerHTML = `&lt;p id="convertError">Kunde inte hämta valutan, försök igen&lt;/p>`;
               return;
           }
 
@@ -534,9 +562,9 @@
 
           // Beräknar det konverterade beloppet och skriver ut det i DOM samt när växlingskursen senast blev uppdaterad
           convertListEl.innerHTML = `
-        <p class="money">${amount} ${fromCurrency} <span class="moneyError">=</span> ${convertedAmount.toFixed(2)} i ${toCurrency}</p>
-        <p>Senast uppdaterad kurs: <span class="updateDate">${updated}<span></p>
-        <p> Ny uppdatering av kurs: <span class="updateDate">${nextUpdate}<span></p>
+        &lt;p class="money">${amount} ${fromCurrency} &lt;span class="moneyError">=&lt;/span> ${convertedAmount.toFixed(2)} i ${toCurrency}&lt;/p>
+        &lt;p>Senast uppdaterad kurs: &lt;span class="updateDate">${updated}&lt;span>&lt;/p>
+        &lt;p> Ny uppdatering av kurs: &lt;span class="updateDate">${nextUpdate}&lt;span>&lt;/p>
         `;
           setTimeout(() => {
               convertListEl.scrollIntoView({ behavior: "smooth" }); // Scrollar ner till det konverterade meddelandet när det visas med en delay på 200 ms
@@ -562,7 +590,7 @@
       if (storedCurrency) {
           const parsedCurrency = JSON.parse(storedCurrency); // Gör om till objekt
           const nowInUnixTime = Math.floor(Date.now() / 1000) // Nuvarande tid i sekunder. Date.now ger millisekunder därför dela med 1000
-          if (nowInUnixTime < parsedCurrency.expires) { // Om tiden nu är mindre än tid för uppdatering så returneras de sparade valutorna från localstorage
+          if (nowInUnixTime &lt; parsedCurrency.expires) { // Om tiden nu är mindre än tid för uppdatering så returneras de sparade valutorna från localstorage
               return { // Returnerar växelkursen för valutan och när den uppdaterades senast och när nästa uppdatering sker
                   rate: parsedCurrency.rates[currencyCode],
                   updated: parsedCurrency.updated,
@@ -646,7 +674,7 @@
    */
   async function getWeatherForecast(capitalName) {
       const apiKey = "3dc22c103acb482d9ee82613262602"; // Api-nyckel för apiet
-      const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${capitalName}&days=3&aqi=no&alerts=no`; // Hela adressen för anrop
+      const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&amp;q=${capitalName}&amp;days=3&amp;aqi=no&amp;alerts=no`; // Hela adressen för anrop
       try {
           const response = await fetch(url)
           const data = await response.json();
@@ -682,14 +710,14 @@
       });
       // Skapar struktur inom containern för att visa väder med celsius samt ikon för vädret, ex soligt/molnigt
       weatherContainerEl.innerHTML += `
-            <p class="textInfo"> Väder just nu i ${weatherInfo.location.name}: <span class="glowy-text">${weatherInfo.current.temp_c}°C</span></p>
-            <img id="weatherIcon" src="${weatherInfo.current.condition.icon}" alt="${weatherInfo.current.condition.text} width="60px" height="60px">`
+            &lt;p class="textInfo"> Väder just nu i ${weatherInfo.location.name}: &lt;span class="glowy-text">${weatherInfo.current.temp_c}°C&lt;/span>&lt;/p>
+            &lt;img id="weatherIcon" src="${weatherInfo.current.condition.icon}" alt="${weatherInfo.current.condition.text} width="60px" height="60px">`
 
       // Rubrik med huvudstadens namn samt diagrammet
       diagramEl.innerHTML += `
-            <h3>Väderprognos för ${capitalName}</h3>
-            <canvas id="myChart"></canvas>
-            <canvas id="chartRainSnow"></canvas>`
+            &lt;h3>Väderprognos för ${capitalName}&lt;/h3>
+            &lt;canvas id="myChart">&lt;/canvas>
+            &lt;canvas id="chartRainSnow">&lt;/canvas>`
 
       // Väderprognos kommande dagar som ska visas i diagrammet
       const weatherDays = weatherInfo.forecast.forecastday;
@@ -832,7 +860,7 @@
       diagramEl.style.display = "none"; // För att dölja diagrammet
       currencyEl.classList.add("hidden");
       countriesListDisplay.classList.add("hidden");
-      if (countryMapBtn && showWeatherBtn && showCurrencyBtn) {
+      if (countryMapBtn &amp;&amp; showWeatherBtn &amp;&amp; showCurrencyBtn) {
           countryMapBtn.classList.remove("active");
           showWeatherBtn.classList.remove("active");
           showCurrencyBtn.classList.remove("active");
@@ -898,4 +926,26 @@
           const sortCountries = filteredCountries.sort((a, b) => b.name.common.localeCompare(a.name.common));
           showCountries(sortCountries);
       }
-  }
+  }</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#displayCountry">displayCountry</a></li><li><a href="global.html#displayWeather">displayWeather</a></li><li><a href="global.html#fetchAllcountries">fetchAllcountries</a></li><li><a href="global.html#fetchByTranslation">fetchByTranslation</a></li><li><a href="global.html#fetchCountry">fetchCountry</a></li><li><a href="global.html#fetchCurrencyData">fetchCurrencyData</a></li><li><a href="global.html#filterCountries">filterCountries</a></li><li><a href="global.html#getWeatherForecast">getWeatherForecast</a></li><li><a href="global.html#hideLoadingIcon">hideLoadingIcon</a></li><li><a href="global.html#hideSections">hideSections</a></li><li><a href="global.html#showCountries">showCountries</a></li><li><a href="global.html#showCountryMap">showCountryMap</a></li><li><a href="global.html#showLoadingIcon">showLoadingIcon</a></li><li><a href="global.html#slowDisplay">slowDisplay</a></li><li><a href="global.html#sortCountries">sortCountries</a></li><li><a href="global.html#sortCountriesBackwards">sortCountriesBackwards</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Mon Mar 16 2026 11:41:09 GMT+0100 (centraleuropeisk normaltid)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

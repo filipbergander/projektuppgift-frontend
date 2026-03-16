@@ -1,6 +1,7 @@
 /*"use strict";
 import '/src/sass/main.scss';
 
+// Ej aktiv mapp
 
 
 addEventListener("DOMContentLoaded", () => {

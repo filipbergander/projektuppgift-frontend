@@ -6,12 +6,12 @@
 }
 
 #showWeatherBtn {
-    @include button($color-complement-hover, $color-text);
+    @include button($btn-color-primary, $color-text);
     margin-bottom: 1rem;
 }
 
 #showCurrencyBtn {
-    @include button($color-complement-hover, $color-text);
+    @include button($color-yellow, $color-text);
     margin-bottom: 1rem;
 }
 
@@ -39,9 +39,21 @@
     }*/
 }
 
+#moreCountries.hidden {
+    display: none;
+}
+
+#back-button {
+    @include button($color-bg-orange, $color-text);
+    margin-top: $margin-general-md;
+    margin-bottom: $margin-general-md;
+    display: flex;
+    align-items: center;
+}
+
 .active {
-    background: linear-gradient(90deg, $color-bg-orange-hover, $color-accent, $btn-color-secondary);
-    animation: gradientShift 4s ease infinite;
+    background: linear-gradient(90deg, $complement-color, $complement-color2, $element-color);
+    animation: gradientShift 5s ease infinite;
     background-size: 500% 500%;
 }
 

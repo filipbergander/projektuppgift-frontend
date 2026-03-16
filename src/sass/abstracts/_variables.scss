@@ -1,12 +1,14 @@
 @use "sass:color";
 //Färger för knappar och hoover-effekter
-$btn-color-primary:#0f6afd;
+$btn-color-primary:#307dfa;
+$btn-color-secondary-blue: #0087f548;
 $btn-color-secondary:#ec935fec;
 $btn-color-hover:#8338EC;
 //Färger för layout
 $color-accent: #05cfcf5b;
 $color-bg:#f1eedd;
 $color-sun:#f9c64fbd;
+$color-yellow: #f9c64f;
 $color-bg-dark-mode: #07151b;
 $color-bg-dark-hover:#022d4183;
 $color-bg-dark:#464747c0;
@@ -21,8 +23,11 @@ $color-black:rgba(0, 0, 0, 0.61);
 $color-text-secondary: #6C757D;
 $color-text-error:#ca1616e3;
 $color-span: #3A7AFE;
+$color-span-darkmode: #5F90F2;
 $color-text-info: #022d41;
 $glowy-text: #ff7300;
+$glowy-text-dark: #A84C00;
+$glowy-text-darkmode: #fe943d;
 //Komplement färger
 $color-complement: color.complement($btn-color-primary);
 $color-complement-hover: color.complement($btn-color-hover);
@@ -31,6 +36,10 @@ $darkened-color-btn: color.scale($btn-color-primary, $lightness:-50%);
 $lightened-color-btn: color.scale($btn-color-primary, $lightness:60%);
 $primary-dark: shade($btn-color-primary, 50%);
 $primary-light: tint($btn-color-primary, 50%);
+// Färger diverse
+$element-color: #f3b406;
+$complement-color: color.complement($btn-color-hover);
+$complement-color2: color.complement($color-yellow);
 //Skuggor
 $shadow-light:0 1px 6px rgb(0, 0, 0, 0.582);
 $shadow-medium:0 4px 12px rgba(0, 0, 0, 0.582);
