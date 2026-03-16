@@ -236,7 +236,7 @@
    * Funktion som hämtar in alla länder som finns från Restcountries API med namn, flagga och region. 
    */
   async function fetchAllcountries() {
-      const url = `https://restcountries.com/v3.1/all?fields=name,flags,region`;
+      const url = `https://restcountries.com/v3.1/all?fields=name,region`;
       try {
           const response = await fetch(url);
           const info = await response.json();
@@ -269,13 +269,16 @@
   function showCountries(info) {
       const countryListEl = document.getElementById("countrylist");
       countryListEl.innerHTML = ""; // Tömmer listan innan den fylls på igen
+      // Om jag vill lägga till flaggan igen för länderna, påverkar prestandan just nu för mycket
+      //<img src="${country.flags.svg}" alt="${country.name.common} flagga" width="18px" height="12px" loading="lazy"></img>
       info.forEach(country => { // Struktur
           countryListEl.innerHTML += `
         <li class="countriesflag">
-            <img src="${country.flags.svg}" alt="${country.name.common} flagga" width="18px" height="12px" loading="lazy">
             <span class="country-name">${country.name.common}</span>
         </li>`
       });
+
+
       // När man klickar på ett land i listan av länder så skrivs det namnet in i sökfältet och fokuset hamnar sedan där
       const countryNameEl = document.querySelectorAll(".country-name");
       const countryInputEl = document.getElementById("country-name-input");
