@@ -272,7 +272,7 @@
       info.forEach(country => { // Struktur
           countryListEl.innerHTML += `
         <li class="countriesflag">
-            <img src="${country.flags.svg}" alt="${country.name.common} flagga" width="18px" height="12px">
+            <img src="${country.flags.svg}" alt="${country.name.common} flagga" width="18px" height="12px" loading="lazy">
             <span class="country-name">${country.name.common}</span>
         </li>`
       });
@@ -872,7 +872,7 @@
           countrySection.classList.remove("hidden"); // Visar innehållet med sökfält när loadingikonen "laddat klart"
           loadingIcon.classList.add("hidden"); // Döljer ikonen efter väntetiden
           loadingOverlay.classList.add("hidden")
-      }, 1475);
+      }, 1515);
   }
 
   /**

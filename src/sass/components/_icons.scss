@@ -76,9 +76,18 @@
         width: 100%;
     }
     #loadingIcon {
+        width: 250px;
+        height: 30px;
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+    }
+}
+
+@media (max-width: 320px) {
+    #loadingIcon {
         width: 200px;
         height: 30px;
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         letter-spacing: 2px;
     }
 }
