@@ -197,6 +197,7 @@
           countryCard.classList.remove("show"); // Tar bort klassen show för att dölja informationen om
           const countryInput = searchInput.charAt(0).toUpperCase() + searchInput.slice(1).toLowerCase(); // Gör första bokstaven i landets namn till en versal och resten till gemener
 
+
           showLoadingIcon(); // Laddningsikon som går igång och visas efter man klickat på sök
           countrySection.classList.add("hidden");
           countriesDiv.classList.add("hidden"); // Döljer listan med alla länder
@@ -205,7 +206,6 @@
           divDropDown.classList.add("hidden");
           showCountriesBtn.firstChild.textContent = "Visa alla länder"; // Ändrar namn på knappen
           arrowIcon.textContent = "keyboard_arrow_down"; // Ändrar ikonen till nedåtpil
-
           // Timeout
           setTimeout(() => {
               fetchCountry(countryInput, searchError); // Anropar funktionen för att hämta datan om landet beroende på vad användaren sökt på
@@ -236,7 +236,7 @@
    * Funktion som hämtar in alla länder som finns från Restcountries API med namn, flagga och region. 
    */
   async function fetchAllcountries() {
-      const url = `https://restcountries.com/v3.1/all?fields=name,region`;
+      const url = `https://restcountries.com/v3.1/all?fields=name,flags,region`;
       try {
           const response = await fetch(url);
           const info = await response.json();
@@ -272,11 +272,10 @@
       info.forEach(country => { // Struktur
           countryListEl.innerHTML += `
         <li class="countriesflag">
-
+            <img src="${country.flags.svg}" alt="${country.name.common} flagga" width="18px" height="12px">
             <span class="country-name">${country.name.common}</span>
         </li>`
       });
-      // <img src="${country.flags.svg}" alt="${country.name.common} flagga" width="18px" height="12px">
       // När man klickar på ett land i listan av länder så skrivs det namnet in i sökfältet och fokuset hamnar sedan där
       const countryNameEl = document.querySelectorAll(".country-name");
       const countryInputEl = document.getElementById("country-name-input");
