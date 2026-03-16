@@ -31,6 +31,11 @@ main {
     height: 100%;
 }
 
+#showArea {
+    display: flex;
+    flex-direction: column;
+}
+
 #country-section {
     @extend %flex-layout-start;
     h1,

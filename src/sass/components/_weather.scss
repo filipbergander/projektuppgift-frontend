@@ -16,6 +16,7 @@
 #weatherDiagram {
     width: 100%;
     max-width: 450px;
+    //min-height: 400px;
     margin: 0 auto;
     background-color: $color-bg;
     padding: 0.75rem;
@@ -23,10 +24,11 @@
     box-shadow: $shadow-medium;
 }
 
-#myChart {
+#weatherDiagram canvas {
     width: 100%;
-    height: auto;
-    margin-bottom: $margin-general-md;
+    max-width: 700px;
+    max-height: 350px;
+    min-height: 250px;
 }
 
 #weather-error {
@@ -40,19 +42,36 @@
 }
 
 @media (max-width: 768px) {
-    #weatherDiagram {
-        width: 95%;
-        height: auto;
+    #showArea {
+        #weatherDiagram canvas {
+            width: 95%;
+            height: 200px;
+        }
     }
 }
 
 @media (max-width: 530px) {
     #weatherDiagram {
-        width: 85%;
-        height: auto;
+        max-width: 350px;
+    }
+    #weatherDiagram canvas {
+        min-height: 200px;
     }
 }
 
-@media (max-width: 375px) {}
+@media (max-width: 490px) {}
 
-@media (max-width: 375px) {}
+@media (max-width: 400px) {
+    #weatherDiagram {
+        max-width: 300px;
+    }
+    #weatherDiagram canvas {
+        min-height: 150px;
+    }
+}
+
+@media (max-width: 325px) {
+    #weatherDiagram {
+        max-width: 275px;
+    }
+}

@@ -156,6 +156,9 @@
         margin-bottom: $margin-general-md;
         transition: 1s ease-in;
         opacity: 0;
+        width: 95%;
+        max-width: 600px;
+        margin: 0 auto;
     }
     
     #country-card.show {
@@ -188,12 +191,28 @@
         font-family: "Honk", system-ui, sans-serif;
         font-size: 3rem;
         letter-spacing: 2px;
+        text-align: center;
         animation: textGlow 3s ease-in-out infinite;
     }
     
     .flagImg {
         border-radius: $radius-medium;
         box-shadow: $shadow-medium;
+    }
+    
+    #dropdownMenu {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        p {
+            color: $color-text-info;
+            font-weight: $fontweight-bold;
+        }
+        label {
+            color: $color-text-info;
+            font-weight: $fontweight-bold;
+        }
     }
     
     @media (max-width: 768px) {}
@@ -220,6 +239,10 @@
         }
         #country-card {
             padding-left: 1rem;
+            width: 95%;
+        }
+        #dropdownMenu {
+            font-size: 0.9rem;
         }
     }
     
@@ -238,6 +261,9 @@
             font-size: 0.8rem;
         }
         #convertHint {
+            font-size: 0.8rem;
+        }
+        #dropdownMenu {
             font-size: 0.8rem;
         }
     }

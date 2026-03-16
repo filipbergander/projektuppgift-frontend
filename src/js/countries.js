@@ -758,6 +758,7 @@
           },
           options: {
               responsive: true,
+              maintainAspectRatio: false,
               plugins: {
                   tooltip: {
                       callbacks: {
@@ -808,6 +809,7 @@
           },
           options: {
               responsive: true,
+              maintainAspectRatio: false,
               plugins: {
                   tooltip: {
                       callbacks: {
