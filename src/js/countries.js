@@ -205,7 +205,6 @@
           countriesListDisplay.classList.add("hidden");
           divDropDown.classList.add("hidden");
           showCountriesBtn.firstChild.textContent = "Visa alla länder"; // Ändrar namn på knappen
-          arrowIcon.textContent = "keyboard_arrow_down"; // Ändrar ikonen till nedåtpil
           // Timeout
           setTimeout(() => {
               fetchCountry(countryInput, searchError); // Anropar funktionen för att hämta datan om landet beroende på vad användaren sökt på
@@ -223,12 +222,12 @@
               countriesListDisplay.classList.remove("hidden"); // Visar listan med alla länder
               divDropDown.classList.remove("hidden");
               showCountriesBtn.firstChild.textContent = "Dölj länder"; // Ändrar namn på knappen
-              arrowIcon.textContent = "keyboard_arrow_up"; // Ändrar ikonen till uppåtpil
+              arrowIcon.style.transform = "rotate(180deg)"; // Ändrar ikonen till uppåtpil
           } else { // När listan visas och användaren klickar igen på knappen, så döljs listan
               countriesListDisplay.classList.add("hidden");
               divDropDown.classList.add("hidden");
               showCountriesBtn.firstChild.textContent = "Visa alla länder";
-              arrowIcon.textContent = "keyboard_arrow_down"; // Ändrar ikonen till nedåtpil
+              arrowIcon.style.transform = "rotate(0deg)"; // Ändrar ikonen till nedåtpil
           }
       });
   });
@@ -664,7 +663,7 @@
       try {
           const response = await fetch(url)
           const data = await response.json();
-          //console.log("Svarsresultat:", data);
+          console.log("Svarsresultat:", data);
           return data;
       } catch (error) {
           console.error("Felmeddelande från hämtning av väder: ", error);
@@ -694,10 +693,12 @@
               diagramEl.scrollIntoView({ behavior: "smooth" }); // Scrollar ner till kartan när den väl visas  
           }, 200);
       });
+
       // Skapar struktur inom containern för att visa väder med celsius samt ikon för vädret, ex soligt/molnigt
       weatherContainerEl.innerHTML += `
             <p class="textInfo"> Väder just nu i ${weatherInfo.location.name}: <span class="glowy-text">${weatherInfo.current.temp_c}°C</span></p>
             <img id="weatherIcon" src="${weatherInfo.current.condition.icon}" alt="${weatherInfo.current.condition.text} width="60px" height="60px">`
+
 
       // Rubrik med huvudstadens namn samt diagrammet
       diagramEl.innerHTML += `

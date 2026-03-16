@@ -71,6 +71,10 @@
     transition: $transition-base;
 }
 
+#arrowIcon {
+    transition: $transition-base;
+}
+
 @media (max-width: 420px) {
     #loadingOverlay {
         width: 100%;

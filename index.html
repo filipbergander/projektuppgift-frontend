@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TravelBuddy</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+    <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"> -->
     <link rel="stylesheet" href="./src/sass/main.scss">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <link rel="manifest" href="/manifest.json">
@@ -14,7 +14,6 @@
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
     <link rel="shortcut icon" href="/images/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-
 </head>
 
 <body>
@@ -40,8 +39,7 @@
                 </div>
             </div>
             <div id="countriesDiv">
-                <button id="moreCountries" class="btn">Visa alla länder<span id="arrowIcon"
-                        class="material-symbols-outlined">keyboard_arrow_down</span></button>
+                <button id="moreCountries" class="btn">Visa alla länder<svg xmlns="http://www.w3.org/2000/svg" id="arrowIcon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/></svg></button>
                 <div id="countriesDisplay" class="hidden">
                     <ul id="countrylist"></ul>
                 </div>
