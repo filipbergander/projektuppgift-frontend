@@ -33,9 +33,8 @@
       const countrySearch = document.getElementById("country-search");
       const countryCard = document.getElementById("country-card");
 
-      // Skapar rubrik och lägger till inom sektion
-      const headline = document.createElement("h1");
-      headline.id = "headline";
+      // Lägger till rubrik
+      const headline = document.getElementById("headline")
       headline.textContent = "Vilket land vill du resa till?"; // Huvudrubrik
       countrySection.prepend(headline); // Lägger till huvudrubriken först inom sektionselementet
 
@@ -223,7 +222,7 @@
    * Funktion som hämtar in alla länder som finns från Restcountries API med namn, flagga och region. 
    */
   async function fetchAllcountries() {
-      const url = `https://restcountries.com/v3.1/all?fields=name,flags,region`;
+      const url = `https://restcountries.com/v3.1/all?fields=name,region`;
       try {
           const response = await fetch(url);
           const info = await response.json();
@@ -259,7 +258,6 @@
       info.forEach(country => { // Struktur
           countryListEl.innerHTML += `
         <li class="countriesflag">
-            <img src="${country.flags.svg}" alt="${country.name.common} flagga" width="18px" height="12px">
             <span class="country-name">${country.name.common}</span>
         </li>`
       });
