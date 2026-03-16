@@ -1,6 +1,6 @@
 @use "sass:color";
 //Färger för knappar och hoover-effekter
-$btn-color-primary:#307dfa;
+$btn-color-primary:#00aeff;
 $btn-color-secondary-blue: #0087f548;
 $btn-color-secondary:#ec935fec;
 $btn-color-hover:#8338EC;
@@ -33,7 +33,7 @@ $color-complement: color.complement($btn-color-primary);
 $color-complement-hover: color.complement($btn-color-hover);
 // Skala färg till ljusare och mörkare för knappar
 $darkened-color-btn: color.scale($btn-color-primary, $lightness:-50%);
-$lightened-color-btn: color.scale($btn-color-primary, $lightness:60%);
+$lightened-color-btn: color.scale($color-white, $lightness:60%);
 $primary-dark: shade($btn-color-primary, 50%);
 $primary-light: tint($btn-color-primary, 50%);
 // Färger diverse

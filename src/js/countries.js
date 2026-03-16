@@ -408,7 +408,7 @@
             </div>
         </div>
                     <label for="amount">Belopp att konvertera</label>
-                    <input type="number" id="amount" placeholder="Ange belopp" step="any">
+                    <input type="number" id="amount" placeholder="Ange belopp" step="any" max="99999999">
                     <button id="convertBtn">Konvertera</button>
             <div id="convertResult"></div>
     </form>
@@ -417,6 +417,10 @@
       const inputAmountEl = document.getElementById("amount"); // Inputfältet för att skriva in beloppet 
       inputAmountEl.addEventListener("input", () => {
           inputAmountEl.innerHTML = inputAmountEl.value.replace(",", "."); // Om användaren skriver med kommatecken görs det om till punkt
+          const maxLength = 8;
+          if (inputAmountEl.value.length > maxLength) {
+              inputAmountEl.value = inputAmountEl.value.slice(0, maxLength);
+          }
       });
 
       const currencyForm = document.getElementById("currencyForm");
@@ -506,6 +510,14 @@
               return;
           }
 
+          // Använder SEK som bas för valutakonverteraren, det som hämtas in från funktionen fetchCurrencyData
+          let currencyConvert;
+          if (fromCurrency === "SEK") {
+              currencyConvert = toCurrency; // Jämför med till-valutan, SEK mot USD exempelvis
+          } else {
+              currencyConvert = fromCurrency; // Jämför med från-valutan USD mot SEK
+          }
+
           // Hämtar in växlingskursen för SEK till den valutan som användaren sökt på och vill konvertera till i sökfältet
           // Genom destructuring plockas värdena ut från objektet som blir returnerade av funktionen 
           const { rate, updated, nextUpdate } = await fetchCurrencyData(currencyConvert);
@@ -516,13 +528,7 @@
               return;
           }
 
-          // Använder SEK som bas för valutakonverteraren, det som hämtas in från funktionen fetchCurrencyData
-          let currencyConvert;
-          if (fromCurrency === "SEK") {
-              currencyConvert = toCurrency; // Jämför med till-valutan, SEK mot USD exempelvis
-          } else {
-              currencyConvert = fromCurrency; // Jämför med från-valutan USD mot SEK
-          }
+
 
           let convertedAmount;
           // Om det inte är svenska som finns i från inputen så ändras valutakonverteraren
