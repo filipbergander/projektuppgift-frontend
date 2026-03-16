@@ -2,6 +2,20 @@
 @use "../abstracts/animations" as *;
 @use "../abstracts/mixins" as *;
 @use "../base/base" as *;
+%flex-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+%flex-layout-start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
 #currency-converter {
     display: flex;
     flex-direction: column;
@@ -38,6 +52,19 @@
     }
 }
 
+#currencyForm {
+    @extend %flex-layout;
+    gap: 0.5rem;
+    input {
+        border-radius: $radius-medium;
+        padding: 4px 4px;
+    }
+}
+
+#changeCurrencyBtn {
+    cursor: pointer;
+}
+
 .moneyError {
     font-weight: $fontweight-bold;
     color: $color-black;
@@ -54,6 +81,16 @@
 }
 
 #currency-converter.hidden {
+    display: none;
+}
+
+// Visar inte flaggorna om man inte angett en valuta
+#fromFlag[src=""] {
+    display: none;
+}
+
+// Visar inte flaggorna om man inte angett en valuta
+#toFlag[src=""] {
     display: none;
 }
 

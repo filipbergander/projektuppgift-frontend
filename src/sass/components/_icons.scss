@@ -2,6 +2,13 @@
 @use "../abstracts/animations" as *;
 @use "../abstracts/mixins" as *;
 @use "../base/base" as *;
+%flex-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
 .spinner {
     width: 34px;
     height: 34px;
@@ -13,19 +20,21 @@
 }
 
 #loadingOverlay {
-    position: fixed;
-    inset: 0;
+    position: absolute;
+    inset: 0 0 0 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(0, 0, 0, 0.315);
-    z-index: 1500;
+    backdrop-filter: blur(3px);
+    z-index: 99999;
+}
+
+#loadingOverlay.hidden {
+    display: none;
 }
 
 #loadingIcon {
-    position: fixed;
-    left: 42%;
-    bottom: 30%;
+    @extend %flex-layout;
     z-index: 1000;
     text-align: center;
     font-family: "Honk", system-ui, sans-serif;
@@ -36,7 +45,8 @@
     text-shadow: $shadow-medium;
     box-shadow: $shadow-fantasy;
     border-radius: 20px;
-    width: 300px;
+    width: 100%;
+    max-width: 300px;
     height: 40px;
     border: 3px solid #ccc;
     animation: BounceTada 1.6s linear infinite;
@@ -48,8 +58,9 @@
 }
 
 #logo {
-    width: 300px;
-    height: 300px;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
     margin-bottom: 0;
     margin-top: $margin-general-large;
     animation: moveIcon 10s ease-in-out infinite;
@@ -57,9 +68,13 @@
 }
 
 @media (max-width: 420px) {
-    .loadingIcon {
-        width: 150px;
-        font-size: 1.4rem;
-        letter-spacing: 1px;
+    #loadingOverlay {
+        width: 100%;
+    }
+    #loadingIcon {
+        width: 200px;
+        height: 30px;
+        font-size: 1.3rem;
+        letter-spacing: 2px;
     }
 }

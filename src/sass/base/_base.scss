@@ -15,6 +15,7 @@
         box-shadow: $shadow-light;
         z-index: 1000;
         background-color: $color-accent;
+        transition: 1s ease-in;
     }
     
     @media (prefers-color-scheme: dark) {
@@ -86,6 +87,19 @@
             animation-play-state: paused;
         }
     }
+    
+    #country-search {
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    #countryForm {
+        display: flex;
+        flex-direction: column;
+    }
+    /* .country {
+        width: 100%;
+    }*/
     /*
 #convertHint {
     margin-top: 2rem;
@@ -121,6 +135,7 @@
         margin-top: $margin-general-s;
         transition: $transition-base;
         animation: bounce 3s ease-in-out infinite;
+        max-width: 350px;
     }
     
     #countrylist {
@@ -144,7 +159,7 @@
     
     #country-card {
         margin-bottom: $margin-general-md;
-        transition: 3s ease-in;
+        transition: 1s ease-in;
         opacity: 0;
     }
     

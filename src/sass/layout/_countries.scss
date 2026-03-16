@@ -17,3 +17,60 @@
     display: flex;
     align-items: center;
 }
+
+#countriesDisplay {
+    display: flex;
+    flex-direction: column;
+}
+
+#dropdownMenu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2rem;
+    margin-right: auto;
+    margin: 0 0 0.5rem 0.5rem;
+    p {
+        font-weight: bold;
+        margin-right: 0;
+    }
+    label {
+        font-weight: bold;
+        margin-right: 0;
+    }
+    span {
+        padding: 0.25rem 0.5rem;
+        border-radius: $radius-medium;
+        border: 1px solid $color-bg-dark;
+        background-color: $color-bg;
+        color: $color-text;
+        cursor: pointer;
+        transition: $transition-base;
+        font-weight: 400;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    select {
+        padding: 0.25rem 0.5rem;
+        border-radius: $radius-medium;
+        border: 1px solid $color-bg-dark;
+        background-color: $color-bg;
+        color: $color-text;
+        cursor: pointer;
+        transition: $transition-base;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+#dropdownMenu.hidden {
+    display: none;
+}
+
+.dropdown.show {
+    display: block;
+    opacity: 1;
+}
