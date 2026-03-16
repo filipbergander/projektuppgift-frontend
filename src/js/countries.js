@@ -16,6 +16,7 @@
   // Sparar variabler för karta och markör globalt
   let visualMap;
   let marker;
+  let myIcon;
 
   let allCountries = []; // Global Array för länder som används för att filtrera sökresultat
 
@@ -108,6 +109,7 @@
           }
       });
 
+      /*
       // Olika kartor som jag kan använda på hemsidan
       /* const darkmodeTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
            maxZoom: 19,
@@ -126,8 +128,7 @@
             maxZoom: 19,
         }); */
 
-      // För att ändra kartans lager om användaren befinner sig i mörkt eller ljust läge
-      const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches; // Om användaren har valt mörk tema
+
 
       // Olika karter som går att använda, jawg har en token som jag sparat som en variabel.
       const jawgToken = "6aUCDcns9wnFKVGcqzrnXSypntTzjgqY7YYoAsMa71MbVgHGNZ6wRokX3739muDB";
@@ -141,7 +142,11 @@
           attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
       });
 
+      // Skapar kartan
       visualMap = L.map('map').setView([51.78, -7.03], 2); // Grundvy för kartan, utzoomad
+
+      // För att ändra kartans lager om användaren befinner sig i mörkt eller ljust läge
+      const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches; // Om användaren har valt mörk tema
       if (darkMode) { // Använder mörk karta
           visualMap.removeLayer(jawgLagoonTile);
           jawgDarkTile.addTo(visualMap);
@@ -162,6 +167,15 @@
               jawgLagoonTile.addTo(visualMap);
           }
       });
+
+      // Hämtar in ikonen
+      myIcon = L.icon({
+          iconUrl: "/images/travelMarker.svg", // Inhämtad svg som liknar flygplan
+          className: 'my-marker-icon', // En klass för att styla in scss, animation och färger
+          iconSize: [30, 30],
+          iconAnchor: [15, 30]
+      });
+
 
       // När användaren skriver i sökfältet för land 
       countryInputEl.addEventListener("input", async() => {
@@ -258,9 +272,11 @@
       info.forEach(country => { // Struktur
           countryListEl.innerHTML += `
         <li class="countriesflag">
+
             <span class="country-name">${country.name.common}</span>
         </li>`
       });
+      // <img src="${country.flags.svg}" alt="${country.name.common} flagga" width="18px" height="12px">
       // När man klickar på ett land i listan av länder så skrivs det namnet in i sökfältet och fokuset hamnar sedan där
       const countryNameEl = document.querySelectorAll(".country-name");
       const countryInputEl = document.getElementById("country-name-input");
@@ -628,14 +644,6 @@
       mapEl.classList.remove("hidden"); // Visa kartan sedan
       visualMap.invalidateSize(); // Justerar kartans synliga storlek när den väl visas
       visualMap.setView([latitude, longitude], 4); // Uppdaterar kartans position efter landets koordinater, zoomar in lite på landet 
-
-      const myIcon = L.icon({
-          iconUrl: "/images/travelMarker.svg", // Inhämtad svg som liknar flygplan
-          className: 'my-marker-icon', // En klass för att styla in scss, animation och färger
-          iconSize: [30, 30],
-          iconAnchor: [15, 30]
-      });
-
       if (marker) {
           visualMap.removeLayer(marker); // Om det redan finns en markör på kartan tas den bort innan den nya markören läggs till
       }
