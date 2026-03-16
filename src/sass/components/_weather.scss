@@ -29,6 +29,12 @@
     margin-bottom: $margin-general-md;
 }
 
+#weather-error {
+    color: $color-text-error;
+    font-weight: $fontweight-bold;
+    text-align: center;
+}
+
 #myChart .hidden {
     display: none;
 }

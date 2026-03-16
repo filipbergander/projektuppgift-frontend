@@ -389,9 +389,9 @@
     <p class="textInfo">Region: <span class="spanInfo">${data[0].continents[0]}</span></p>
     <p class="textInfo">Huvudstad: <span class="spanInfo">${capitalName}</span></p>
     <div id="weatherContainer"></div>
-    <button id="countryMapBtn">Visa karta över landet</button>
-    <button id="showWeatherBtn">Se väderprognos</button>
-    <button id="showCurrencyBtn">Jämför valuta</button>
+    <button id="countryMapBtn">Visa karta över landet<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m600-120-240-84-186 72q-20 8-37-4.5T120-170v-560q0-13 7.5-23t20.5-15l212-72 240 84 186-72q20-8 37 4.5t17 33.5v560q0 13-7.5 23T812-192l-212 72Zm-40-98v-468l-160-56v468l160 56Zm80 0 120-40v-474l-120 46v468Zm-440-10 120-46v-468l-120 40v474Zm440-458v468-468Zm-320-56v468-468Z"/></svg></button>
+    <button id="showWeatherBtn">Se väderprognos<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q25-92 100-149t170-57q117 0 198.5 81.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H260Zm0-80h480q42 0 71-29t29-71q0-42-29-71t-71-29h-60v-80q0-83-58.5-141.5T480-720q-83 0-141.5 58.5T280-520h-20q-58 0-99 41t-41 99q0 58 41 99t99 41Zm220-240Z"/></svg></button>
+    <button id="showCurrencyBtn">Jämför valuta<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-40q-112 0-206-51T120-227v107H40v-240h240v80h-99q48 72 126.5 116T480-120q75 0 140.5-28.5t114-77q48.5-48.5 77-114T840-480h80q0 91-34.5 171T791-169q-60 60-140 94.5T480-40Zm-36-160v-52q-47-11-76.5-40.5T324-370l66-26q12 41 37.5 61.5T486-314q33 0 56.5-15.5T566-378q0-29-24.5-47T454-466q-59-21-86.5-50T340-592q0-41 28.5-74.5T446-710v-50h70v50q36 3 65.5 29t40.5 61l-64 26q-8-23-26-38.5T482-648q-35 0-53.5 15T410-592q0 26 23 41t83 35q72 26 96 61t24 77q0 29-10 51t-26.5 37.5Q583-274 561-264.5T514-250v50h-70ZM40-480q0-91 34.5-171T169-791q60-60 140-94.5T480-920q112 0 206 51t154 136v-107h80v240H680v-80h99q-48-72-126.5-116T480-840q-75 0-140.5 28.5t-114 77q-48.5 48.5-77 114T120-480H40Z"/></svg></button>
     `;
 
       // Eventlyssnare för att visa valutakonverteraren 
@@ -424,7 +424,7 @@
         </div>
                     <label for="amount">Belopp att konvertera</label>
                     <input type="number" id="amount" placeholder="Ange belopp" step="any" max="99999999">
-                    <button id="convertBtn">Konvertera</button>
+                    <button id="convertBtn">Konvertera<svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#1f1f1f"><path d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z"/></svg></button>
             <div id="convertResult"></div>
     </form>
         `;
@@ -663,6 +663,11 @@
       try {
           const response = await fetch(url)
           const data = await response.json();
+          if (!response.ok) { // Felmeddelande i konsoll och DOM om det inte går att hämta väderprognos
+              console.warn(`Kunde inte hämta väderprognos för ${capitalName}`)
+              const weatherContainerEl = document.getElementById("weatherContainer");
+              weatherContainerEl.innerHTML = `<p id="weather-error">Kunde inte hämta väderprognos för ${capitalName}.</p>`;
+          }
           console.log("Svarsresultat:", data);
           return data;
       } catch (error) {

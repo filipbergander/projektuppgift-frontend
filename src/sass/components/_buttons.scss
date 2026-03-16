@@ -1,23 +1,33 @@
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
+%flex-layout-btn {
+    display: flex;
+    align-items: center;
+}
+
 #countryMapBtn {
     @include button($color-complement-hover, $color-text);
     margin-bottom: 1rem;
+    @extend %flex-layout-btn;
 }
 
 #showWeatherBtn {
     @include button($btn-color-primary, $color-text);
     margin-bottom: 1rem;
+    @extend %flex-layout-btn;
 }
 
 #showCurrencyBtn {
     @include button($color-yellow, $color-text);
     margin-bottom: 1rem;
+    @extend %flex-layout-btn;
 }
 
 #search-button.btn {
     @include button($color-complement-hover, $color-text);
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.5rem;
+    display: inline-flex;
+    align-items: center;
 }
 
 #moreCountries.btn {
