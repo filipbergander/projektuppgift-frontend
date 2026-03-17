@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TravelBuddy - sök länder, se kartor, väderprognos och konvertera mellan valutor.">
     <title>TravelBuddy</title>
     <link rel="stylesheet" href="./src/sass/main.scss">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
@@ -24,7 +25,7 @@
             <img src="/images/travelbuddy-512.png" alt="TravelBuddy logotyp" width="512" height="512" id="logo">
         </header>
         <section id="country-section">
-            <h1 id="headline"></h1>
+            <h1 id="headline" aria-label="Huvudrubrik">Vilket land vill du resa till?</h1>
             <div id="country-search" class="hidden">
                 <div class="country">
                     <form id="countryForm">

@@ -75,6 +75,11 @@
     transition: $transition-base;
 }
 
+#changeCurrencyIcon {
+    cursor: pointer;
+    transition: $transition-base;
+}
+
 @media (max-width: 420px) {
     #loadingOverlay {
         width: 100%;

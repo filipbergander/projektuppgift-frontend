@@ -35,9 +35,9 @@
       const countryCard = document.getElementById("country-card");
 
       // Lägger till rubrik
-      const headline = document.getElementById("headline")
+      /*const headline = document.getElementById("headline")
       headline.textContent = "Vilket land vill du resa till?"; // Huvudrubrik
-      countrySection.prepend(headline); // Lägger till huvudrubriken först inom sektionselementet
+      countrySection.prepend(headline); // Lägger till huvudrubriken först inom sektionselementet*/
 
       // Skapar tipsmeddelande och lägger till efter rubriken och i diven
       const tipMessage = document.createElement("p");
@@ -416,7 +416,7 @@
                 <label for="fromCurrency">Från: <img src="https://flagcdn.com/se.svg" class="flag" alt="Svenska flaggan" id="fromFlag" width="24px" height="20px"></label>
                 <input type="text" id="fromCurrency" value="SEK" disabled>
             </div>
-                <svg xmlns="http://www.w3.org/2000/svg" id="changeCurrencyBtn" height="24px" viewBox="0 -960 960 960" width="20px" fill="#1f1f1f"><path d="M280-120 80-320l200-200 57 56-104 104h607v80H233l104 104-57 56Zm400-320-57-56 104-104H120v-80h607L623-784l57-56 200 200-200 200Z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" id="changeCurrencyIcon" height="24px" viewBox="0 -960 960 960" width="20px" fill="#1f1f1f"><path d="M280-120 80-320l200-200 57 56-104 104h607v80H233l104 104-57 56Zm400-320-57-56 104-104H120v-80h607L623-784l57-56 200 200-200 200Z"/></svg>
             <div class="toCurrency"> 
                     <label for="toCurrency">Till: <img src="${flagSvg}" class="flag" id="toFlag" alt="${countryName} flaggan" width="24px" height="20px"></label>
                     <input type="text" id="toCurrency" value="${currencyCode}">
@@ -472,12 +472,15 @@
       });
 
       // När man klickar på ändra valuta-ikonen byts flaggornas bild genom src, alt-texten till bilderna samt valutavärdet inom input
-      const changeCurrencyBtn = document.getElementById("changeCurrencyBtn"); //
-      changeCurrencyBtn.addEventListener("click", () => {
+      const changeCurrencyIcon = document.getElementById("changeCurrencyIcon"); //Ikon för att byta plats på valutorna i konverteraren
+      let rotate = 0;
+      changeCurrencyIcon.addEventListener("click", () => {
           const fromCurrencyInp = document.getElementById("fromCurrency");
           const toCurrencyInp = document.getElementById("toCurrency");
           const toFlag = document.getElementById("toFlag");
           const fromFlag = document.getElementById("fromFlag");
+          rotate += 180; // Roterar med 180 grader vid varje klick
+          changeCurrencyIcon.style.transform = `rotate(${rotate}deg)`; // Ikonen roteras ett halvt varv när man klickar på knappen
 
           const changeCurrency = fromCurrencyInp.value; // Ändrar valutan
           fromCurrencyInp.value = toCurrencyInp.value;
@@ -553,9 +556,10 @@
               convertedAmount = amount / rate; // Dividerar beloppet
           }
 
+          const swedishFormat = convertedAmount.toLocaleString("sv-SE", { maximumFractionDigits: 2 }); // Gör om det konverterade beloppet svenskt format, max två decimaler
           // Beräknar det konverterade beloppet och skriver ut det i DOM samt när växlingskursen senast blev uppdaterad
           convertListEl.innerHTML = `
-        <p class="money">${amount} ${fromCurrency} <span class="moneyError">=</span> ${convertedAmount.toFixed(2)} i ${toCurrency}</p>
+        <p class="money">${amount} ${fromCurrency} <span class="moneyError">=</span> ${swedishFormat} i ${toCurrency}</p>
         <p>Senast uppdaterad kurs: <span class="updateDate">${updated}<span></p>
         <p> Ny uppdatering av kurs: <span class="updateDate">${nextUpdate}<span></p>
         `;
