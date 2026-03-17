@@ -63,8 +63,19 @@
         .moneyError {
             color: $color-white !important;
         }
+        .money {
+            color: $glowy-text !important;
+        }
         .spanInfo {
             color: $color-span-darkmode !important;
+        }
+        #dropdownMenu {
+            p {
+                color: $color-white !important;
+            }
+            label {
+                color: $color-white !important;
+            }
         }
     }
     

@@ -745,7 +745,7 @@
                       data: lowestTemp,
                       backgroundColor: ["#0019fc"],
                       hoverBackgroundColor: "#fff",
-                      borderColor: "#0026ff94",
+                      borderColor: "#0066ff",
                       borderWidth: 2,
                       order: 2,
                   },
