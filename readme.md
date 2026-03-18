@@ -9,6 +9,8 @@ Genom att kombinera animationer och genomtänkt design strävar jag efter att ut
 Innehållet i applikationen presenteras och skapas främst med hjälp av JavasScript och SASS.
 
 Webbplats: https://projektfrontend-fb.netlify.app/
+
 JS dokumentation: https://projektfrontend-fb.netlify.app/docs/index.html
+
 Rapport: 
 
