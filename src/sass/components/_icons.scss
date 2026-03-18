@@ -78,6 +78,8 @@
 #changeCurrencyIcon {
     cursor: pointer;
     transition: $transition-base;
+    border: none;
+    display: flex;
 }
 
 @media (max-width: 420px) {

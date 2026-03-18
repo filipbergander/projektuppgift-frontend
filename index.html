@@ -32,14 +32,14 @@
                         <label for="country-name-input" class="hidden">Sök land:</label>
                         <div>
                             <input type="text" id="country-name-input" name="country" autocomplete="off" placeholder="Skriv land...">
-                            <button type="button" id="search-button" class="btn">Sök<svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#1f1f1f"><path d="M765-144 526-383q-30 22-65.79 34.5-35.79 12.5-76.18 12.5Q284-336 214-406t-70-170q0-100 70-170t170-70q100 0 170 70t70 170.03q0 40.39-12.5 76.18Q599-464 577-434l239 239-51 51ZM384-408q70 0 119-49t49-119q0-70-49-119t-119-49q-70 0-119 49t-49 119q0 70 49 119t119 49Z"/></svg></button>
+                            <button type="button" id="search-button" aria-label="Sök land" class="btn">Sök<svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#1f1f1f"><path d="M765-144 526-383q-30 22-65.79 34.5-35.79 12.5-76.18 12.5Q284-336 214-406t-70-170q0-100 70-170t170-70q100 0 170 70t70 170.03q0 40.39-12.5 76.18Q599-464 577-434l239 239-51 51ZM384-408q70 0 119-49t49-119q0-70-49-119t-119-49q-70 0-119 49t-49 119q0 70 49 119t119 49Z"/></svg></button>
                         </div>
                         <div id="country-error"></div>
                     </form>
                 </div>
             </div>
             <div id="countriesDiv">
-                <button id="moreCountries" class="btn">Visa alla länder<svg xmlns="http://www.w3.org/2000/svg" id="arrowIcon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/></svg></button>
+                <button id="moreCountries" aria-label="Visa alla länder" class="btn">Visa alla länder<svg xmlns="http://www.w3.org/2000/svg" id="arrowIcon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/></svg></button>
                 <div id="countriesDisplay" class="hidden">
                     <ul id="countrylist"></ul>
                 </div>

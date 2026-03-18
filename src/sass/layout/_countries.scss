@@ -31,10 +31,6 @@
     gap: 2rem;
     margin-right: auto;
     margin: 0 0 0.5rem 0.5rem;
-    p {
-        font-weight: bold;
-        margin-right: 0;
-    }
     label {
         font-weight: bold;
         margin-right: 0;
@@ -63,6 +59,19 @@
         &:hover {
             text-decoration: underline;
         }
+    }
+}
+
+#sortHint {
+    padding: 0.25rem 0.5rem;
+    border-radius: $radius-medium;
+    border: 1px solid $color-bg-dark;
+    background-color: $color-bg;
+    color: $color-text;
+    cursor: pointer;
+    transition: $transition-base;
+    &:hover {
+        text-decoration: underline;
     }
 }
 
