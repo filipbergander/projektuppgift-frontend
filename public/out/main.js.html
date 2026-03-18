@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: countries.js</title>
+    <title>JSDoc: Source: main.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: countries.js</h1>
+    <h1 class="page-title">Source: main.js</h1>
 
     
 
@@ -44,6 +44,7 @@
   // Sparar variabler för karta och markör globalt
   let visualMap;
   let marker;
+  let myIcon;
 
   let allCountries = []; // Global Array för länder som används för att filtrera sökresultat
 
@@ -61,11 +62,10 @@
       const countrySearch = document.getElementById("country-search");
       const countryCard = document.getElementById("country-card");
 
-      // Skapar rubrik och lägger till inom sektion
-      const headline = document.createElement("h1");
-      headline.id = "headline";
+      // Lägger till rubrik
+      /*const headline = document.getElementById("headline")
       headline.textContent = "Vilket land vill du resa till?"; // Huvudrubrik
-      countrySection.prepend(headline); // Lägger till huvudrubriken först inom sektionselementet
+      countrySection.prepend(headline); // Lägger till huvudrubriken först inom sektionselementet*/
 
       // Skapar tipsmeddelande och lägger till efter rubriken och i diven
       const tipMessage = document.createElement("p");
@@ -137,6 +137,7 @@
           }
       });
 
+      /*
       // Olika kartor som jag kan använda på hemsidan
       /* const darkmodeTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
            maxZoom: 19,
@@ -155,8 +156,7 @@
             maxZoom: 19,
         }); */
 
-      // För att ändra kartans lager om användaren befinner sig i mörkt eller ljust läge
-      const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches; // Om användaren har valt mörk tema
+
 
       // Olika karter som går att använda, jawg har en token som jag sparat som en variabel.
       const jawgToken = "6aUCDcns9wnFKVGcqzrnXSypntTzjgqY7YYoAsMa71MbVgHGNZ6wRokX3739muDB";
@@ -170,7 +170,11 @@
           attribution: '© &lt;a href="https://www.jawg.io" target="_blank">Jawg Maps&lt;/a> © &lt;a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap&lt;/a> contributors'
       });
 
+      // Skapar kartan
       visualMap = L.map('map').setView([51.78, -7.03], 2); // Grundvy för kartan, utzoomad
+
+      // För att ändra kartans lager om användaren befinner sig i mörkt eller ljust läge
+      const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches; // Om användaren har valt mörk tema
       if (darkMode) { // Använder mörk karta
           visualMap.removeLayer(jawgLagoonTile);
           jawgDarkTile.addTo(visualMap);
@@ -192,6 +196,15 @@
           }
       });
 
+      // Hämtar in ikonen
+      myIcon = L.icon({
+          iconUrl: "/images/travelMarker.svg", // Inhämtad svg som liknar flygplan
+          className: 'my-marker-icon', // En klass för att styla in scss, animation och färger
+          iconSize: [30, 30],
+          iconAnchor: [15, 30]
+      });
+
+
       // När användaren skriver i sökfältet för land 
       countryInputEl.addEventListener("input", async() => {
           const countryInput = countryInputEl.value.trim().toLowerCase(); // Det som användaren söker på i sökfältet, tar bort mellanslag med trim(), samt för att kunna söka med både stor- och liten första bokstav.
@@ -212,6 +225,7 @@
           countryCard.classList.remove("show"); // Tar bort klassen show för att dölja informationen om
           const countryInput = searchInput.charAt(0).toUpperCase() + searchInput.slice(1).toLowerCase(); // Gör första bokstaven i landets namn till en versal och resten till gemener
 
+
           showLoadingIcon(); // Laddningsikon som går igång och visas efter man klickat på sök
           countrySection.classList.add("hidden");
           countriesDiv.classList.add("hidden"); // Döljer listan med alla länder
@@ -219,8 +233,6 @@
           countriesListDisplay.classList.add("hidden");
           divDropDown.classList.add("hidden");
           showCountriesBtn.firstChild.textContent = "Visa alla länder"; // Ändrar namn på knappen
-          arrowIcon.textContent = "keyboard_arrow_down"; // Ändrar ikonen till nedåtpil
-
           // Timeout
           setTimeout(() => {
               fetchCountry(countryInput, searchError); // Anropar funktionen för att hämta datan om landet beroende på vad användaren sökt på
@@ -238,20 +250,20 @@
               countriesListDisplay.classList.remove("hidden"); // Visar listan med alla länder
               divDropDown.classList.remove("hidden");
               showCountriesBtn.firstChild.textContent = "Dölj länder"; // Ändrar namn på knappen
-              arrowIcon.textContent = "keyboard_arrow_up"; // Ändrar ikonen till uppåtpil
+              arrowIcon.style.transform = "rotate(180deg)"; // Ändrar ikonen till uppåtpil
           } else { // När listan visas och användaren klickar igen på knappen, så döljs listan
               countriesListDisplay.classList.add("hidden");
               divDropDown.classList.add("hidden");
               showCountriesBtn.firstChild.textContent = "Visa alla länder";
-              arrowIcon.textContent = "keyboard_arrow_down"; // Ändrar ikonen till nedåtpil
+              arrowIcon.style.transform = "rotate(0deg)"; // Ändrar ikonen till nedåtpil
           }
       });
   });
   /**
-   * Funktion som hämtar in alla länder som finns från Restcountries API med namn, flagga och region. 
+   * Funktion som hämtar in alla länder som finns från Restcountries API med namn, flagga och region samt cca2 kod som används för flaggor
    */
   async function fetchAllcountries() {
-      const url = `https://restcountries.com/v3.1/all?fields=name,flags,region`;
+      const url = `https://restcountries.com/v3.1/all?fields=name,region,cca2`;
       try {
           const response = await fetch(url);
           const info = await response.json();
@@ -284,13 +296,18 @@
   function showCountries(info) {
       const countryListEl = document.getElementById("countrylist");
       countryListEl.innerHTML = ""; // Tömmer listan innan den fylls på igen
+
+      // Laddat ned flaggor som ligger i mappen images/flags där filnamnet är landets kod, se för Sverige exempelvis
       info.forEach(country => { // Struktur
+          const code = country.cca2.toLowerCase(); // Landets kod i små bokstäver för att hämta in rätt flagga från mappen
           countryListEl.innerHTML += `
-        &lt;li class="countriesflag">
-            &lt;img src="${country.flags.svg}" alt="${country.name.common} flagga" width="18px" height="12px">
+                  &lt;li class="countriesflag">
+                &lt;img src="/images/flags/${code}.svg" alt="${country.name.common} flagga" width="18px" height="12px">&lt;/img>  
             &lt;span class="country-name">${country.name.common}&lt;/span>
         &lt;/li>`
       });
+
+
       // När man klickar på ett land i listan av länder så skrivs det namnet in i sökfältet och fokuset hamnar sedan där
       const countryNameEl = document.querySelectorAll(".country-name");
       const countryInputEl = document.getElementById("country-name-input");
@@ -325,7 +342,6 @@
       try {
           const response = await fetch(url);
           const data = await response.json();
-
           // Generera felmeddelande om namnet inte hittas.
           if (!response.ok) { // Om responsen inte hittade något land används en backup-funktion för namn på länder med svenska språket. t.ex frankrike och inte france.
               console.warn(`Landet "${countryInput}" hittades inte, försöker med översättning`)
@@ -402,9 +418,9 @@
     &lt;p class="textInfo">Region: &lt;span class="spanInfo">${data[0].continents[0]}&lt;/span>&lt;/p>
     &lt;p class="textInfo">Huvudstad: &lt;span class="spanInfo">${capitalName}&lt;/span>&lt;/p>
     &lt;div id="weatherContainer">&lt;/div>
-    &lt;button id="countryMapBtn">Visa karta över landet&lt;/button>
-    &lt;button id="showWeatherBtn">Se väderprognos&lt;/button>
-    &lt;button id="showCurrencyBtn">Jämför valuta&lt;/button>
+    &lt;button id="countryMapBtn">Visa karta över landet&lt;svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">&lt;path d="m600-120-240-84-186 72q-20 8-37-4.5T120-170v-560q0-13 7.5-23t20.5-15l212-72 240 84 186-72q20-8 37 4.5t17 33.5v560q0 13-7.5 23T812-192l-212 72Zm-40-98v-468l-160-56v468l160 56Zm80 0 120-40v-474l-120 46v468Zm-440-10 120-46v-468l-120 40v474Zm440-458v468-468Zm-320-56v468-468Z"/>&lt;/svg>&lt;/button>
+    &lt;button id="showWeatherBtn">Se väderprognos&lt;svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">&lt;path d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q25-92 100-149t170-57q117 0 198.5 81.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H260Zm0-80h480q42 0 71-29t29-71q0-42-29-71t-71-29h-60v-80q0-83-58.5-141.5T480-720q-83 0-141.5 58.5T280-520h-20q-58 0-99 41t-41 99q0 58 41 99t99 41Zm220-240Z"/>&lt;/svg>&lt;/button>
+    &lt;button id="showCurrencyBtn">Jämför valuta&lt;svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">&lt;path d="M480-40q-112 0-206-51T120-227v107H40v-240h240v80h-99q48 72 126.5 116T480-120q75 0 140.5-28.5t114-77q48.5-48.5 77-114T840-480h80q0 91-34.5 171T791-169q-60 60-140 94.5T480-40Zm-36-160v-52q-47-11-76.5-40.5T324-370l66-26q12 41 37.5 61.5T486-314q33 0 56.5-15.5T566-378q0-29-24.5-47T454-466q-59-21-86.5-50T340-592q0-41 28.5-74.5T446-710v-50h70v50q36 3 65.5 29t40.5 61l-64 26q-8-23-26-38.5T482-648q-35 0-53.5 15T410-592q0 26 23 41t83 35q72 26 96 61t24 77q0 29-10 51t-26.5 37.5Q583-274 561-264.5T514-250v50h-70ZM40-480q0-91 34.5-171T169-791q60-60 140-94.5T480-920q112 0 206 51t154 136v-107h80v240H680v-80h99q-48-72-126.5-116T480-840q-75 0-140.5 28.5t-114 77q-48.5 48.5-77 114T120-480H40Z"/>&lt;/svg>&lt;/button>
     `;
 
       // Eventlyssnare för att visa valutakonverteraren 
@@ -429,15 +445,15 @@
                 &lt;label for="fromCurrency">Från: &lt;img src="https://flagcdn.com/se.svg" class="flag" alt="Svenska flaggan" id="fromFlag" width="24px" height="20px">&lt;/label>
                 &lt;input type="text" id="fromCurrency" value="SEK" disabled>
             &lt;/div>
-                &lt;svg xmlns="http://www.w3.org/2000/svg" id="changeCurrencyBtn" height="24px" viewBox="0 -960 960 960" width="20px" fill="#1f1f1f">&lt;path d="M280-120 80-320l200-200 57 56-104 104h607v80H233l104 104-57 56Zm400-320-57-56 104-104H120v-80h607L623-784l57-56 200 200-200 200Z"/>&lt;/svg>
+                &lt;svg xmlns="http://www.w3.org/2000/svg" id="changeCurrencyIcon" height="24px" viewBox="0 -960 960 960" width="20px" fill="#1f1f1f">&lt;path d="M280-120 80-320l200-200 57 56-104 104h607v80H233l104 104-57 56Zm400-320-57-56 104-104H120v-80h607L623-784l57-56 200 200-200 200Z"/>&lt;/svg>
             &lt;div class="toCurrency"> 
                     &lt;label for="toCurrency">Till: &lt;img src="${flagSvg}" class="flag" id="toFlag" alt="${countryName} flaggan" width="24px" height="20px">&lt;/label>
                     &lt;input type="text" id="toCurrency" value="${currencyCode}">
             &lt;/div>
         &lt;/div>
                     &lt;label for="amount">Belopp att konvertera&lt;/label>
-                    &lt;input type="number" id="amount" placeholder="Ange belopp" step="any">
-                    &lt;button id="convertBtn">Konvertera&lt;/button>
+                    &lt;input type="number" id="amount" placeholder="Ange belopp" step="any" max="99999999">
+                    &lt;button id="convertBtn">Konvertera&lt;svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#1f1f1f">&lt;path d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z"/>&lt;/svg>&lt;/button>
             &lt;div id="convertResult">&lt;/div>
     &lt;/form>
         `;
@@ -445,6 +461,10 @@
       const inputAmountEl = document.getElementById("amount"); // Inputfältet för att skriva in beloppet 
       inputAmountEl.addEventListener("input", () => {
           inputAmountEl.innerHTML = inputAmountEl.value.replace(",", "."); // Om användaren skriver med kommatecken görs det om till punkt
+          const maxLength = 8;
+          if (inputAmountEl.value.length > maxLength) {
+              inputAmountEl.value = inputAmountEl.value.slice(0, maxLength);
+          }
       });
 
       const currencyForm = document.getElementById("currencyForm");
@@ -481,12 +501,15 @@
       });
 
       // När man klickar på ändra valuta-ikonen byts flaggornas bild genom src, alt-texten till bilderna samt valutavärdet inom input
-      const changeCurrencyBtn = document.getElementById("changeCurrencyBtn"); //
-      changeCurrencyBtn.addEventListener("click", () => {
+      const changeCurrencyIcon = document.getElementById("changeCurrencyIcon"); //Ikon för att byta plats på valutorna i konverteraren
+      let rotate = 0;
+      changeCurrencyIcon.addEventListener("click", () => {
           const fromCurrencyInp = document.getElementById("fromCurrency");
           const toCurrencyInp = document.getElementById("toCurrency");
           const toFlag = document.getElementById("toFlag");
           const fromFlag = document.getElementById("fromFlag");
+          rotate += 180; // Roterar med 180 grader vid varje klick
+          changeCurrencyIcon.style.transform = `rotate(${rotate}deg)`; // Ikonen roteras ett halvt varv när man klickar på knappen
 
           const changeCurrency = fromCurrencyInp.value; // Ändrar valutan
           fromCurrencyInp.value = toCurrencyInp.value;
@@ -534,6 +557,14 @@
               return;
           }
 
+          // Använder SEK som bas för valutakonverteraren, det som hämtas in från funktionen fetchCurrencyData
+          let currencyConvert;
+          if (fromCurrency === "SEK") {
+              currencyConvert = toCurrency; // Jämför med till-valutan, SEK mot USD exempelvis
+          } else {
+              currencyConvert = fromCurrency; // Jämför med från-valutan USD mot SEK
+          }
+
           // Hämtar in växlingskursen för SEK till den valutan som användaren sökt på och vill konvertera till i sökfältet
           // Genom destructuring plockas värdena ut från objektet som blir returnerade av funktionen 
           const { rate, updated, nextUpdate } = await fetchCurrencyData(currencyConvert);
@@ -544,13 +575,7 @@
               return;
           }
 
-          // Använder SEK som bas för valutakonverteraren, det som hämtas in från funktionen fetchCurrencyData
-          let currencyConvert;
-          if (fromCurrency === "SEK") {
-              currencyConvert = toCurrency; // Jämför med till-valutan, SEK mot USD exempelvis
-          } else {
-              currencyConvert = fromCurrency; // Jämför med från-valutan USD mot SEK
-          }
+
 
           let convertedAmount;
           // Om det inte är svenska som finns i från inputen så ändras valutakonverteraren
@@ -560,9 +585,10 @@
               convertedAmount = amount / rate; // Dividerar beloppet
           }
 
+          const swedishFormat = convertedAmount.toLocaleString("sv-SE", { maximumFractionDigits: 2 }); // Gör om det konverterade beloppet svenskt format, max två decimaler
           // Beräknar det konverterade beloppet och skriver ut det i DOM samt när växlingskursen senast blev uppdaterad
           convertListEl.innerHTML = `
-        &lt;p class="money">${amount} ${fromCurrency} &lt;span class="moneyError">=&lt;/span> ${convertedAmount.toFixed(2)} i ${toCurrency}&lt;/p>
+        &lt;p class="money">${amount} ${fromCurrency} &lt;span class="moneyError">=&lt;/span> ${swedishFormat} i ${toCurrency}&lt;/p>
         &lt;p>Senast uppdaterad kurs: &lt;span class="updateDate">${updated}&lt;span>&lt;/p>
         &lt;p> Ny uppdatering av kurs: &lt;span class="updateDate">${nextUpdate}&lt;span>&lt;/p>
         `;
@@ -580,9 +606,10 @@
    * En funktion för att hämta in växelkurser från API, Exchangerate-API, med svenska valutan som bas.
    * Sparar växelkurser i localstorage för att återanvända och returnerar sedan växelkursen för landet som användaren sökt på i sökfältet.
    * @param {*} currencyCode - Valutakoden för det land som användaren sökt på, ex EUR
-   * @returns {rate: number, updated: string} - Ett objekt med:
+   * @returns {{rate: number, updated: string, nextUpdate: string}} - Ett objekt med:
    * - rate: Växelkurser som nummer med SEK som bas för det land som användaren söker på. Ex 1 SEK = 0.11 USD
    * - updated: När växelkurserna senaste blev uppdaterad som en textsträng, ex "Tisdag 10/3"
+   * - nextUpdate: När växelkurserna kommer uppdateras nästa gång som en textsträng, ex "Onsdag 11/3"
    */
   async function fetchCurrencyData(currencyCode) {
       // Om det finns sparat i localstorage så hämtas valutorna där istället för att göra ett till och nytt API-anrop
@@ -652,14 +679,6 @@
       mapEl.classList.remove("hidden"); // Visa kartan sedan
       visualMap.invalidateSize(); // Justerar kartans synliga storlek när den väl visas
       visualMap.setView([latitude, longitude], 4); // Uppdaterar kartans position efter landets koordinater, zoomar in lite på landet 
-
-      const myIcon = L.icon({
-          iconUrl: "/images/travelMarker.svg", // Inhämtad svg som liknar flygplan
-          className: 'my-marker-icon', // En klass för att styla in scss, animation och färger
-          iconSize: [30, 30],
-          iconAnchor: [15, 30]
-      });
-
       if (marker) {
           visualMap.removeLayer(marker); // Om det redan finns en markör på kartan tas den bort innan den nya markören läggs till
       }
@@ -678,7 +697,12 @@
       try {
           const response = await fetch(url)
           const data = await response.json();
-          //console.log("Svarsresultat:", data);
+          if (!response.ok) { // Felmeddelande i konsoll och DOM om det inte går att hämta väderprognos
+              console.warn(`Kunde inte hämta väderprognos för ${capitalName}`)
+              const weatherContainerEl = document.getElementById("weatherContainer");
+              weatherContainerEl.innerHTML = `&lt;p id="weather-error">Kunde inte hämta väderprognos för ${capitalName}.&lt;/p>`;
+          }
+          console.log("Svarsresultat:", data);
           return data;
       } catch (error) {
           console.error("Felmeddelande från hämtning av väder: ", error);
@@ -708,10 +732,12 @@
               diagramEl.scrollIntoView({ behavior: "smooth" }); // Scrollar ner till kartan när den väl visas  
           }, 200);
       });
+
       // Skapar struktur inom containern för att visa väder med celsius samt ikon för vädret, ex soligt/molnigt
       weatherContainerEl.innerHTML += `
             &lt;p class="textInfo"> Väder just nu i ${weatherInfo.location.name}: &lt;span class="glowy-text">${weatherInfo.current.temp_c}°C&lt;/span>&lt;/p>
             &lt;img id="weatherIcon" src="${weatherInfo.current.condition.icon}" alt="${weatherInfo.current.condition.text} width="60px" height="60px">`
+
 
       // Rubrik med huvudstadens namn samt diagrammet
       diagramEl.innerHTML += `
@@ -749,7 +775,7 @@
                       data: lowestTemp,
                       backgroundColor: ["#0019fc"],
                       hoverBackgroundColor: "#fff",
-                      borderColor: "#0026ff94",
+                      borderColor: "#0066ff",
                       borderWidth: 2,
                       order: 2,
                   },
@@ -766,6 +792,7 @@
           },
           options: {
               responsive: true,
+              maintainAspectRatio: false,
               plugins: {
                   tooltip: {
                       callbacks: {
@@ -816,6 +843,7 @@
           },
           options: {
               responsive: true,
+              maintainAspectRatio: false,
               plugins: {
                   tooltip: {
                       callbacks: {
@@ -867,13 +895,13 @@
       }
   }
 
-  /**
-   * För att generera profilkortet för land långsamt
-   */
+  /*
+   För att generera profilkortet för land långsamt
+  
   function slowDisplay() {
       const countryProfile = document.getElementById("country-card");
       countryProfile.classList.add("show");
-  }
+  } */
 
   /**
    * För att visa laddningsikon och overlay samt dölja huvudinnehållet i main
@@ -889,16 +917,18 @@
           countrySection.classList.remove("hidden"); // Visar innehållet med sökfält när loadingikonen "laddat klart"
           loadingIcon.classList.add("hidden"); // Döljer ikonen efter väntetiden
           loadingOverlay.classList.add("hidden")
-      }, 1475);
+      }, 1515);
   }
 
-  /**
-   * Döljer laddningsikonen
-   */
+  /*
+Döljer laddningsikonen
+   
   function hideLoadingIcon() {
       const loadingIcon = document.getElementById("loadingIcon");
       loadingIcon.classList.add("hidden");
-  }
+  } */
+
+
   /**
    * Sorterar länder i ordningen A-Ö
    */
@@ -936,13 +966,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#displayCountry">displayCountry</a></li><li><a href="global.html#displayWeather">displayWeather</a></li><li><a href="global.html#fetchAllcountries">fetchAllcountries</a></li><li><a href="global.html#fetchByTranslation">fetchByTranslation</a></li><li><a href="global.html#fetchCountry">fetchCountry</a></li><li><a href="global.html#fetchCurrencyData">fetchCurrencyData</a></li><li><a href="global.html#filterCountries">filterCountries</a></li><li><a href="global.html#getWeatherForecast">getWeatherForecast</a></li><li><a href="global.html#hideLoadingIcon">hideLoadingIcon</a></li><li><a href="global.html#hideSections">hideSections</a></li><li><a href="global.html#showCountries">showCountries</a></li><li><a href="global.html#showCountryMap">showCountryMap</a></li><li><a href="global.html#showLoadingIcon">showLoadingIcon</a></li><li><a href="global.html#slowDisplay">slowDisplay</a></li><li><a href="global.html#sortCountries">sortCountries</a></li><li><a href="global.html#sortCountriesBackwards">sortCountriesBackwards</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#displayCountry">displayCountry</a></li><li><a href="global.html#displayWeather">displayWeather</a></li><li><a href="global.html#fetchAllcountries">fetchAllcountries</a></li><li><a href="global.html#fetchByTranslation">fetchByTranslation</a></li><li><a href="global.html#fetchCountry">fetchCountry</a></li><li><a href="global.html#fetchCurrencyData">fetchCurrencyData</a></li><li><a href="global.html#filterCountries">filterCountries</a></li><li><a href="global.html#getWeatherForecast">getWeatherForecast</a></li><li><a href="global.html#hideSections">hideSections</a></li><li><a href="global.html#showCountries">showCountries</a></li><li><a href="global.html#showCountryMap">showCountryMap</a></li><li><a href="global.html#showLoadingIcon">showLoadingIcon</a></li><li><a href="global.html#sortCountries">sortCountries</a></li><li><a href="global.html#sortCountriesBackwards">sortCountriesBackwards</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Mon Mar 16 2026 11:41:09 GMT+0100 (centraleuropeisk normaltid)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Mar 18 2026 11:14:18 GMT+0100 (centraleuropeisk normaltid)
 </footer>
 
 <script> prettyPrint(); </script>
