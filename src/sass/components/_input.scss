@@ -1,0 +1,35 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/animations" as *;
+@use "../abstracts/mixins" as *;
+@use "../base/base" as *;
+#country-name-input {
+    font-weight: $fontweight-bold;
+    border-radius: 0.7em;
+    padding: 0.5em 0.5em;
+    border: 2px solid $color-bg-orange;
+    transition: $transition-base;
+    width: 65%;
+    &:hover {
+        border-color: $color-bg-orange-hover;
+    }
+}
+
+@media (max-width: 768px) {}
+
+@media (max-width: 530px) {
+    #country-name-input {
+        font-size: 0.9rem;
+    }
+    #search-button {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 375px) {
+    #country-name-input {
+        font-size: 0.8rem;
+    }
+    #search-button {
+        font-size: 0.8rem;
+    }
+}

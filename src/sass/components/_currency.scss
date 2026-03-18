@@ -1,0 +1,126 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/animations" as *;
+@use "../abstracts/mixins" as *;
+@use "../base/base" as *;
+%flex-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+%flex-layout-start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+#currency-converter {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    align-items: center;
+    margin: 0 auto;
+    gap: 0.5rem;
+    box-shadow: $shadow-medium;
+    background-color: $color-bg;
+    padding: $padding-base;
+    border-radius: $radius-medium;
+    label[for="fromCurrency"] {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    label[for="toCurrency"] {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .fromToCurrency {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        padding: $padding-base;
+        margin-top: $margin-general-md;
+    }
+    h3 {
+        text-align: center;
+    }
+}
+
+#currencyForm {
+    @extend %flex-layout;
+    gap: 0.5rem;
+    input {
+        border-radius: $radius-medium;
+        padding: 4px 4px;
+    }
+}
+
+.moneyError {
+    font-weight: $fontweight-bold;
+    color: $color-black;
+}
+
+.money {
+    font-weight: $fontweight-bold;
+    color: $glowy-text-dark;
+}
+
+.updateDate {
+    font-weight: $fontweight-bold;
+    color: $color-text-info;
+}
+
+#currency-converter.hidden {
+    display: none;
+}
+
+// Visar inte flaggorna om man inte angett en valuta
+#fromFlag[src=""] {
+    display: none;
+}
+
+// Visar inte flaggorna om man inte angett en valuta
+#toFlag[src=""] {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #currency-converter {
+        width: 95%;
+        max-width: 500px;
+    }
+    .fromCurrency {
+        width: 100%;
+    }
+    .fromToCurrency {
+        gap: 0.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 530px) {
+    #currency-converter {
+        width: 90%;
+    }
+}
+
+@media (max-width: 375px) {
+    #currency-converter {
+        width: 90%;
+    }
+}
+
+@media (max-width: 315px) {
+    #currency-converter {
+        width: 80%;
+    }
+}

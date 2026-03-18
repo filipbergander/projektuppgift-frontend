@@ -1,0 +1,188 @@
+@use "variables" as *;
+// Spin-animation för laddningsikoner
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+//Rör logotypen ned och sedan tillbaka upp långsamt
+@keyframes moveIcon {
+    0% {
+        transform: scale(1);
+    }
+    30% {
+        transform: scale(1);
+    }
+    32% {
+        transform: scale(1.08);
+        translate: 0 10px;
+    }
+    35% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+// Rör texten upp och ned för rubrik h1
+@keyframes moveText {
+    0% {
+        transform: rotate(-2deg) translateY(-3px);
+    }
+    50% {
+        transform: rotate(1deg) translateY(3px);
+    }
+    100% {
+        transform: rotate(-2deg) translateY(-3px);
+    }
+}
+
+// Större och ljusare animation för text blinkar
+@keyframes bigLighter {
+    0% {
+        transform: scale(1);
+        color: $color-span;
+    }
+    50% {
+        transform: scale(1.2);
+        color: $glowy-text;
+    }
+    100% {
+        transform: scale(1);
+        color: $color-span;
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes textPulse {
+    0% {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 30px $glowy-text;
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    }
+}
+
+@keyframes textGlow {
+    0% {
+        text-shadow: 0 0 5px $color-bg-orange, 0 0 10px $color-bg-orange;
+    }
+    50% {
+        text-shadow: 0 0 5px $color-text, 0 0 10px $color-text;
+    }
+    100% {
+        text-shadow: 0 0 5px $color-bg-orange, 0 0 10px $color-bg-orange;
+    }
+}
+
+// Pulserande och bounce animation
+@keyframes pulseBounce {
+    0% {
+        transform: translateY(0);
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(-10px);
+        transform: scale(1.2);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(0);
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+// Bounce-effekt med Tada. La på en blinkande effekt och translateY. Inspiration från https://www.tutorialspoint.com/css/css_animation_tada.htm
+@keyframes BounceTada {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.9;
+    }
+    10%,
+    20% {
+        transform: translateY(-6px) scale(0.9) rotate(-3deg);
+        opacity: 1;
+    }
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateY(-4px) scale(1.1) rotate(3deg);
+        opacity: 0.9;
+    }
+    40%,
+    60%,
+    80% {
+        transform: translateY(0) scale(1.1) rotate(-3deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0) scale(1) rotate(0);
+        opacity: 0.9;
+    }
+}
+
+// Hjärtslaganimation
+@keyframes heartbeat {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    14% {
+        transform: scale(1.2);
+    }
+    28% {
+        transform: scale(1);
+    }
+    42% {
+        transform: scale(1.2);
+    }
+    70% {
+        transform: scale(1);
+    }
+}
+
+// Bounce-effekt
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+// Svävande animation för väderikonen
+@keyframes floatWeatherIcon {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}

@@ -9,8 +9,10 @@
         "preview": "vite preview"
     },
     "devDependencies": {
+        "jsdoc": "^4.0.5",
         "sass": "^1.97.3",
-        "vite": "^7.2.4"
+        "vite": "^7.2.4",
+        "vite-plugin-pwa": "^1.2.0"
     },
     "dependencies": {
         "normalize.css": "^8.0.1"

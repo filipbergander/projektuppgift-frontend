@@ -1,0 +1,280 @@
+    @use "../abstracts/variables" as *;
+    @use "../abstracts/mixins" as *;
+    @import url('https://fonts.googleapis.com/css2?family=Contrail+One&family=Honk:MORF,SHLN@0..45,0..100&family=Work+Sans:wght@400;600;700&display=swap');
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-image: linear-gradient(to right, $color-sun, $color-bg-orange-hover);
+    }
+    
+    main {
+        font-family: $font-primary;
+        color: $color-text;
+        box-shadow: $shadow-light;
+        z-index: 1000;
+        background-color: $color-accent;
+        transition: 1s ease-in;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        #html,
+        body {
+            background-color: black;
+            background-image: linear-gradient(to right, $color-bg-dark-mode, $color-bg-dark-hover);
+            color: $color-white;
+        }
+        #main {
+            background-color: $color-bg-main-dark;
+            color: $color-white;
+        }
+        #country-section h1 {
+            color: $color-white !important;
+        }
+        #country-card {
+            color: $color-white;
+        }
+        #showArea {
+            background-color: $color-text-info;
+            color: $color-white;
+        }
+        .textInfo {
+            color: $color-white !important;
+        }
+        #weatherDiagram {
+            background-color: $color-black !important;
+            box-shadow: $shadow-fantasy !important;
+        }
+        #currency-converter {
+            background-color: $color-text-info !important;
+            color: $color-white !important;
+            box-shadow: $shadow-fantasy !important;
+        }
+        .updateDate {
+            color: $glowy-text !important;
+        }
+        #changeCurrencyIcon {
+            fill: white;
+        }
+        #map {
+            box-shadow: $shadow-fantasy !important;
+        }
+        .moneyError {
+            color: $color-white !important;
+        }
+        .money {
+            color: $glowy-text !important;
+        }
+        .spanInfo {
+            color: $color-span-darkmode !important;
+        }
+        #dropdownMenu {
+            p {
+                color: $color-white !important;
+            }
+            label {
+                color: $color-white !important;
+            }
+        }
+    }
+    
+    #country-section {
+        h1 {
+            font-family: $font-secondary-headline;
+            letter-spacing: 1px;
+            color: $color-text;
+            text-transform: uppercase;
+            animation: moveText 2s ease-in-out infinite;
+            transition: $transition-base;
+        }
+        #hint {
+            margin: 0 0.5em 0em;
+            opacity: 1;
+            transition: opacity 4s ease, margin 0.3s ease;
+            animation: bounce 3s ease-in-out infinite;
+            text-align: center;
+            margin-bottom: $margin-general-s;
+        }
+        #hint.hiddenText {
+            opacity: 0;
+        }
+        // När man börjar skriva i sökfältet slutar animationen för h1-rubriken
+        &:has(input:focus) h1 {
+            animation-play-state: paused;
+        }
+    }
+    
+    #country-search {
+        width: 100%;
+        max-width: 600px;
+    }
+    
+    #country {
+        width: 100%;
+    }
+    
+    #countryForm {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    #convertError {
+        color: $color-text-error;
+        font-weight: $fontweight-bold;
+        margin-top: $margin-general-s;
+        transition: $transition-base;
+        animation: bounce 3s ease-in-out infinite;
+    }
+    
+    #currency-error {
+        color: $color-text-error;
+        font-weight: $fontweight-bold;
+        margin-top: $margin-general-s;
+        transition: $transition-base;
+        animation: bounce 3s ease-in-out infinite;
+    }
+    
+    #country-error {
+        color: $color-text-error;
+        font-weight: $fontweight-bold;
+        margin-top: $margin-general-s;
+        transition: $transition-base;
+        animation: bounce 3s ease-in-out infinite;
+        max-width: 350px;
+    }
+    
+    #countrylist {
+        font-size: 0.9rem;
+    }
+    
+    .hidden {
+        display: none;
+    }
+    
+    .show {
+        display: block;
+    }
+    
+    nav {
+        display: flex;
+        ul {
+            list-style: none;
+        }
+    }
+    
+    #country-card {
+        margin-bottom: $margin-general-md;
+        transition: 1s ease-in;
+        opacity: 0;
+        width: 95%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    #country-card.show {
+        opacity: 1;
+    }
+    
+    #showArea {
+        width: 100%;
+        margin: 0 auto;
+        margin-bottom: $margin-general-large;
+    }
+    
+    .spanInfo {
+        font-weight: $fontweight-bold;
+        color: $color-span;
+    }
+    
+    .textInfo {
+        font-weight: $fontweight-bold;
+        color: $color-text-info;
+    }
+    
+    .glowy-text {
+        font-weight: $fontweight-bold;
+        color: $glowy-text;
+        animation: bigLighter 2s ease-in-out infinite;
+    }
+    
+    .headline-country {
+        font-family: $font-fantasy;
+        font-size: 3rem;
+        letter-spacing: 2px;
+        text-align: center;
+        animation: textGlow 3s ease-in-out infinite;
+    }
+    
+    .flagImg {
+        border-radius: $radius-medium;
+        box-shadow: $shadow-medium;
+    }
+    
+    #dropdownMenu {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        p {
+            color: $color-text-info;
+            font-weight: $fontweight-bold;
+        }
+        label {
+            color: $color-text-info;
+            font-weight: $fontweight-bold;
+        }
+    }
+    
+    @media (max-width: 768px) {}
+    
+    @media (max-width: 530px) {
+        h1 {
+            font-size: 1.5rem;
+        }
+        #country-error {
+            font-size: 0.9rem;
+        }
+        #convertError {
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        #countrylist {
+            font-size: 0.8rem;
+        }
+        #hint {
+            font-size: 0.9rem;
+        }
+        #convertHint {
+            font-size: 0.9rem;
+        }
+        #country-card {
+            padding-left: 1rem;
+            width: 95%;
+        }
+        #dropdownMenu {
+            font-size: 0.9rem;
+        }
+    }
+    
+    @media (max-width: 375px) {
+        #countrylist {
+            columns: 2;
+            column-gap: 0.2rem;
+        }
+        #country-error {
+            font-size: 0.8rem;
+        }
+        #convertError {
+            font-size: 0.9rem;
+        }
+        #hint {
+            font-size: 0.8rem;
+        }
+        #convertHint {
+            font-size: 0.8rem;
+        }
+        #dropdownMenu {
+            font-size: 0.8rem;
+        }
+    }

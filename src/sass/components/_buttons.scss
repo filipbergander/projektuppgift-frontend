@@ -1,0 +1,83 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+%flex-layout-btn {
+    display: flex;
+    align-items: center;
+}
+
+#countryMapBtn {
+    @include button($color-complement-hover, $color-text);
+    margin-bottom: 1rem;
+    @extend %flex-layout-btn;
+}
+
+#showWeatherBtn {
+    @include button($btn-color-primary, $color-text);
+    margin-bottom: 1rem;
+    @extend %flex-layout-btn;
+}
+
+#showCurrencyBtn {
+    @include button($color-yellow, $color-text);
+    margin-bottom: 1rem;
+    @extend %flex-layout-btn;
+}
+
+#search-button.btn {
+    @include button($color-complement-hover, $color-text);
+    padding: 0.5rem 0.5rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+#moreCountries.btn {
+    @include button($btn-color-secondary, $color-text);
+    margin-top: $margin-general-md;
+    margin-bottom: $margin-general-md;
+    display: flex;
+    align-items: center;
+}
+
+#convertBtn {
+    @include button($btn-color-secondary, $color-text);
+    margin-top: $margin-general-md;
+    margin-bottom: $margin-general-md;
+    display: flex;
+    align-items: center;
+    /*&:active {
+        animation: textGlow, bounce 0.5s ease-in-out;
+    }*/
+}
+
+#moreCountries.hidden {
+    display: none;
+}
+
+#back-button {
+    @include button($color-bg-orange, $color-text);
+    margin-top: $margin-general-md;
+    margin-bottom: $margin-general-md;
+    display: flex;
+    align-items: center;
+}
+
+.active {
+    background: linear-gradient(90deg, $complement-color, $complement-color2, $element-color);
+    animation: gradientShift 5s ease infinite;
+    background-size: 500% 500%;
+}
+
+@media (max-width: 768px) {}
+
+@media (max-width: 530px) {
+    #moreCountries.btn {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 375px) {
+    #moreCountries.btn {
+        font-size: 0.8rem;
+        padding: 0.1rem 0.5rem;
+    }
+}

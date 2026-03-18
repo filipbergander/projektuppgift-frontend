@@ -1,0 +1,77 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/animations" as *;
+@use "../abstracts/mixins" as *;
+#weatherIcon {
+    background-color: $color-white;
+    border-radius: 25%;
+    animation: floatWeatherIcon 3s ease-in-out infinite;
+    box-shadow: $shadow-medium;
+    transition: transform 0.3s ease;
+}
+
+#weatherContainer {
+    margin-bottom: $margin-general-md;
+}
+
+#weatherDiagram {
+    width: 100%;
+    max-width: 450px;
+    //min-height: 400px;
+    margin: 0 auto;
+    background-color: $color-bg;
+    padding: 0.75rem;
+    border-radius: $radius-medium;
+    box-shadow: $shadow-medium;
+}
+
+#weatherDiagram canvas {
+    width: 100%;
+    max-width: 700px;
+    max-height: 350px;
+    min-height: 250px;
+}
+
+#weather-error {
+    color: $color-text-error;
+    font-weight: $fontweight-bold;
+    text-align: center;
+}
+
+#myChart .hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #showArea {
+        #weatherDiagram canvas {
+            width: 95%;
+            height: 200px;
+        }
+    }
+}
+
+@media (max-width: 530px) {
+    #weatherDiagram {
+        max-width: 350px;
+    }
+    #weatherDiagram canvas {
+        min-height: 200px;
+    }
+}
+
+@media (max-width: 490px) {}
+
+@media (max-width: 400px) {
+    #weatherDiagram {
+        max-width: 300px;
+    }
+    #weatherDiagram canvas {
+        min-height: 150px;
+    }
+}
+
+@media (max-width: 325px) {
+    #weatherDiagram {
+        max-width: 275px;
+    }
+}

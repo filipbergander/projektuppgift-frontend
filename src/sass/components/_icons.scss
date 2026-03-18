@@ -1,0 +1,104 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/animations" as *;
+@use "../abstracts/mixins" as *;
+@use "../base/base" as *;
+%flex-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.spinner {
+    width: 34px;
+    height: 34px;
+    margin: 1.5rem auto;
+    border: 3px solid #ccc;
+    border-top: 3px solid $color-text;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+#loadingOverlay {
+    position: absolute;
+    inset: 0 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+    z-index: 99999;
+}
+
+#loadingOverlay.hidden {
+    display: none;
+}
+
+#loadingIcon {
+    @extend %flex-layout;
+    z-index: 1000;
+    text-align: center;
+    font-family: $font-fantasy;
+    font-size: 2rem;
+    letter-spacing: 3px;
+    text-align: center;
+    background-color: $btn-color-primary;
+    text-shadow: $shadow-medium;
+    box-shadow: $shadow-fantasy;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 300px;
+    height: 40px;
+    border: 3px solid #ccc;
+    animation: BounceTada 1.6s linear infinite;
+    //border-top: 3px solid $color-text;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+#loadingIcon.hidden {
+    display: none;
+}
+
+#logo {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin-bottom: 0;
+    margin-top: $margin-general-large;
+    animation: moveIcon 10s ease-in-out infinite;
+    transition: $transition-base;
+}
+
+#arrowIcon {
+    transition: $transition-base;
+}
+
+#changeCurrencyIcon {
+    cursor: pointer;
+    transition: $transition-base;
+    border: none;
+    display: flex;
+}
+
+@media (max-width: 420px) {
+    #loadingOverlay {
+        width: 100%;
+    }
+    #loadingIcon {
+        width: 250px;
+        height: 30px;
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+    }
+}
+
+@media (max-width: 320px) {
+    #loadingIcon {
+        width: 200px;
+        height: 30px;
+        font-size: 1.4rem;
+        letter-spacing: 2px;
+    }
+}

@@ -1,0 +1,47 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+@use "../base/base" as *;
+#map {
+    height: 450px;
+    width: 450px;
+    transition: 1s ease-in-out;
+    display: block;
+    border: 4px solid;
+    border-image: linear-gradient(90deg, $btn-color-primary, $color-accent, $color-sun, $color-bg-orange) 1;
+    box-shadow: $shadow-medium;
+    opacity: 1;
+    margin: 0 auto;
+}
+
+#map.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.my-marker-icon {
+    transition: transform 0.3s ease;
+    border-radius: 50%;
+    animation: gradientShift 4s ease infinite, textPulse 3s ease-in-out infinite;
+    box-shadow: $shadow-medium;
+    background: linear-gradient(270deg, $glowy-text, $color-accent, $color-white, $color-sun);
+    animation: textPulse 3s ease-in-out infinite;
+    background-size: 500% 500%;
+}
+
+@media (max-width: 768px) {}
+
+@media (max-width: 530px) {
+    #map {
+        width: 350px;
+        height: 350px;
+    }
+}
+
+@media (max-width: 430px) {}
+
+@media (max-width: 375px) {
+    #map {
+        width: 275px;
+        height: 300px;
+    }
+}
