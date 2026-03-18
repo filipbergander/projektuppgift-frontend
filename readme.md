@@ -1,14 +1,14 @@
 # Projektuppgift - Frontend-baserad Webbutveckling VT26
 
-I denna projektuppgift för kursen Frontent-baserad webbutveckling skapar jag en webbapplikation som gör det möjligt att konvertera och jämföra mellan olika valutor.
-Syftet med applikationen är att underlätta hanteringen av pengar vid resor utomlands.
-Många gånger är det svårt att avgöra hur mycket en vara faktiskt kostar i den lokala valutan jämfört med den svenska kronor.
-Det är lätt att missförstånd uppstår, och att man överskattar eller underskattar priset. 
+Denna projektuppgift beskriver skapandet av en webbapplikation som gör det möjligt att se länder i världen, väderprognos, 
+karta samt möjligheten att konvertera och jämföra valutor mot svenska kronan.
+Syftet med applikationen är att underlätta för människor som planerar att resa, både inför och under själva resan.
 
-Målet med mitt projekt är att skapa en tydlig och responsiv webbapplikation. 
-Genom att integrera animationer och genomtänkt styling strävar jag efter att utveckla en användarvänlig och välgjord design som är anpassad efter målgruppen.
-Innehållet i applikationen presenteras och skapas med hjälp av JavasScript och SASS.
+Målet med mitt projekt är att skapa en tydlig, responsiv och användarvän-lig webbplats som fungerar som en webbapplikation, både på mobiler som datorer. 
+Genom att kombinera animationer och genomtänkt design strävar jag efter att utveckla en underhållande sida som är anpassad efter sin målgrupp. 
+Innehållet i applikationen presenteras och skapas främst med hjälp av JavasScript och SASS.
 
-Webbplats: https://projektfb-frontend.netlify.app/
+Webbplats: https://projektfrontend-fb.netlify.app/
+JS dokumentation: https://projektfrontend-fb.netlify.app/docs/index.html
 Rapport: 
 
