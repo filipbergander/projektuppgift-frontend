@@ -232,10 +232,10 @@
       });
   });
   /**
-   * Funktion som hämtar in alla länder som finns från Restcountries API med namn, flagga och region. 
+   * Funktion som hämtar in alla länder som finns från Restcountries API med namn, flagga och region samt cca2 kod som används för flaggor
    */
   async function fetchAllcountries() {
-      const url = `https://restcountries.com/v3.1/all?fields=name,region`;
+      const url = `https://restcountries.com/v3.1/all?fields=name,region,cca2`;
       try {
           const response = await fetch(url);
           const info = await response.json();
@@ -268,11 +268,13 @@
   function showCountries(info) {
       const countryListEl = document.getElementById("countrylist");
       countryListEl.innerHTML = ""; // Tömmer listan innan den fylls på igen
-      // Om jag vill lägga till flaggan igen för länderna, påverkar prestandan just nu för mycket
-      //<img src="${country.flags.svg}" alt="${country.name.common} flagga" width="18px" height="12px" loading="lazy"></img>
+
+      // Laddat ned flaggor som ligger i mappen images/flags där filnamnet är landets kod, se för Sverige exempelvis
       info.forEach(country => { // Struktur
+          const code = country.cca2.toLowerCase(); // Landets kod i små bokstäver för att hämta in rätt flagga från mappen
           countryListEl.innerHTML += `
-        <li class="countriesflag">
+                  <li class="countriesflag">
+                <img src="/images/flags/${code}.svg" alt="${country.name.common} flagga" width="18px" height="12px" loading="lazy"></img>
             <span class="country-name">${country.name.common}</span>
         </li>`
       });
@@ -312,7 +314,6 @@
       try {
           const response = await fetch(url);
           const data = await response.json();
-
           // Generera felmeddelande om namnet inte hittas.
           if (!response.ok) { // Om responsen inte hittade något land används en backup-funktion för namn på länder med svenska språket. t.ex frankrike och inte france.
               console.warn(`Landet "${countryInput}" hittades inte, försöker med översättning`)

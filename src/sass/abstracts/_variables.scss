@@ -46,7 +46,14 @@ $shadow-medium:0 4px 12px rgba(0, 0, 0, 0.582);
 $shadow-fantasy: 0 0px 12px rgba(236, 136, 13, 0.874),
 0px 0px 12px rgba(254, 153, 2, 0.874);
 //Fonter
-$font-primary:'Inter',
+$font-primary:"Work Sans",
+ui-sans-serif,
+system-ui,
+sans-serif;
+$font-secondary-headline: "Contrail One",
+sans-serif;
+$font-fantasy: "Honk",
+system-ui,
 sans-serif;
 $fontweight-bold:700;
 //Border-radius
