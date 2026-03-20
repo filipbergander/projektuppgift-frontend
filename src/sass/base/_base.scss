@@ -1,7 +1,7 @@
     @use "../abstracts/variables" as *;
     @use "../abstracts/mixins" as *;
     //@import url('https://fonts.googleapis.com/css2?family=Contrail+One&family=Honk:MORF,SHLN@0..45,0..100&family=Work+Sans:wght@400;600;700&display=swap');
-    //@import url('https://fonts.googleapis.com/css2?family=Contrail+One&family=Honk&family=Work+Sans:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Contrail+One&family=Honk&family=Work+Sans:wght@400;600;700&display=swap');
     html,
     body {
         margin: 0;
@@ -11,8 +11,7 @@
     }
     
     main {
-        //font-family: $font-primary;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: $font-primary;
         color: $color-text;
         box-shadow: $shadow-light;
         z-index: 1000;
@@ -83,8 +82,7 @@
     
     #country-section {
         h1 {
-            //font-family: $font-secondary-headline;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: $font-secondary-headline;
             letter-spacing: 1px;
             color: $color-text;
             text-transform: uppercase;
@@ -202,8 +200,7 @@
     }
     
     .headline-country {
-        //font-family: $font-fantasy;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: $font-fantasy;
         font-size: 3rem;
         letter-spacing: 2px;
         text-align: center;
