@@ -4,9 +4,9 @@ Denna projektuppgift beskriver skapandet av en webbapplikation som gör det möj
 karta samt möjligheten att konvertera och jämföra valutor mot svenska kronan.
 Syftet med applikationen är att underlätta för människor som planerar att resa, både inför och under själva resan.
 
-Målet med mitt projekt är att skapa en tydlig, responsiv och användarvän-lig webbplats som fungerar som en webbapplikation, både på mobiler som datorer. 
+Målet med mitt projekt är att skapa en tydlig, responsiv och användarvänlig webbplats som fungerar likt en webbapplikation, både på mobiler och datorer. 
 Genom att kombinera animationer och genomtänkt design strävar jag efter att utveckla en underhållande sida som är anpassad efter sin målgrupp. 
-Innehållet i applikationen presenteras och skapas främst med hjälp av JavasScript och SASS.
+Innehållet i applikationen presenteras och skapas främst med hjälp av JavasScript och SASS och är automatiserad genom VITE.
 
 Webbplats: https://projektfrontend-fb.netlify.app/
 
