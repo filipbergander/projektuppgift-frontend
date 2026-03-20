@@ -191,15 +191,24 @@
           filterCountries();
           //showCountries(filteredCountries); // Skickar med den filtrerade listan av länder för att hämta in länderna automatiskt medan man skriver
       });
+
+
+
+      // När användaren klickar på sök-knappen för land körs funktionen searchLand
+      searchBtn.addEventListener("click", searchLand);
+
+      // När använder klickar på knappen för att visa alla länder så körs funktionen showListAllCountries
+      showCountriesBtn.addEventListener("click", showListAllCountries);
+
+
       // När användaren klickar på sök-knappen för land
-      searchBtn.addEventListener("click", () => {
+      /*searchBtn.addEventListener("click", () => {
           let searchInput = countryInputEl.value.trim(); // tar bort mellanslag
           if (searchInput === "") { // Felmeddelande om man inte sökar på någonting
               searchError.innerHTML = "Vänligen, fyll i ett land"; // Felmeddelande i DOM
               return;
           }
-          countryCard.innerHTML = ""; // Tar bort allt från landsprofilen
-          countryCard.classList.remove("show"); // Tar bort klassen show för att dölja informationen om
+
           const countryInput = searchInput.charAt(0).toUpperCase() + searchInput.slice(1).toLowerCase(); // Gör första bokstaven i landets namn till en versal och resten till gemener
 
 
@@ -217,10 +226,15 @@
               countryCard.classList.add("show"); // Lägger på klassen show för att visa elementet
               countryCard.scrollIntoView({ behavior: "smooth" }); // Scrollar ner information om landet/profil-kortet
           }, 1350);
-      });
+      });*/
 
-      // När användaren klickar på knappen för att visa alla länder
-      showCountriesBtn.addEventListener("click", () => {
+
+  });
+
+
+
+  // När användaren klickar på knappen för att visa alla länder
+  /*showCountriesBtn.addEventListener("click", () => {
           const arrowIcon = document.getElementById("arrowIcon"); // Ikonen (chevron) som pilar i knappen
           if (countriesListDisplay.classList.contains("hidden")) {
               hideSections(); // Döljer element som karta, diagram
@@ -235,7 +249,8 @@
               arrowIcon.style.transform = "rotate(0deg)"; // Ändrar ikonen till nedåtpil
           }
       });
-  });
+  });*/
+
   /**
    * Funktion som hämtar in alla länder som finns från Restcountries API med namn, flagga och region samt cca2 kod som används för flaggor
    */
@@ -936,3 +951,60 @@ Döljer laddningsikonen
           showCountries(sortCountries);
       }
   }
+
+  function searchLand() {
+      const countryInputEl = document.getElementById("country-name-input"); // Inputfält där användaren skriver in landets namn
+      const countryCard = document.getElementById("country-card"); // landprofilen
+      const searchError = document.getElementById("country-error"); // Felmeddelande som kan visas i DOM
+      const countriesDiv = document.getElementById("countriesDiv"); // Listan med alla länder
+      const countrySection = document.getElementById("country-section");
+      const countriesListDisplay = document.getElementById("countriesDisplay"); // Div där listan med alla länder ligger
+      const divDropDown = document.getElementById("dropdownMenu");
+      const showCountriesBtn = document.getElementById("moreCountries"); // Knappen för att visa alla länder
+
+      const searchInput = countryInputEl.value.trim(); // tar bort mellanslag
+      if (searchInput === "") { // Felmeddelande om man inte sökar på någonting
+          searchError.innerHTML = "Vänligen, fyll i ett land"; // Felmeddelande i DOM
+          return;
+      }
+
+      const countryInput = searchInput.charAt(0).toUpperCase() + searchInput.slice(1).toLowerCase(); // Gör första bokstaven i landets namn till en versal och resten till gemener
+
+      countryCard.innerHTML = ""; // Tar bort allt från landsprofilen
+      countryCard.classList.remove("show"); // Tar bort klassen show för att dölja informationen om
+
+      showLoadingIcon(); // Laddningsikon som går igång och visas efter man klickat på sök
+      countrySection.classList.add("hidden");
+      countriesDiv.classList.add("hidden"); // Döljer listan med alla länder
+      hideSections(); // Döljer karta, väderprognos och valutakonverterare 
+      countriesListDisplay.classList.add("hidden");
+      divDropDown.classList.add("hidden");
+      showCountriesBtn.firstChild.textContent = "Visa alla länder"; // Ändrar namn på knappen
+      // Timeout
+      setTimeout(() => {
+          fetchCountry(countryInput, searchError); // Anropar funktionen för att hämta datan om landet beroende på vad användaren sökt på
+          //main.classList.remove("hidden");
+          countryCard.classList.add("show"); // Lägger på klassen show för att visa elementet
+          countryCard.scrollIntoView({ behavior: "smooth" }); // Scrollar ner information om landet/profil-kortet
+      }, 1350);
+  }
+
+  function showListAllCountries() {
+      const countriesListDisplay = document.getElementById("countriesDisplay"); // Div där listan med alla länder ligger
+      const showCountriesBtn = document.getElementById("moreCountries"); // Knappen för att visa alla länder
+      const divDropDown = document.getElementById("dropdownMenu"); // Sortera och filtrera listan elementen
+      const arrowIcon = document.getElementById("arrowIcon"); // Ikonen (chevron) som pilar i knappen
+
+      if (countriesListDisplay.classList.contains("hidden")) {
+          hideSections(); // Döljer element som karta, diagram
+          countriesListDisplay.classList.remove("hidden"); // Visar listan med alla länder
+          divDropDown.classList.remove("hidden");
+          showCountriesBtn.firstChild.textContent = "Dölj länder"; // Ändrar namn på knappen
+          arrowIcon.style.transform = "rotate(180deg)"; // Ändrar ikonen till uppåtpil
+      } else { // När listan visas och användaren klickar igen på knappen, så döljs listan
+          countriesListDisplay.classList.add("hidden");
+          divDropDown.classList.add("hidden");
+          showCountriesBtn.firstChild.textContent = "Visa alla länder";
+          arrowIcon.style.transform = "rotate(0deg)"; // Ändrar ikonen till nedåtpil
+      }
+  };
