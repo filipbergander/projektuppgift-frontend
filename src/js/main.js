@@ -523,9 +523,9 @@
           attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
       });
       // Vanliga lagret från openstreetmap, behöver ingen token
-      const normalTile = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      /*const normalTile = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      });
+      });*/
 
       // Skapar kartan
       visualMap = L.map('map').setView([51.78, -7.03], 2); // Grundvy för kartan, utzoomad
@@ -537,7 +537,7 @@
           jawgDarkTile.addTo(visualMap);
       } else { // Använder ljus karta
           visualMap.removeLayer(jawgDarkTile);
-          normalTile.addTo(visualMap);
+          jawgLagoonTile.addTo(visualMap);
       }
 
       // Lyssnar även på om man ändrar tema live, då ändras kartan också till rätt tema, ljust eller mörkt
