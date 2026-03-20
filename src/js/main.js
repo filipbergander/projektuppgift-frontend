@@ -14,7 +14,7 @@
   import '/src/sass/main.scss';
 
   // Sparar variabler för karta och markör globalt
-  let visualMap;
+  let visualMap = false; // Används för att kontrollera om kartan visas eller inte
   let marker;
   let myIcon;
 
@@ -27,62 +27,11 @@
       const countryInputEl = document.getElementById("country-name-input");
       const searchBtn = document.getElementById("search-button");
       const searchError = document.getElementById("country-error");
-      const countriesListDisplay = document.getElementById("countriesDisplay");
       const showCountriesBtn = document.getElementById("moreCountries");
-      const countriesDiv = document.getElementById("countriesDiv");
-      const countrySection = document.getElementById("country-section");
-      const countrySearch = document.getElementById("country-search");
-      const countryCard = document.getElementById("country-card");
 
-      // Lägger till rubrik
-      /*const headline = document.getElementById("headline")
-      headline.textContent = "Vilket land vill du resa till?"; // Huvudrubrik
-      countrySection.prepend(headline); // Lägger till huvudrubriken först inom sektionselementet*/
-
-      // Skapar tipsmeddelande och lägger till efter rubriken och i diven
-      const tipMessage = document.createElement("p");
-      tipMessage.id = "hint";
-      tipMessage.classList.add("hiddenText");
-      tipMessage.textContent = "Sök både svenska och engelska namn";
-      countrySearch.prepend(tipMessage);
-
-      const hintEl = document.getElementById("hint");
-      // Sätter igång en timeout som visar tipsmeddelandet och sedan döljer det igen.
-      setTimeout(() => {
-          hintEl.classList.remove("hiddenText"); // Visar tipset efter 3 sek
-      }, 3000);
-
-      setTimeout(() => {
-          hintEl.classList.add("hiddenText"); // Döljer tipset
-      }, 11000);
-
-      // Skapar div för att sortera bland kategorier
-      const divDropDown = document.createElement("div");
-      divDropDown.id = "dropdownMenu";
-      divDropDown.className = "hidden";
-
-      // Struktur inom DOM för att sortera och filtrera länder, efter regioner
-      divDropDown.innerHTML += `
-        <p class="sortCountries">Sortera: <button id="sortHint" role="button" aria-label="Sortera länder efter namn" tabindex="0">Namn</button></p>
-        <label for="region-to-select">Regioner:
-        <select id="region-to-select">
-        <option value="Alla">Alla</option>
-        </select></label>
-        `;
-
-      // Lägger till dropdownmenyn till DOM efter knappen för att visa länder
-      showCountriesBtn.insertAdjacentElement("afterend", divDropDown);
-
-      // Lyssnar på ändringar i select-elementet för regioner
-      document.getElementById("region-to-select").addEventListener("change", () => {
-          const selectedRegion = document.getElementById("region-to-select").value;
-          if (selectedRegion === "Alla") { // Har man klickat i alla så visas alla länder
-              showCountries(allCountries); // Visar alla länder
-          } else { // Filtrerar länderna beroende på region som man klickat i
-              const filteredRegions = allCountries.filter(country => country.region === selectedRegion);
-              showCountries(filteredRegions); // Visar länderna efter filtreringen
-          }
-      });
+      createTipsMsg(); // Anropar funktionen för att skapa och visa ett tipsmeddelande för användaren när sidan laddas in
+      createDivDropDown(); // Anropar funktionen för att skapa dropdownmenyn för att sortera och filtrera länder
+      fetchAllcountries(); // Hämtar alla länder efter att DOM laddats in
 
       let listCountries = true; // Boolean som används för att skifta mellan true/false för att sortera
       const sortEl = document.getElementById("sortHint");
@@ -96,10 +45,6 @@
           }
           listCountries = !listCountries; // Ändrar värdet mellan true/false mellan klickningarna på knappen
       });
-
-      fetchAllcountries(); // Hämtar alla länder efter att DOM laddats in
-
-
       // Eventlyssnare när användaren klickar på "Enter-tangenten", initierar sökningen av land
       countryInputEl.addEventListener("keydown", event => {
           if (event.key === "Enter") { // Om man skriver i sökfältet för land och trycker på enter
@@ -109,147 +54,30 @@
           }
       });
 
-      /*
-      // Olika kartor som jag kan använda på hemsidan
-      /* const darkmodeTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-           maxZoom: 19,
-           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-       });  
-       const jawgStreetsTile = L.tileLayer(`https://tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
-           maxZoom: 19,
-           attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
-       });
-
-        const stadiaTile = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-            maxZoom: 19
-        });
-
-        const voyagerTile = L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-            maxZoom: 19,
-        }); */
-
-
-
-      // Olika karter som går att använda, jawg har en token som jag sparat som en variabel.
-      const jawgToken = "6aUCDcns9wnFKVGcqzrnXSypntTzjgqY7YYoAsMa71MbVgHGNZ6wRokX3739muDB";
-      const jawgDarkTile = L.tileLayer(`https://tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
-          maxZoom: 19,
-          attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
-      });
-
-      const jawgLagoonTile = L.tileLayer(`https://tile.jawg.io/jawg-lagoon/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
-          maxZoom: 19,
-          attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
-      });
-
-      const normalTile = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      });
-
-      // Skapar kartan
-      visualMap = L.map('map').setView([51.78, -7.03], 2); // Grundvy för kartan, utzoomad
-
-      // För att ändra kartans lager om användaren befinner sig i mörkt eller ljust läge
-      const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches; // Om användaren har valt mörk tema
-      if (darkMode) { // Använder mörk karta
-          visualMap.removeLayer(jawgLagoonTile);
-          jawgDarkTile.addTo(visualMap);
-      } else { // Använder ljus karta
-          visualMap.removeLayer(jawgDarkTile);
-          normalTile.addTo(visualMap);
-      }
-
-      // Lyssnar även på om man ändrar tema live, då ändras kartan också till rätt tema, ljust eller mörkt
-      const darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      darkModeQuery.addEventListener("change", event => {
-          const darkMode = event.matches;
-          if (darkMode) { // Använder mörk karta
-              visualMap.removeLayer(jawgLagoonTile);
-              jawgDarkTile.addTo(visualMap);
-          } else { // Använder ljus karta
-              visualMap.removeLayer(jawgDarkTile);
-              normalTile.addTo(visualMap);
+      // Lyssnar på ändringar i select-elementet för regioner
+      document.getElementById("region-to-select").addEventListener("change", () => {
+          const selectedRegion = document.getElementById("region-to-select").value;
+          if (selectedRegion === "Alla") { // Har man klickat i alla så visas alla länder
+              showCountries(allCountries); // Visar alla länder
+          } else { // Filtrerar länderna beroende på region som man klickat i
+              const filteredRegions = allCountries.filter(country => country.region === selectedRegion);
+              showCountries(filteredRegions); // Visar länderna efter filtreringen
           }
       });
 
-      // Hämtar in ikonen
-      myIcon = L.icon({
-          iconUrl: "/images/travelMarker.svg", // Inhämtad svg som liknar flygplan
-          className: 'my-marker-icon', // En klass för att styla in scss, animation och färger
-          iconSize: [30, 30],
-          iconAnchor: [15, 30]
-      });
-
-
       // När användaren skriver i sökfältet för land 
-      countryInputEl.addEventListener("input", async() => {
-          const countryInput = countryInputEl.value.trim().toLowerCase(); // Det som användaren söker på i sökfältet, tar bort mellanslag med trim(), samt för att kunna söka med både stor- och liten första bokstav.
+      countryInputEl.addEventListener("input", () => {
+          const value = countryInputEl.value.trim().toLowerCase(); // Det som användaren söker på i sökfältet, tar bort mellanslag med trim(), samt för att kunna söka med både stor- och liten första bokstav.
           searchError.innerHTML = ""; // Tar bort felmeddelande i DOM när användaren skriver i sökfältet
-          const filteredCountries = allCountries.filter(country =>
-              country.name.common.toLowerCase().includes(countryInput) // Filtrerar efter vad användaren söker på
-          );
-          filterCountries();
-          //showCountries(filteredCountries); // Skickar med den filtrerade listan av länder för att hämta in länderna automatiskt medan man skriver
+          filterCountries(value); // Anropar funktionen med sökinnehållet 
       });
-
-
 
       // När användaren klickar på sök-knappen för land körs funktionen searchLand
       searchBtn.addEventListener("click", searchLand);
 
       // När använder klickar på knappen för att visa alla länder så körs funktionen showListAllCountries
       showCountriesBtn.addEventListener("click", showListAllCountries);
-
-
-      // När användaren klickar på sök-knappen för land
-      /*searchBtn.addEventListener("click", () => {
-          let searchInput = countryInputEl.value.trim(); // tar bort mellanslag
-          if (searchInput === "") { // Felmeddelande om man inte sökar på någonting
-              searchError.innerHTML = "Vänligen, fyll i ett land"; // Felmeddelande i DOM
-              return;
-          }
-
-          const countryInput = searchInput.charAt(0).toUpperCase() + searchInput.slice(1).toLowerCase(); // Gör första bokstaven i landets namn till en versal och resten till gemener
-
-
-          showLoadingIcon(); // Laddningsikon som går igång och visas efter man klickat på sök
-          countrySection.classList.add("hidden");
-          countriesDiv.classList.add("hidden"); // Döljer listan med alla länder
-          hideSections(); // Döljer karta, väderprognos och valutakonverterare 
-          countriesListDisplay.classList.add("hidden");
-          divDropDown.classList.add("hidden");
-          showCountriesBtn.firstChild.textContent = "Visa alla länder"; // Ändrar namn på knappen
-          // Timeout
-          setTimeout(() => {
-              fetchCountry(countryInput, searchError); // Anropar funktionen för att hämta datan om landet beroende på vad användaren sökt på
-              //main.classList.remove("hidden");
-              countryCard.classList.add("show"); // Lägger på klassen show för att visa elementet
-              countryCard.scrollIntoView({ behavior: "smooth" }); // Scrollar ner information om landet/profil-kortet
-          }, 1350);
-      });*/
-
-
   });
-
-
-
-  // När användaren klickar på knappen för att visa alla länder
-  /*showCountriesBtn.addEventListener("click", () => {
-          const arrowIcon = document.getElementById("arrowIcon"); // Ikonen (chevron) som pilar i knappen
-          if (countriesListDisplay.classList.contains("hidden")) {
-              hideSections(); // Döljer element som karta, diagram
-              countriesListDisplay.classList.remove("hidden"); // Visar listan med alla länder
-              divDropDown.classList.remove("hidden");
-              showCountriesBtn.firstChild.textContent = "Dölj länder"; // Ändrar namn på knappen
-              arrowIcon.style.transform = "rotate(180deg)"; // Ändrar ikonen till uppåtpil
-          } else { // När listan visas och användaren klickar igen på knappen, så döljs listan
-              countriesListDisplay.classList.add("hidden");
-              divDropDown.classList.add("hidden");
-              showCountriesBtn.firstChild.textContent = "Visa alla länder";
-              arrowIcon.style.transform = "rotate(0deg)"; // Ändrar ikonen till nedåtpil
-          }
-      });
-  });*/
 
   /**
    * Funktion som hämtar in alla länder som finns från Restcountries API med namn, flagga och region samt cca2 kod som används för flaggor
@@ -261,7 +89,6 @@
           const info = await response.json();
           allCountries = info; // Sparar länderna i den globala arrayen
           showCountries(info); // Skickar med alla länderna för att visa dem i DOM 
-
           let regions = [];
           // Alla regioner för land som finns i arrayen från apiet
           info.forEach(region => {
@@ -269,7 +96,6 @@
                   regions.push(region.region);
               }
           });
-
           // Skriver ut regionerna för land i DOM till det tidigare skapade select-elementet
           const regionsSelectEl = document.getElementById("region-to-select");
           regions.forEach(region => {
@@ -277,12 +103,13 @@
                 <option value="${region}">${region}</option>
                 `
           });
+          // Felmeddelande
       } catch (error) {
           console.error("Felmeddelande vid hämtning av alla länder: ", error);
       }
   }
   /**
-   * 
+   * Genererar en lista av länder inom DOM, flagga och namn. Händelselyssnare när man klickar på ett land, namnet fylls då i till sökfältet.
    * @param {*} info - Arrayen med alla länder som hämtas från API för att kunna visa i DOM
    */
   function showCountries(info) {
@@ -298,11 +125,9 @@
             <span class="country-name">${country.name.common}</span>
         </li>`
       });
-
-
       // När man klickar på ett land i listan av länder så skrivs det namnet in i sökfältet och fokuset hamnar sedan där
-      const countryNameEl = document.querySelectorAll(".country-name");
-      const countryInputEl = document.getElementById("country-name-input");
+      const countryNameEl = document.querySelectorAll(".country-name"); // Alla länders namn
+      const countryInputEl = document.getElementById("country-name-input"); // Sökfältet
       countryNameEl.forEach(country => {
           country.addEventListener("click", () => {
               countryInputEl.value = country.innerHTML;
@@ -312,12 +137,11 @@
   }
 
   /**
-   * Filtrerar listan av länder beroende på vad användaren skriver i sökfältet
+   * Filtrerar listan av länder beroende på vad användaren skrivet för land i sökfältet.
    */
-  function filterCountries() {
-      const countryInputEl = document.getElementById("country-name-input").value.toLowerCase();
+  function filterCountries(searchValue) {
       const filteredCountries = allCountries.filter(country =>
-          country.name.common.toLowerCase().includes(countryInputEl)
+          country.name.common.toLowerCase().includes(searchValue)
       );
       showCountries(filteredCountries); // Anropar funktionen för att hämta alla länder när de är filtrerade beroende på vad användaren sökt på
   }
@@ -413,7 +237,6 @@
     <button id="countryMapBtn" aria-label="Visa en karta över landet">Visa karta över landet<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m600-120-240-84-186 72q-20 8-37-4.5T120-170v-560q0-13 7.5-23t20.5-15l212-72 240 84 186-72q20-8 37 4.5t17 33.5v560q0 13-7.5 23T812-192l-212 72Zm-40-98v-468l-160-56v468l160 56Zm80 0 120-40v-474l-120 46v468Zm-440-10 120-46v-468l-120 40v474Zm440-458v468-468Zm-320-56v468-468Z"/></svg></button>
     <button id="showWeatherBtn" aria-label="Visa väderprognos">Se väderprognos<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q25-92 100-149t170-57q117 0 198.5 81.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H260Zm0-80h480q42 0 71-29t29-71q0-42-29-71t-71-29h-60v-80q0-83-58.5-141.5T480-720q-83 0-141.5 58.5T280-520h-20q-58 0-99 41t-41 99q0 58 41 99t99 41Zm220-240Z"/></svg></button>
     <button id="showCurrencyBtn" aria-label="Visa valutakonverterare">Jämför valuta<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-40q-112 0-206-51T120-227v107H40v-240h240v80h-99q48 72 126.5 116T480-120q75 0 140.5-28.5t114-77q48.5-48.5 77-114T840-480h80q0 91-34.5 171T791-169q-60 60-140 94.5T480-40Zm-36-160v-52q-47-11-76.5-40.5T324-370l66-26q12 41 37.5 61.5T486-314q33 0 56.5-15.5T566-378q0-29-24.5-47T454-466q-59-21-86.5-50T340-592q0-41 28.5-74.5T446-710v-50h70v50q36 3 65.5 29t40.5 61l-64 26q-8-23-26-38.5T482-648q-35 0-53.5 15T410-592q0 26 23 41t83 35q72 26 96 61t24 77q0 29-10 51t-26.5 37.5Q583-274 561-264.5T514-250v50h-70ZM40-480q0-91 34.5-171T169-791q60-60 140-94.5T480-920q112 0 206 51t154 136v-107h80v240H680v-80h99q-48-72-126.5-116T480-840q-75 0-140.5 28.5t-114 77q-48.5 48.5-77 114T120-480H40Z"/></svg></button>
-    
     `;
 
       // Eventlyssnare för att visa valutakonverteraren 
@@ -455,8 +278,8 @@
       const inputAmountEl = document.getElementById("amount"); // Inputfältet för att skriva in beloppet 
       inputAmountEl.addEventListener("input", () => {
           inputAmountEl.innerHTML = inputAmountEl.value.replace(",", "."); // Om användaren skriver med kommatecken görs det om till punkt
-          const maxLength = 8;
-          if (inputAmountEl.value.length > maxLength) {
+          const maxLength = 8; // Max antal tecken 
+          if (inputAmountEl.value.length > maxLength) { // Jämför
               inputAmountEl.value = inputAmountEl.value.slice(0, maxLength);
           }
       });
@@ -476,8 +299,8 @@
       fromCurrInp.addEventListener("input", () => {
           const fromCurrency = fromCurrInp.value.toUpperCase();
           const fromFlag = document.getElementById("fromFlag");
-          fromFlag.src = `https://flagcdn.com/${fromCurrency.slice(0, 2).toLowerCase()}.svg`;
-          if (fromCurrency === "") {
+          fromFlag.src = `https://flagcdn.com/${fromCurrency.slice(0, 2).toLowerCase()}.svg`; // Ändrar flagga efter valutakoden
+          if (fromCurrency === "") { // Om inget har skrivits in inom valuta-inputen
               fromFlag.src = "";
               fromFlag.alt = "";
           }
@@ -527,6 +350,7 @@
       // Eventlyssnare för att visa kartan över det land som användaren sökt på
       const countryMapBtn = document.getElementById("countryMapBtn");
       countryMapBtn.addEventListener("click", () => {
+          createMap();
           const mapEl = document.getElementById("map");
           hideSections(); // Döljer element som väderprognos och valutakonverterare när man klickar på visa kartan över landet
           const [latitude, longitude] = data[0].latlng; // Koordinaterna
@@ -569,8 +393,6 @@
               convertListEl.innerHTML = `<p id="convertError">Kunde inte hämta valutan, försök igen</p>`;
               return;
           }
-
-
 
           let convertedAmount;
           // Om det inte är svenska som finns i från inputen så ändras valutakonverteraren
@@ -662,13 +484,13 @@
           console.error("Felmeddelande: ", error); // Felmeddelande
       }
   };
-
   /**
    * Visar en karta över det land som användaren sökt på och samtidigt visar en markör över landet
    * @param {*} latitude - Koordinater för latitud som hämtas in från apiet
    * @param {*} longitude - Koordinater för longitud som hämtas in från apiet
    */
   function showCountryMap(latitude, longitude, countryInput) {
+      createMap(); // Anropar funktionen för att skapa kartan
       hideSections(); // Dölj element som väderprognos, valutakonverterare
       const mapEl = document.getElementById("map"); // Hämtar in element från DOM
       mapEl.classList.remove("hidden"); // Visa kartan sedan
@@ -680,6 +502,66 @@
       marker = L.marker([latitude, longitude], { icon: myIcon, content: countryInput }).addTo(visualMap); // Markören sätts på kartan beroende på landets koordinater
       // marker.bindTooltip(`${countryInput}`).openTooltip(); // Tooltip med landets namn
   }
+  /**
+   * Funktion för att skapa en karta genom leaflet, openstreetmap samt Jawgmaps. 
+   * Olika kartlager används från jawgmaps beroende på om användaren valt mörkt/ljust tema.
+   */
+  function createMap() {
+      if (visualMap) return; // Om kartan redan skapats så behöver ingen ny skapas
+      visualMap = true; // När kartan skapats sätts den till true för att inte behöva skapa en till varje gång man klickar på visa karta över ett land
+
+      // Olika karter som går att använda, 
+      const jawgToken = "6aUCDcns9wnFKVGcqzrnXSypntTzjgqY7YYoAsMa71MbVgHGNZ6wRokX3739muDB"; // Token sparad i variabel
+      // Mörkare lager från jawg
+      const jawgDarkTile = L.tileLayer(`https://tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
+          maxZoom: 19,
+          attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+      });
+      // Ett ljusare kartlager från jawg
+      const jawgLagoonTile = L.tileLayer(`https://tile.jawg.io/jawg-lagoon/{z}/{x}/{y}{r}.png?access-token=${jawgToken}`, {
+          maxZoom: 19,
+          attribution: '© <a href="https://www.jawg.io" target="_blank">Jawg Maps</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+      });
+      // Vanliga lagret från openstreetmap, behöver ingen token
+      const normalTile = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      });
+
+      // Skapar kartan
+      visualMap = L.map('map').setView([51.78, -7.03], 2); // Grundvy för kartan, utzoomad
+
+      // För att ändra kartans lager om användaren befinner sig i mörkt eller ljust läge
+      const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches; // Om användaren har valt mörk tema
+      if (darkMode) { // Använder mörk karta
+          visualMap.removeLayer(jawgLagoonTile);
+          jawgDarkTile.addTo(visualMap);
+      } else { // Använder ljus karta
+          visualMap.removeLayer(jawgDarkTile);
+          normalTile.addTo(visualMap);
+      }
+
+      // Lyssnar även på om man ändrar tema live, då ändras kartan också till rätt tema, ljust eller mörkt
+      const darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      darkModeQuery.addEventListener("change", event => {
+          const darkMode = event.matches;
+          if (darkMode) { // Använder mörk karta
+              visualMap.removeLayer(jawgLagoonTile);
+              jawgDarkTile.addTo(visualMap);
+          } else { // Använder ljus karta
+              visualMap.removeLayer(jawgDarkTile);
+              normalTile.addTo(visualMap);
+          }
+      });
+
+      // Hämtar in ikonen
+      myIcon = L.icon({
+          iconUrl: "/images/travelMarker.svg", // Inhämtad svg som liknar flygplan
+          className: 'my-marker-icon', // En klass för att styla in scss, animation och färger
+          iconSize: [30, 30],
+          iconAnchor: [15, 30]
+      });
+  }
+
 
   /**
    * Hämtar in väderprognos för huvudstaden i landet som användaren sökt på, ex Stockholm
@@ -693,17 +575,19 @@
           const response = await fetch(url)
           const data = await response.json();
           if (!response.ok) { // Felmeddelande i konsoll och DOM om det inte går att hämta väderprognos
-              console.warn(`Kunde inte hämta väderprognos för ${capitalName}`)
-              const weatherContainerEl = document.getElementById("weatherContainer");
+              console.warn(`Kunde inte hämta väderprognos för ${capitalName}`) // Felmeddelande som en varning i konsolen för landet
+
+              const weatherContainerEl = document.getElementById("weatherContainer"); // Felmeddelande i DOM
               weatherContainerEl.innerHTML = `<p id="weather-error">Kunde inte hämta väderprognos för ${capitalName}.</p>`;
           }
           return data;
-      } catch (error) {
+      } catch (error) { // Felmeddelandet
           console.error("Felmeddelande från hämtning av väder: ", error);
       }
   }
   /**
-   * Visar väder för huvudstaden i det land som användaren sökt på, anropar funktionen för att visa diagram för väderprognos
+   * Visar väder för huvudstaden i det land som användaren sökt på. 
+   * Anropar funktionen för att visa diagram för väderprognos
    * @param {*} weatherInfo - Hämtar in väderinformation från API:et
    * @param {*} capitalName - Huvudstadens namn som används för att visa i DOM vilken stad väderprognosen gäller för
    */
@@ -723,7 +607,7 @@
           diagramEl.style.alignItems = "center";
 
           setTimeout(() => {
-              diagramEl.scrollIntoView({ behavior: "smooth" }); // Scrollar ner till kartan när den väl visas  
+              diagramEl.scrollIntoView({ behavior: "smooth" }); // Scrollar ner till kartan när den väl visas som smooth, 0.2 sek delay  
           }, 200);
       });
 
@@ -756,7 +640,7 @@
           type: 'line',
           data: {
               labels: labels,
-              datasets: [{
+              datasets: [{ // Genomsnittstemperatur
                       label: 'Temperatur genomsnitt',
                       data: avgTemp,
                       backgroundColor: ["#ff9900"],
@@ -764,7 +648,7 @@
                       borderColor: "#ffa600",
                       borderWidth: 2,
                       order: 1,
-                  }, {
+                  }, { // Lägsta temp
                       label: 'Min-temp',
                       data: lowestTemp,
                       backgroundColor: ["#0019fc"],
@@ -773,7 +657,7 @@
                       borderWidth: 2,
                       order: 2,
                   },
-                  {
+                  { // Högsta temp
                       label: 'Max-temp',
                       data: highestTemp,
                       backgroundColor: ["#ff0000"],
@@ -786,7 +670,7 @@
           },
           options: {
               responsive: true,
-              maintainAspectRatio: false,
+              maintainAspectRatio: false, // Responsiv
               plugins: {
                   tooltip: {
                       callbacks: {
@@ -816,7 +700,7 @@
           type: 'bar',
           data: {
               labels: labels,
-              datasets: [{
+              datasets: [{ // Stapel för chans till regn
                   label: 'Chans för regn',
                   data: chanceRain,
                   backgroundColor: ["#0066ff"],
@@ -824,7 +708,7 @@
                   order: 1,
                   borderColor: "#000000",
                   barThickness: 30,
-              }, {
+              }, { // Stapel för chans till snö
                   label: 'Chans för snö',
                   data: chanceSnow,
                   backgroundColor: ["#ffffff"],
@@ -837,7 +721,7 @@
           },
           options: {
               responsive: true,
-              maintainAspectRatio: false,
+              maintainAspectRatio: false, // Responsiv
               plugins: {
                   tooltip: {
                       callbacks: {
@@ -924,10 +808,10 @@ Döljer laddningsikonen
 
 
   /**
-   * Sorterar länder i ordningen A-Ö
+   * Sorterar länder i ordningen A-Ö, justerar efter region, om användaren valt en specifik
    */
   function sortCountries() {
-      const selectedRegion = document.getElementById("region-to-select").value;
+      const selectedRegion = document.getElementById("region-to-select").value; // 
       if (selectedRegion === "Alla") {
           const sortCountries = allCountries.sort((a, b) => a.name.common.localeCompare(b.name.common));
           showCountries(sortCountries);
@@ -938,7 +822,7 @@ Döljer laddningsikonen
       }
   }
   /**
-   * Sorterar länder i ordningen Ö-A, reverse
+   * Sorterar länder i ordningen Ö-A, reverse och justerar efter region om användaren valt en specifik
    */
   function sortCountriesBackwards() {
       const selectedRegion = document.getElementById("region-to-select").value;
@@ -952,6 +836,11 @@ Döljer laddningsikonen
       }
   }
 
+  /**
+   * Hämtar in landet som användaren sökt på i sökfältet,.
+   * Visar en laddningsikon och genererar sedan ett profilkort med info om det land som användaren sök på.
+   * @returns - Felmeddelande om användaren lämnat sökfältet blankt vid sökning
+   */
   function searchLand() {
       const countryInputEl = document.getElementById("country-name-input"); // Inputfält där användaren skriver in landets namn
       const countryCard = document.getElementById("country-card"); // landprofilen
@@ -989,6 +878,9 @@ Döljer laddningsikonen
       }, 1350);
   }
 
+  /**
+   * Visar eller döljer listan av länder när man söker på land.
+   */
   function showListAllCountries() {
       const countriesListDisplay = document.getElementById("countriesDisplay"); // Div där listan med alla länder ligger
       const showCountriesBtn = document.getElementById("moreCountries"); // Knappen för att visa alla länder
@@ -1001,10 +893,55 @@ Döljer laddningsikonen
           divDropDown.classList.remove("hidden");
           showCountriesBtn.firstChild.textContent = "Dölj länder"; // Ändrar namn på knappen
           arrowIcon.style.transform = "rotate(180deg)"; // Ändrar ikonen till uppåtpil
-      } else { // När listan visas och användaren klickar igen på knappen, så döljs listan
+      } else { // När listan visas och användaren klickar igen på knappen för att söka land så döljs listan
           countriesListDisplay.classList.add("hidden");
           divDropDown.classList.add("hidden");
           showCountriesBtn.firstChild.textContent = "Visa alla länder";
           arrowIcon.style.transform = "rotate(0deg)"; // Ändrar ikonen till nedåtpil
       }
+  };
+
+  /**
+   * Skapar ett "tipsmeddelande" ovanför sökfältet till land för användaren. 
+   */
+  function createTipsMsg() {
+      // Skapar tipsmeddelande och lägger till efter rubriken och i diven
+      const countrySearch = document.getElementById("country-search");
+      const tipMessage = document.createElement("p");
+      tipMessage.id = "hint";
+      tipMessage.classList.add("hiddenText");
+      tipMessage.textContent = "Sök både svenska och engelska namn";
+      countrySearch.prepend(tipMessage);
+      const hintEl = document.getElementById("hint");
+
+      // Sätter igång en timeout som visar tipsmeddelandet och sedan döljer det igen.
+      setTimeout(() => {
+          hintEl.classList.remove("hiddenText"); // Visar tipset efter 3 sek
+      }, 3000);
+
+      setTimeout(() => {
+          hintEl.classList.add("hiddenText"); // Döljer tipset
+      }, 11000);
+  }
+
+  /**
+   * Skapar en meny med knapp för att sortera samt filtrera länder i listan. 
+   */
+  function createDivDropDown() {
+      // Skapar div för att sortera bland kategorier
+      const showCountriesBtn = document.getElementById("moreCountries"); // Knappen som man kan klicka på för att visa länderna
+      const divDropDown = document.createElement("div"); // Skapar div
+      divDropDown.id = "dropdownMenu"; // Ger div ett id
+      divDropDown.className = "hidden"; // Dold i början
+
+      // Struktur inom DOM för att sortera och filtrera länder, efter regioner
+      divDropDown.innerHTML += `
+        <p class="sortCountries">Sortera: <button id="sortHint" role="button" aria-label="Sortera länder efter namn" tabindex="0">Namn</button></p>
+        <label for="region-to-select">Regioner:
+        <select id="region-to-select">
+        <option value="Alla">Alla</option>
+        </select></label>
+        `;
+      // Lägger till dropdownmenyn till DOM efter knappen för att visa länder
+      showCountriesBtn.insertAdjacentElement("afterend", divDropDown);
   };
