@@ -1,4 +1,5 @@
 @use "sass:color";
+@import url('https://fonts.googleapis.com/css2?family=Contrail+One&family=Honk&family=Work+Sans:wght@400;600;700&display=swap');
 //Färger för knappar och hoover-effekter
 $btn-color-primary:#00aeff;
 $btn-color-secondary-blue: #0087f548;
@@ -19,7 +20,10 @@ $color-bg-main-dark: #022d41;
 //Färger för text
 $color-text: #1A1A1A;
 $color-white:#fff;
-$color-black:rgba(0, 0, 0, 0.61);
+$color-black:rgba(0,
+0,
+0,
+0.61);
 $color-text-secondary: #6C757D;
 $color-text-error:#ca1616e3;
 $color-span: #3A7AFE;
@@ -32,19 +36,35 @@ $glowy-text-darkmode: #fe943d;
 $color-complement: color.complement($btn-color-primary);
 $color-complement-hover: color.complement($btn-color-hover);
 // Skala färg till ljusare och mörkare för knappar
-$darkened-color-btn: color.scale($btn-color-primary, $lightness:-50%);
-$lightened-color-btn: color.scale($color-white, $lightness:60%);
-$primary-dark: shade($btn-color-primary, 50%);
-$primary-light: tint($btn-color-primary, 50%);
+$darkened-color-btn: color.scale($btn-color-primary,
+$lightness:-50%);
+$lightened-color-btn: color.scale($color-white,
+$lightness:60%);
+$primary-dark: shade($btn-color-primary,
+50%);
+$primary-light: tint($btn-color-primary,
+50%);
 // Färger diverse
 $element-color: #f3b406;
 $complement-color: color.complement($btn-color-hover);
 $complement-color2: color.complement($color-yellow);
 //Skuggor
-$shadow-light:0 1px 6px rgb(0, 0, 0, 0.582);
-$shadow-medium:0 4px 12px rgba(0, 0, 0, 0.582);
-$shadow-fantasy: 0 0px 12px rgba(236, 136, 13, 0.874),
-0px 0px 12px rgba(254, 153, 2, 0.874);
+$shadow-light:0 1px 6px rgb(0,
+0,
+0,
+0.582);
+$shadow-medium:0 4px 12px rgba(0,
+0,
+0,
+0.582);
+$shadow-fantasy: 0 0px 12px rgba(236,
+136,
+13,
+0.874),
+0px 0px 12px rgba(254,
+153,
+2,
+0.874);
 //Fonter
 $font-primary:"Work Sans",
 ui-sans-serif,

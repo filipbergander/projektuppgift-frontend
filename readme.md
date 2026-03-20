@@ -12,6 +12,6 @@ Webbplats: https://projektfrontend-fb.netlify.app/
 
 JS dokumentation: https://projektfrontend-fb.netlify.app/docs/index.html
 
-Rapport:[Projektuppgift - Frontend baserad webbutveckling.pdf](https://github.com/user-attachments/files/26148015/Projektuppgift.-.Frontend.baserad.webbutveckling.pdf)
+Rapport: [Projektuppgift - Frontend baserad webbutveckling.pdf](https://github.com/user-attachments/files/26148015/Projektuppgift.-.Frontend.baserad.webbutveckling.pdf)
 
 
