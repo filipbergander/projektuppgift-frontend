@@ -13,23 +13,3 @@
         border-color: $color-bg-orange-hover;
     }
 }
-
-@media (max-width: 768px) {}
-
-@media (max-width: 530px) {
-    #country-name-input {
-        font-size: 0.9rem;
-    }
-    #search-button {
-        font-size: 0.9rem;
-    }
-}
-
-@media (max-width: 375px) {
-    #country-name-input {
-        font-size: 0.8rem;
-    }
-    #search-button {
-        font-size: 0.8rem;
-    }
-}

@@ -584,8 +584,8 @@
           // Beräknar det konverterade beloppet och skriver ut det i DOM samt när växlingskursen senast blev uppdaterad
           convertListEl.innerHTML = `
         <p class="money">${amount} ${fromCurrency} <span class="moneyError">=</span> ${swedishFormat} i ${toCurrency}</p>
-        <p>Senast uppdaterad kurs: <span class="updateDate">${updated}<span></p>
-        <p> Ny uppdatering av kurs: <span class="updateDate">${nextUpdate}<span></p>
+        <p class="updateText">Senast uppdaterad kurs: <span class="updateDate">${updated}<span></p>
+        <p class="updateText"> Ny uppdatering av kurs: <span class="updateDate">${nextUpdate}<span></p>
         `;
           setTimeout(() => {
               convertListEl.scrollIntoView({ behavior: "smooth" }); // Scrollar ner till det konverterade meddelandet när det visas med en delay på 200 ms
