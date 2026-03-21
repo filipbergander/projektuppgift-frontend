@@ -119,10 +119,10 @@
       // Laddat ned flaggor som ligger i mappen images/flags där filnamnet är landets kod, se för Sverige exempelvis
       info.forEach(country => { // Struktur
           const code = country.cca2.toLowerCase(); // Landets kod i små bokstäver för att hämta in rätt flagga från mappen
-          //<img src="/images/flags/${code}.svg" alt="${country.name.common} flagga" width="18px" height="12px"></img>  
           countryListEl.innerHTML += `
                   <li class="countriesflag">
-                            <span class="country-name">${country.name.common}</span>
+                <img src="/images/flags/${code}.svg" alt="${country.name.common} flagga" width="18px" height="12px"></img>  
+            <span class="country-name">${country.name.common}</span>
         </li>`
       });
       // När man klickar på ett land i listan av länder så skrivs det namnet in i sökfältet och fokuset hamnar sedan där
