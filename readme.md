@@ -12,6 +12,9 @@ Webbplats: https://projektfrontend-fb.netlify.app/
 
 JS dokumentation: https://projektfrontend-fb.netlify.app/docs/index.html
 
-Rapport: [Projektuppgift - Frontend baserad webbutveckling.pdf](https://github.com/user-attachments/files/26148015/Projektuppgift.-.Frontend.baserad.webbutveckling.pdf)
+Rapport: [Projektuppgift - Frontend baserad webbutveckling.pdf](https://github.com/user-attachments/files/26164922/Projektuppgift.-.Frontend.baserad.webbutveckling.pdf)
 
 
+OBS:
+Medtagit applikationen för testbranch genom en annan URL där jag inte använder bilderna inom listan av länder.
+Webbplats: https://testtravelbuddy-fb.netlify.app/
