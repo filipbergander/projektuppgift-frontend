@@ -8,7 +8,7 @@ Målet med mitt projekt är att skapa en tydlig, responsiv och användarvänlig 
 Genom att kombinera animationer och genomtänkt design strävar jag efter att utveckla en underhållande sida som är anpassad efter sin målgrupp. 
 Innehållet i applikationen presenteras och skapas främst med hjälp av JavasScript och SASS och är automatiserad genom VITE.
 
-Webbplats: https://projektfrontend-fb.netlify.app/
+Webbplats: https://travelbuddy-fb.netlify.app/
 
 JS dokumentation: https://projektfrontend-fb.netlify.app/docs/index.html
 
