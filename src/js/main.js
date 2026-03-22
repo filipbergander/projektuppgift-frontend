@@ -80,7 +80,8 @@
   });
 
   /**
-   * Funktion som hämtar in alla länder som finns från Restcountries API med namn, flagga och region samt cca2 kod som används för flaggor
+   * Funktion som hämtar in alla länder som finns från Restcountries API med namn,
+   *  flagga och region samt cca2 kod som används för flaggor
    */
   async function fetchAllcountries() {
       const url = `https://restcountries.com/v3.1/all?fields=name,region,cca2`;
@@ -120,8 +121,8 @@
       info.forEach(country => { // Struktur
           const code = country.cca2.toLowerCase(); // Landets kod i små bokstäver för att hämta in rätt flagga från mappen
           countryListEl.innerHTML += `
-                  <li class="countriesflag">
-                <img src="/images/flags/${code}.svg" alt="${country.name.common} flagga" width="18px" height="12px"></img>  
+        <li class="countriesflag">
+            <img src="/images/flags/${code}.svg" alt="${country.name.common} flagga" width="18px" height="12px"></img>  
             <span class="country-name">${country.name.common}</span>
         </li>`
       });
