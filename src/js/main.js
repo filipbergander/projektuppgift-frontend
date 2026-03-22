@@ -117,12 +117,14 @@
       const countryListEl = document.getElementById("countrylist");
       countryListEl.innerHTML = ""; // Tömmer listan innan den fylls på igen
 
+
       // Laddat ned flaggor som ligger i mappen images/flags där filnamnet är landets kod, se för Sverige exempelvis
+      // <img src="/images/flags/${code}.svg" alt="${country.name.common} flagga" width="18px" height="12px"></img>
+      // Använder inte bilderna i utskriften till DOM. 
       info.forEach(country => { // Struktur
-          const code = country.cca2.toLowerCase(); // Landets kod i små bokstäver för att hämta in rätt flagga från mappen
+          //const code = country.cca2.toLowerCase(); // Landets kod i små bokstäver för att hämta in rätt flagga från mappen
           countryListEl.innerHTML += `
         <li class="countriesflag">
-            <img src="/images/flags/${code}.svg" alt="${country.name.common} flagga" width="18px" height="12px"></img>  
             <span class="country-name">${country.name.common}</span>
         </li>`
       });
