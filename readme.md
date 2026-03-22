@@ -10,7 +10,7 @@ Innehållet i applikationen presenteras och skapas främst med hjälp av JavasSc
 
 Webbplats: https://travelbuddy-fb.netlify.app/
 
-JS dokumentation: https://projektfrontend-fb.netlify.app/docs/index.html
+JS dokumentation: https://travelbuddy-fb.netlify.app/docs/index.html
 
 Rapport: [Projektuppgift - Frontend baserad webbutveckling.pdf](https://github.com/user-attachments/files/26164922/Projektuppgift.-.Frontend.baserad.webbutveckling.pdf)
 
