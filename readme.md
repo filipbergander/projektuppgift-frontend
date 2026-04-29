@@ -19,3 +19,6 @@ Rapport: [Projektuppgift - Frontend baserad webbutveckling.pdf](https://github.c
 Medtagit applikationen för testbranch genom en annan URL där jag inte använder bilderna inom listan av länder.
 
 Webbplats: https://testtravelbuddy-fb.netlify.app/
+
+**Uppdatering**
+Förmodligen har token löpt ut för att kunna anropa restcountries-api.
